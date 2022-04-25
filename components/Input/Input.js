@@ -6,6 +6,7 @@ const Input = ({
   placeholder = '',
   icon = null,
   backIcon = null,
+  backIconCallback = null,
 }) => {
   return (
     <div className='relative'>
@@ -15,7 +16,16 @@ const Input = ({
         </div>
       )}
       {backIcon && (
-        <div className={`absolute top-[7.5px] right-[5px]`}>
+        <div
+          className={`absolute top-[7.5px] right-[5px] ${
+            backIconCallback ? ' cursor-pointer' : ''
+          }`}
+          onClick={() => {
+            if (backIconCallback) {
+              backIconCallback();
+            }
+          }}
+        >
           <Image src={backIcon} width={21} height={24} />
         </div>
       )}

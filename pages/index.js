@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import Layout from './shared/Layout';
 
 import Input from '../components/Input/Input';
@@ -8,8 +10,12 @@ import google from '../images/icons/google.svg';
 import email from '../images/icons/email.svg';
 import security from '../images/icons/security.svg';
 import eye from '../images/icons/eye.svg';
+import Confirmation from '../components/Confirmation/Confirmation';
 
 export default function Home() {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isConfOpen, setIsConfOpen] = useState(true);
+  useEffect(() => {}, [passwordVisible]);
   return (
     <Layout>
       <div className='flex flex-col md:flex-row justify-center'>
@@ -18,14 +24,25 @@ export default function Home() {
             <h1>Login</h1>
             <Input placeholder={'E-mail / username'} icon={email} />
             <Input
-              type={'password'}
-              placeholder={'Password'}
+              type={`${passwordVisible ? 'text' : 'password'}`}
+              placeholder={`${passwordVisible ? 'text' : 'password'}`}
               icon={security}
               backIcon={eye}
+              backIconCallback={() => {
+                setPasswordVisible((prev) => !prev);
+              }}
             />
             <div className='flex justify-between text-xs text-paragraph underline'>
-              <div className='cursor-pointer'>Remember me.</div>
-              <div className='cursor-pointer'>Forget Password</div>
+              <div className='cursor-pointer flex justify-center items-center gap-1'>
+                <input type='checkbox' />
+                <span> Remember me.</span>
+              </div>
+              <div
+                className='cursor-pointer'
+                onClick={() => setIsConfOpen((prev) => !prev)}
+              >
+                Forget Password
+              </div>
             </div>
             <div className='flex justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3'>
               <button>Sign In</button>
@@ -42,6 +59,28 @@ export default function Home() {
           <Image src={hero} layout='responsive' />
         </div>
       </div>
+      <AnimatePresence>
+        {isConfOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Confirmation
+              title='Forgot your password?'
+              close={() => {
+                setIsConfOpen((prev) => !prev);
+              }}
+              visible={isConfOpen}
+            >
+              <div className='flex flex-col'>
+                <p className='text-sm mt-2'>Enter your email</p>
+                <Input />
+              </div>
+            </Confirmation>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }
