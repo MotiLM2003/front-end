@@ -77,6 +77,7 @@ export default function Home() {
                     className=''
                     onClick={() => {
                       alert('sending email');
+                      setIsConfOpen((prev) => !prev);
                     }}
                   >
                     Submit

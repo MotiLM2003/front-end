@@ -1,33 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from '../../images/logo.svg';
 import search from '../../images/icons/search.svg';
 import account from '../../images/icons/account.svg';
 import downArrow from '../../images/icons/down-arrow.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import { setId } from '../../store/menuSlice';
+import MenuItem from './MenuItem';
 const Header = () => {
+  const dispatch = useDispatch();
+  const { menuId } = useSelector((state) => state.menuReducer);
+  useEffect(() => {
+    console.log(menuId);
+  }, []);
   return (
     <header className='p-3 flex default-container align-center  justify-between md:justify-center '>
       <div className='md:px-8'>
         <Image src={logo} width='238' height='43' />
       </div>
-      <div className='hidden   md:flex grow justify-center items-center'>
+      <div className='hidden   md:flex grow justify-center items-center header-menu'>
         <ul className='flex    md:gap-12'>
-          <li className='primary-hover'>
-            <Link href='/'>Main</Link>
-          </li>
-          <li className='primary-hover'>
-            <Link href='/about-us/'>About us</Link>
-          </li>
-          <li className='primary-hover'>
-            <Link href='/campaigns/'>Campaigns</Link>
-          </li>
-          <li className='primary-hover'>
-            <Link href='/our-services/'>Our Service</Link>
-          </li>
-          <li className='primary-hover'>
-            <Link href='/our-services/'>Get Started</Link>
-          </li>
+          <MenuItem text='Main' path='/' itemId={0} menuId={menuId} />
+          <MenuItem
+            text='About us'
+            path='/about-us/'
+            itemId={1}
+            menuId={menuId}
+          />
+
+          <MenuItem
+            text='Campaigns'
+            path='/campaigns/'
+            itemId={2}
+            menuId={menuId}
+          />
+
+          <MenuItem
+            text='Our Service'
+            path='/our-services/'
+            itemId={3}
+            menuId={menuId}
+          />
+
+          <MenuItem
+            text='Get Started'
+            path='/get-started/'
+            itemId={4}
+            menuId={menuId}
+          />
         </ul>
       </div>
       <div className='flex items-center gap-4'>
