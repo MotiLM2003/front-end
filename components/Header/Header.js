@@ -6,11 +6,11 @@ import account from '../../images/icons/account.svg';
 import downArrow from '../../images/icons/down-arrow.svg';
 const Header = () => {
   return (
-    <header className='p-3 flex default-container align-center justify-center '>
-      <div className='px-8'>
+    <header className='p-3 flex default-container align-center  justify-between md:justify-center '>
+      <div className='md:px-8'>
         <Image src={logo} width='238' height='43' />
       </div>
-      <div className='grow flex justify-center items-center'>
+      <div className='hidden   md:flex grow justify-center items-center'>
         <ul className='flex    md:gap-12'>
           <li className='primary-hover'>Main</li>
           <li className='primary-hover'>About us</li>

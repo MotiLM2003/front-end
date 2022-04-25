@@ -5,8 +5,8 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className='default-container flex flex-col '>
-        <div className='grow'> {children}</div>
+      <div className=''>
+        <div className='grow'>{children}</div>
       </div>
       <Footer />
     </>

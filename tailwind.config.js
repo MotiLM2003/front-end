@@ -18,7 +18,8 @@ module.exports = {
         shades: {
           100: '#EFEFEF',
           200: '#EAEAEA',
-          300: '#1D1E1D',
+          300: '#E5E5E5',
+          400: '#1D1E1D',
         },
       },
     },
