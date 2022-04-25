@@ -8,8 +8,8 @@ import mobile from '../../images/icons/phone.svg';
 import email from '../../images/icons/email.svg';
 const Footer = () => {
   return (
-    <footer className='bg-shades-400 text-white text-sm pt-12 px-12  pb-12'>
-      <div className='default-container  flex flex-col gap-[5rem] md:gap-0 md:flex-row justify-between items-center '>
+    <footer className=' text-white text-sm    '>
+      <div className='default-container bg-shades-400 px-5 pb-5  flex flex-col gap-[5rem] md:gap-0 md:flex-row justify-between items-center '>
         <div>
           <div>
             <Image src={logo2} width='320' height='60' alt='logo icon' />
@@ -58,6 +58,9 @@ const Footer = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className='bg-primary h-[4rem] flex justify-center items-center'>
+        All rights reserved This site was built by sheltzer net.
       </div>
     </footer>
   );

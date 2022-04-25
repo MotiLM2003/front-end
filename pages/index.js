@@ -33,10 +33,6 @@ export default function Home() {
               }}
             />
             <div className='flex justify-between text-xs text-paragraph underline'>
-              <div className='cursor-pointer flex justify-center items-center gap-1'>
-                <input type='checkbox' />
-                <span> Remember me.</span>
-              </div>
               <div
                 className='cursor-pointer'
                 onClick={() => setIsConfOpen((prev) => !prev)}
@@ -74,8 +70,18 @@ export default function Home() {
               visible={isConfOpen}
             >
               <div className='flex flex-col'>
-                <p className='text-sm mt-2'>Enter your email</p>
-                <Input />
+                <p className='text-sm my-2'>Enter your email</p>
+                <input type='text' className='bg-shades-500 rounded h-[2rem]' />
+                <div className='flex max-w-[100px] justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3  self-end'>
+                  <button
+                    className=''
+                    onClick={() => {
+                      alert('sending email');
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </Confirmation>
           </motion.div>

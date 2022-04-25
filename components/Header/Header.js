@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import logo from '../../images/logo.svg';
 import search from '../../images/icons/search.svg';
 import account from '../../images/icons/account.svg';
@@ -12,11 +13,21 @@ const Header = () => {
       </div>
       <div className='hidden   md:flex grow justify-center items-center'>
         <ul className='flex    md:gap-12'>
-          <li className='primary-hover'>Main</li>
-          <li className='primary-hover'>About us</li>
-          <li className='primary-hover'>Campaigns</li>
-          <li className='primary-hover'>Our Service</li>
-          <li className='primary-hover'>Get Started</li>
+          <li className='primary-hover'>
+            <Link href='/'>Main</Link>
+          </li>
+          <li className='primary-hover'>
+            <Link href='/about-us/'>About us</Link>
+          </li>
+          <li className='primary-hover'>
+            <Link href='/campaigns/'>Campaigns</Link>
+          </li>
+          <li className='primary-hover'>
+            <Link href='/our-services/'>Our Service</Link>
+          </li>
+          <li className='primary-hover'>
+            <Link href='/our-services/'>Get Started</Link>
+          </li>
         </ul>
       </div>
       <div className='flex items-center gap-4'>
