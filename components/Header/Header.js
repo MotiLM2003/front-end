@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className='p-3 flex default-container align-center justify-center '>
       <div className='px-8'>
-        <Image src={logo} width='238' height='43' layout='fill' />
+        <Image src={logo} width='238' height='43' />
       </div>
       <div className='grow flex justify-center items-center'>
         <ul className='flex    md:gap-12'>
