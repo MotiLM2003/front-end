@@ -14,7 +14,7 @@ import Confirmation from '../components/Confirmation/Confirmation';
 
 export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [isConfOpen, setIsConfOpen] = useState(true);
+  const [isConfOpen, setIsConfOpen] = useState(false);
   useEffect(() => {}, [passwordVisible]);
   return (
     <Layout>
