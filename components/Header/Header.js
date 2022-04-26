@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <header className='p-3 flex default-container align-center  justify-between md:justify-center '>
       <div className='md:px-8'>
-        <Image src={logo} width='238' height='43' sizes='320 640 750' />
+        <Image src={logo} width='238' height='43' alt='dasd' />
       </div>
       <div className='hidden   md:flex grow justify-center items-center header-menu'>
         <ul className='flex    md:gap-12'>
