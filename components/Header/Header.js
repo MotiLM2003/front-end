@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import logo from '../../images/logo.svg';
 import search from '../../images/icons/search.svg';
 import account from '../../images/icons/account.svg';
 import downArrow from '../../images/icons/down-arrow.svg';
-import { useSelector, useDispatch } from 'react-redux';
-import { setId } from '../../store/menuSlice';
+import { useSelector } from 'react-redux';
 import MenuItem from './MenuItem';
 const Header = () => {
-  const dispatch = useDispatch();
   const { menuId } = useSelector((state) => state.menuReducer);
   useEffect(() => {
     console.log(menuId);
@@ -17,7 +14,7 @@ const Header = () => {
   return (
     <header className='p-3 flex default-container align-center  justify-between md:justify-center '>
       <div className='md:px-8'>
-        <Image src={logo} width='238' height='43' />
+        <Image src={logo} width='238' height='43' sizes='320 640 750' />
       </div>
       <div className='hidden   md:flex grow justify-center items-center header-menu'>
         <ul className='flex    md:gap-12'>

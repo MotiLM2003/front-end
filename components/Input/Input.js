@@ -9,7 +9,7 @@ const Input = ({
   backIconCallback = null,
 }) => {
   return (
-    <div className='relative'>
+    <div className='relative button'>
       {icon && (
         <div className={`absolute top-[7.5px] left-[5px]`}>
           <Image src={icon} width={21} height={24} />
