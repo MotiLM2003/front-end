@@ -16,6 +16,7 @@ module.exports = {
         'red': '#ED604F',
 
         shades: {
+          50: '#F8F8F8',
           100: '#EFEFEF',
           200: '#EAEAEA',
           300: '#E5E5E5',

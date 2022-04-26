@@ -28,9 +28,14 @@ a {
   }
 
   h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h3 {
     @apply text-2xl;
   }
-
   .default-container {
     @apply max-w-screen-xl mx-auto;
   }
@@ -42,4 +47,8 @@ a {
 
 .header-menu .selected {
   border-bottom: 2px solid #1979be;
+}
+
+.shadow {
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.04);
 }
