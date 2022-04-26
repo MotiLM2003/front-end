@@ -5,7 +5,10 @@ const getStarted = () => {
   return (
     <Layout>
       <div className='p-[10rem] flex justify-center items-center'>
-        <h1>Get Started</h1>
+        <div className='p-4 flex flex-col md:flex-row'>
+          <div>1</div>
+          <div>2</div>
+        </div>
       </div>
     </Layout>
   );

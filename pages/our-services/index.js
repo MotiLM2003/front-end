@@ -13,9 +13,9 @@ const ourServices = () => {
       <div className='default-container p-[2rem]  flex  flex-col items-center bg-shades-50'>
         <h1>Our Service</h1>
         <div>
-          <div className='flex p-10 gap-8 items-center justify-center  '>
+          <div className='  flex flex-col md:flex-row p-10 gap-8 items-center justify-center text-center   '>
             <div className='bg-white p-6 shadow rounded-xl'>
-              <Image src={funding} width={131} height={131} />
+              <Image src={funding} width={131} height={131} layout='fixed' />
             </div>
             <div className='max-w-[660px]'>
               <h2 className='mb-2'>Campaign Building</h2>
@@ -31,9 +31,14 @@ const ourServices = () => {
           </div>
         </div>
         <div>
-          <div className='flex p-10 gap-8 items-center flex-row-reverse'>
+          <div className='flex   flex-col  p-10 gap-8 items-center md:flex-row-reverse'>
             <div className='bg-white p-6 shadow rounded-xl'>
-              <Image src={mailService} width={131} height={131} />
+              <Image
+                src={mailService}
+                width={131}
+                height={131}
+                layout='fixed'
+              />
             </div>
             <div className='max-w-[660px]'>
               <h2 className='mb-2'>Media Marketing</h2>
@@ -48,7 +53,7 @@ const ourServices = () => {
           </div>
         </div>
         <div>
-          <div className='flex p-10 gap-8 items-center'>
+          <div className='flex flex-col md:flex-row p-10 gap-8 items-center  '>
             <div className='bg-white p-6 shadow rounded-xl'>
               <Image src={mail} width={131} height={131} />
             </div>
@@ -63,9 +68,14 @@ const ourServices = () => {
           </div>
         </div>
         <div>
-          <div className='flex p-10 gap-8 items-center flex-row-reverse'>
+          <div className='flex flex-col  p-10 gap-8 items-center r md:flex-row-reverse'>
             <div className='bg-white p-6 shadow rounded-xl'>
-              <Image src={telephonyService} width={131} height={131} />
+              <Image
+                src={telephonyService}
+                width={131}
+                height={131}
+                layout='fixed'
+              />
             </div>
             <div className='max-w-[660px]'>
               <h2 className='mb-2'>Telemarketing</h2>
@@ -78,12 +88,12 @@ const ourServices = () => {
           </div>
         </div>
         <div>
-          <div className='flex p-10 gap-8 items-center'>
+          <div className='flex flex-col md:flex-row p-10 gap-8 items-center'>
             <div className='bg-white p-6 shadow rounded-xl'>
-              <Image src={mail2} width={131} height={131} />
+              <Image src={mail2} width={131} height={131} layout='fixed' />
             </div>
             <div className='max-w-[660px]'>
-              <h2 className='mb-2'>Signs And Flyers</h2>
+              <h2 className='mb-2 '>Signs And Flyers</h2>
               We create an eye-catching flyer presenting your cause. With text,
               photos, and all the possible donation methods. We send out your
               campaign flyer to the thousands of addresses. This is a great way

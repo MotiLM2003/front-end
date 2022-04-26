@@ -51,7 +51,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className='basis-[35%] relative'>
+        <div className='basis-1/2 xl:basis-1/3 relative'>
           <Image src={hero} layout='responsive' />
         </div>
       </div>
