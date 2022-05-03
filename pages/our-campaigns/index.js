@@ -8,10 +8,10 @@ import rabi2 from '../../images/rabbi-2.png';
 const OurCampaings = () => {
   return (
     <Layout>
-      <div className='min-h-[80vh] default-container flex flex-col items-center'>
+      <div className='min-h-[80vh] default-container flex flex-col items-center '>
         <h1 className='mb-10'>Our Champions</h1>
 
-        <div className='flex'>
+        <div className='flex flex-col-reverse  md:flex-row items-center'>
           <div className='max-w-[650px]'>
             <h2>הר"ר שרגא קוטלר</h2>
             <p className='text-black font-bold'>A Champion of our cause:</p>
@@ -53,13 +53,13 @@ const OurCampaings = () => {
               and he does it with an indescribable devotion.
             </p>
           </div>
-          <div className='shrink'>
-            <Image src={rabi1} />
+          <div>
+            <Image src={rabi1} layout='fixed' />
           </div>
         </div>
         {/*  */}
 
-        <div className='flex flex-row-reverse mt-[5rem]'>
+        <div className='flex flex-col md:flex-row-reverse mt-[5rem]'>
           <div className='max-w-[650px]'>
             <h2>הר"ר נתן נוסבוים</h2>
             <p className='text-black font-bold'>A Champion of our cause:</p>
@@ -74,10 +74,37 @@ const OurCampaings = () => {
               offices of the vaad frequented daily in the heart of the great
               City of Torah in the United States.
             </p>
-            <p className='mt-6'></p>
+            <p className='mt-6'>
+              For nearly twenty years, after being called by Roshei Yeshiva and
+              the Rabbanim of the city, Harav Nussbaum has headed the Vaad
+              HaTzedaka, helping and assisting every applicant with a beautiful
+              welcome and special grace reserved for him only.
+            </p>
+            <p className='mt-6'>
+              His supreme devotion became known to all. As the years went by and
+              he was appointed as a community Rav and a Rebbe, most of his day
+              was taken up, but he refused to give up his daily reception time
+              in the Vaad’s office where he enjoys using his special character
+              and his unique intelligence to assist every applicant, shortens
+              processes for him and constitutes a real connection between him
+              and the city gvirim.
+            </p>
+            <p className='mt-6 text-primary'>
+              No wonder the Vaad HaTzedaka of Lakewood has taken up a place of
+              honor among the various charitable committees throughout the
+              Jewish world and its approval opens generous doors anytime,
+              anywhere.
+            </p>
+            <p className='mt-6'>
+              Harav Nussbaum's consent to serve as a board member of our
+              organization and his willingness to dedicate time to us from his
+              busy schedule, is a badge of honor and appreciation that he
+              acquires for the extensive and blessed activity that is carried
+              out within the framework of our organization every single day.
+            </p>
           </div>
-          <div className='shrink'>
-            <Image src={rabi2} />
+          <div>
+            <Image src={rabi2} width={491} height={600} layout='fixed' />
           </div>
         </div>
       </div>
