@@ -40,6 +40,9 @@ a {
     @apply max-w-screen-xl mx-auto;
   }
 
+  p {
+    @apply text-paragraph;
+  }
   .primary-hover {
     @apply hover:text-primary cursor-pointer transition duration-150;
   }

@@ -14,6 +14,7 @@ module.exports = {
         'paragraph': '#5A5D6B',
         'gray': '#8F93A3',
         'red': '#ED604F',
+        'light-blue': '#dee0e2',
 
         shades: {
           50: '#F8F8F8',

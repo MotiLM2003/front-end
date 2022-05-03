@@ -31,7 +31,7 @@ const ourServices = () => {
           </div>
         </div>
         <div className='mb-5 md:mb-0'>
-          <div className='flex   flex-col   p-1 md:p-10 gap-8 items-center md:flex-row-reverse'>
+          <div className='flex   flex-col   p-1 md:p-10 gap-8 items-center md:flex-row-reverse text-center md:text-right'>
             <div className='bg-white p-6 shadow rounded-xl'>
               <Image
                 src={mailService}
@@ -53,9 +53,9 @@ const ourServices = () => {
           </div>
         </div>
         <div className='mb-5 md:mb-0'>
-          <div className='flex flex-col md:flex-row  p-1 md:p-10 gap-8 items-center  '>
+          <div className='flex flex-col md:flex-row  p-1 md:p-10 gap-8 items-center text-center md:text-left '>
             <div className='bg-white p-6 shadow rounded-xl'>
-              <Image src={mail} width={131} height={131} />
+              <Image src={mail} width={131} height={131} layout='fixed' />
             </div>
             <div className='max-w-[660px]'>
               <h2 className='mb-2'>Mailing Service</h2>
@@ -68,7 +68,7 @@ const ourServices = () => {
           </div>
         </div>
         <div className='mb-5 md:mb-0'>
-          <div className='flex flex-col   p-1 md:p-100 gap-8 items-center r md:flex-row-reverse'>
+          <div className='flex flex-col   p-1 md:p-100 gap-8 items-center r md:flex-row-reverse text-center md:text-right'>
             <div className='bg-white p-6 shadow rounded-xl'>
               <Image
                 src={telephonyService}
@@ -88,7 +88,7 @@ const ourServices = () => {
           </div>
         </div>
         <div className='mb-5 md:mb-0'>
-          <div className='flex flex-col md:flex-row  p-2 md:p-10 gap-8 items-center'>
+          <div className='flex flex-col md:flex-row  p-2 md:p-10 gap-8 items-center text-center md:text-left'>
             <div className='bg-white p-6 shadow rounded-xl'>
               <Image src={mail2} width={131} height={131} layout='fixed' />
             </div>

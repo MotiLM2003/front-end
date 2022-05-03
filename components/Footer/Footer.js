@@ -8,7 +8,7 @@ import mobile from '../../images/icons/phone.svg';
 import email from '../../images/icons/email.svg';
 const Footer = () => {
   return (
-    <footer className=' text-white text-sm    '>
+    <footer className=' text-white text-sm  mt-10   '>
       <div className='bg-shades-400 px-5 pb-5  '>
         <div className='default-container flex flex-col gap-[5rem] md:gap-0 md:flex-row justify-between items-center '>
           <div>

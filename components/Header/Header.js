@@ -24,6 +24,7 @@ const Header = () => {
             path='/about-us/'
             itemId={1}
             menuId={menuId}
+            isHasSubMenu={true}
           />
 
           <MenuItem
