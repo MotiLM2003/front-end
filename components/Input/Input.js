@@ -7,6 +7,7 @@ const Input = ({
   icon = null,
   backIcon = null,
   backIconCallback = null,
+  moreClass = '',
 }) => {
   return (
     <div className='relative button'>
@@ -32,7 +33,7 @@ const Input = ({
       <input
         type={type}
         placeholder={placeholder}
-        className={`outline-none rounded-md p-4  pl-8 py-[.5px] text-xs h-[2.5rem] w-[240px]`}
+        className={`outline-none rounded-md p-4  pl-8 py-[.5px] text-xs h-[2.5rem] w-[240px] ${moreClass}`}
       />
     </div>
   );

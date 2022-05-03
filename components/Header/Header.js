@@ -47,6 +47,12 @@ const Header = () => {
             itemId={4}
             menuId={menuId}
           />
+          <MenuItem
+            text='Contact Us'
+            path='/contact-us/'
+            itemId={5}
+            menuId={menuId}
+          />
         </ul>
       </div>
       <div className='flex items-center gap-4'>
