@@ -3,11 +3,14 @@ import Image from 'next/image';
 
 const Input = ({
   type = 'text',
+  name = '',
+  onChange = () => {},
   placeholder = '',
   icon = null,
   backIcon = null,
   backIconCallback = null,
   moreClass = '',
+  value = '',
 }) => {
   return (
     <div className='relative button'>
@@ -16,6 +19,7 @@ const Input = ({
           <Image src={icon} width={21} height={24} />
         </div>
       )}
+
       {backIcon && (
         <div
           className={`absolute top-[7.5px] right-[5px] ${
@@ -31,7 +35,10 @@ const Input = ({
         </div>
       )}
       <input
+        name={name}
         type={type}
+        value={value}
+        onChange={onChange}
         placeholder={placeholder}
         className={`outline-none rounded-md p-4  pl-8 py-[.5px] text-xs h-[2.5rem] w-[240px] ${moreClass}`}
       />

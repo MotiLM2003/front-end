@@ -6,11 +6,10 @@ import account from '../../images/icons/account.svg';
 import downArrow from '../../images/icons/down-arrow.svg';
 import { useSelector } from 'react-redux';
 import MenuItem from './MenuItem';
+import Link from 'next/link';
 const Header = () => {
   const { menuId } = useSelector((state) => state.menuReducer);
-  useEffect(() => {
-    console.log(menuId);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <header className='p-3 flex default-container align-center  justify-between md:justify-center '>
       <div className='md:px-8'>
@@ -67,13 +66,15 @@ const Header = () => {
           alt='search icon'
           className='cursor-pointer'
         />
-        <Image
-          src={account}
-          width='19'
-          height='19'
-          alt='account icon'
-          className='cursor-pointer'
-        />
+        <Link href='/login/'>
+          <Image
+            src={account}
+            width='19'
+            height='19'
+            alt='account icon'
+            className='cursor-pointer'
+          />
+        </Link>
       </div>
     </header>
   );

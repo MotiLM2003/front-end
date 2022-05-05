@@ -9,7 +9,7 @@ const Confirmation = ({
   close,
 }) => {
   return (
-    <div className={`${visible ? 'block' : 'hidden'}`}>
+    <div className={`${visible ? 'block' : 'hidden'} overflow-hidden`}>
       <div className='conf-background'></div>
       <div className='conf-container rounded'>
         <div className='flex justify-between'>
@@ -20,6 +20,7 @@ const Confirmation = ({
             height='25px'
             className='cursor-pointer'
             onClick={close}
+            layout='fixed'
           />
         </div>
         {children}
