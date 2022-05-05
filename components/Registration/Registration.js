@@ -54,7 +54,7 @@ const Registration = () => {
         );
       case 1:
         return (
-          <Stage2 onSetStage={setFinalData} data={data} onChange={onChange} />
+          <Stage2 onSetStage={onSetStage} data={data} onChange={onChange} />
         );
       case 2:
         return (

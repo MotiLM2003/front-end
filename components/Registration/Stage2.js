@@ -18,7 +18,7 @@ import AddRabi from './AddRabi';
 const Stage2 = ({ onSetStage, data, onChange }) => {
   const [rabiList, setRabiList] = useState([]);
   const [isCertificate, setIsCertificate] = useState(false);
-
+  const [rabiError, setRabiError] = useState(null);
   const handleCer = (e) => {
     const value = e.target.value;
 
@@ -26,10 +26,10 @@ const Stage2 = ({ onSetStage, data, onChange }) => {
   };
   return (
     <motion.div
-      initial={{ x: 350, opacity: 0 }}
+      initial={{ x: 0, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      exit={{ x: -400, opacity: 0 }}
+      exit={{ x: 0, opacity: 0 }}
       className='mt-4 md:px-[4rem] overflow-hidden'
     >
       <div className='flex flex-col gap-2'>
@@ -63,9 +63,18 @@ const Stage2 = ({ onSetStage, data, onChange }) => {
             WithPlus={true}
             withMinus={false}
             onAdd={(rabi) => {
+              if (rabi.name.length === 0 || rabi.phone.length === 0) {
+                setRabiError('you must provide phone and name.');
+                return;
+              } else if (rabiList.length > 4) {
+                setRabiError("You can't add more then 5");
+              }
+              setRabiError(false);
               setRabiList([...rabiList, rabi]);
             }}
           />
+          {rabiError && <span className='text-red font-bold'>{rabiError}</span>}
+
           {rabiList.length > 0 &&
             rabiList.map(({ name, phone, address }) => (
               <AddRabi
@@ -179,7 +188,16 @@ const Stage2 = ({ onSetStage, data, onChange }) => {
         we receive an electronic notification that you want to cancel your
         subscription. Please allow up to one month from notice of cancelation.*
       </p>
-      <div className='mt-2 md:mt-[3rem] flex justify-center'>
+      <div className='mt-2 md:mt-[3rem]  gap-2 flex justify-center'>
+        <button
+          class='bg-red  hover:bg-red-h duration-500  transition-all text-white p-2 rounded min-w-[200px] font-bold text-xl'
+          value=''
+          onClick={() => {
+            onSetStage(0);
+          }}
+        >
+          Back
+        </button>
         <button
           class='bg-red  hover:bg-red-h duration-500  transition-all text-white p-2 rounded min-w-[200px] font-bold text-xl'
           value=''

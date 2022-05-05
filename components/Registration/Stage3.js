@@ -9,10 +9,10 @@ import Ok from '@components/Icons/Ok';
 const Stage3 = () => {
   return (
     <motion.div
-      initial={{ x: 350, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      exit={{ x: -400, opacity: 0 }}
+      exit={{ y: 0, opacity: 0 }}
       className='mt-4 md:px-[4rem] overflow-hidden p-2'
     >
       <div>

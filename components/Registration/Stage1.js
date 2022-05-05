@@ -14,7 +14,6 @@ import location from '../../images/icons/dark/location.svg';
 
 import { motion, AnimatePresence } from 'framer-motion';
 const Stage1 = ({ onSetStage, data, onChange }) => {
-  console.log(data);
   return (
     <motion.div
       initial={{ opacity: 0 }}

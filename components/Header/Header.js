@@ -24,6 +24,7 @@ const Header = () => {
             itemId={1}
             menuId={menuId}
             isHasSubMenu={true}
+            isClickable={false}
           />
 
           <MenuItem
