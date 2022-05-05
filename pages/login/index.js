@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import Input from '@components/input/Input';
+import Input from '@components/Input/Input';
 import hero from '../../images/login.svg';
 import bigAccount from '../../images/big-account.svg';
 import google from '../../images/icons/google.svg';
