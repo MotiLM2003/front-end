@@ -131,7 +131,13 @@ const Stage2 = ({ onSetStage, data, onChange }) => {
               exit={{ x: -400, opacity: 0 }}
             >
               <div className='flex  items-center gap-3 mt-6'>
-                <input type='checkbox' name='isAgree'></input>
+                <input
+                  type='checkbox'
+                  name='isAgree'
+                  value={data.isAgree}
+                  checked={data.isAgree}
+                  onChange={onChange}
+                ></input>
                 <p className='text-red font-bold'>
                   I agree to pay $50 to the Vaad Hatzedaka of Lakewood if a
                   certificate is granted.
@@ -190,7 +196,7 @@ const Stage2 = ({ onSetStage, data, onChange }) => {
       </p>
       <div className='mt-2 md:mt-[3rem]  gap-2 flex justify-center'>
         <button
-          class='bg-red  hover:bg-red-h duration-500  transition-all text-white p-2 rounded min-w-[200px] font-bold text-xl'
+          class='bg-shades-400  hover:bg-primary duration-500  transition-all text-white p-2 rounded min-w-[100px] font-bold text-xl'
           value=''
           onClick={() => {
             onSetStage(0);

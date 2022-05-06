@@ -4,35 +4,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Stage1 from './Stage1';
 import Stage2 from './Stage2';
 import Stage3 from './Stage3';
-const initialData = {
-  email: '',
-  password: '',
-  rePassword: '',
-  firstName: '',
-  lastName: '',
-  phone: '',
-  language: 0,
-  birthDate: '',
-  idNumber: '',
-  country: '',
-  city: '',
-  street: '',
-  zipCode: '',
-  companyName: '',
-  moreDetails: '',
-  certificateNumber: '',
-  isAgree: false,
-  creditCardNumber: '',
-  creditCardExpire: '',
-  CVC: '',
-};
+import { fakeData, data } from './data';
+const initialData = fakeData;
 
 const Registration = () => {
+  console.log(initialData);
   const [stage, setStage] = useState(0);
   const [data, setData] = useState(initialData);
 
   const onSetStage = (newStage) => {
-    setStage(newStage);
+    if (newStage !== 2) {
+      setStage(newStage);
+    } else {
+      setFinalData();
+    }
   };
 
   const setFinalData = () => {
@@ -42,8 +27,13 @@ const Registration = () => {
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.table(data);
-    setData({ ...data, [name]: value });
+
+    if (e.target.type === 'checkbox') {
+      const isChecked = e.target.checked;
+      setData({ ...data, [name]: isChecked });
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const renderStage = () => {
