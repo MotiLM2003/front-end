@@ -13,9 +13,7 @@ const MenuItem = ({
   const dispatch = useDispatch();
   const [isSubMenu, setIsSubMenu] = useState(false);
 
-  useEffect(() => {
-    console.log(isSubMenu);
-  }, [isSubMenu]);
+  useEffect(() => {}, [isSubMenu]);
 
   return (
     <li

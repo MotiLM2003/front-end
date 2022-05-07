@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
-import email from '../../images/icons/email-2.svg';
 import Input from '@components/Input/Input';
-import account from '../../images/icons/account2.svg';
-import shield from '../../images/icons/dark/shield.svg';
-import mobile from '../../images/icons/dark/mobile.svg';
-import globe from '../../images/icons/dark/globe.svg';
-import id from '../../images/icons/dark/id.svg';
-import date from '../../images/icons/dark/date.svg';
-import cloud from '../../images/icons/dark/cloud.svg';
-import country from '../../images/icons/dark/country.svg';
-import city from '../../images/icons/dark/city.svg';
 import creditCard from '../../images/icons/dark/credit-card.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import sound from '../../images/icons/dark/sound.svg';
 import AddRabi from './AddRabi';
 
-const Stage2 = ({ onSetStage, data, onChange }) => {
-  const [rabiList, setRabiList] = useState([]);
+const Stage2 = ({ onSetStage, data, onChange, rabiList, setRabiList }) => {
   const [isCertificate, setIsCertificate] = useState(false);
   const [rabiError, setRabiError] = useState(null);
   const handleCer = (e) => {

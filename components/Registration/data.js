@@ -12,7 +12,6 @@ export const data = {
   city: '',
   street: '',
   zipCode: '',
-  companyName: '',
   moreDetails: '',
   certificateNumber: '',
   isAgree: false,
@@ -29,7 +28,7 @@ export const fakeData = {
   lastName: 'Elmakies',
   phone: '0586552717',
   language: 0,
-  birthDate: '16/01/1979',
+
   idNumber: '036383289',
   country: 'Israel',
   city: 'Ramat Gan',

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import { useRouter } from 'next/router';
 import Input from '@components/Input/Input';
 import hero from '../../images/login.svg';
 import bigAccount from '../../images/big-account.svg';
@@ -14,24 +14,63 @@ import eye from '../../images/icons/eye.svg';
 import Confirmation from '@components/Confirmation/Confirmation';
 import Layout from 'pages/shared/Layout';
 import Registration from '@components/Registration/Registration';
-
+import axios from 'axios';
+import api from '../../apis/userAPI';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from '../../store/userSlice';
+import { route } from 'next/dist/server/router';
 export default function Home() {
+  const router = useRouter();
+  const { isLogged } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+  console.log(isLogged);
+  const [details, setDetails] = useState({
+    email: 'motiphone2003@gmail.com',
+    password: 'moti2003',
+  });
+  const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isConfOpen, setIsConfOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+
+  const onChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setDetails({ ...details, [name]: value });
+  };
   useEffect(() => {}, [passwordVisible]);
+
+  const logIn = async () => {
+    try {
+      const { data } = await api.post('/users/login', details);
+      dispatch(setUser(data));
+      console.log(data);
+      router.push('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Layout>
       <div className='flex flex-col md:flex-row justify-center'>
         <div className='bg-shades-100 p-6 flex items-center basis-1/2  justify-center'>
           <div className='flex flex-col gap-2'>
             <h1>Login</h1>
-            <Input placeholder={'E-mail / username'} icon={email} />
+            <Input
+              placeholder={'E-mail / username'}
+              name='email'
+              value={details.email}
+              onChange={onChange}
+              icon={email}
+            />
             <Input
               type={`${passwordVisible ? 'text' : 'password'}`}
               placeholder={`${passwordVisible ? 'text' : 'password'}`}
               icon={security}
               backIcon={eye}
+              name='password'
+              value={details.password}
+              onChange={onChange}
               backIconCallback={() => {
                 setPasswordVisible((prev) => !prev);
               }}
@@ -44,7 +83,10 @@ export default function Home() {
                 Forget Password
               </div>
             </div>
-            <div className='flex justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3'>
+            <div
+              className='flex justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3'
+              onClick={() => logIn()}
+            >
               <button>Sign In</button>
             </div>
             <p className='text-xs flex justify-center m-4'> Or</p>
