@@ -9,7 +9,7 @@ const Input = ({
   icon = null,
   backIcon = null,
   backIconCallback = null,
-  moreClass = '',
+  className = '',
   value = '',
 }) => {
   return (
@@ -40,7 +40,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`outline-none rounded-md p-4  pl-8 py-[.5px] text-xs h-[2.5rem] w-[240px] ${moreClass}`}
+        className={` outline-none rounded-md p-4  pl-8 py-[.5px] text-xs h-[2.5rem]  border border-shades-300 ${className} transition-all duration-1250 ease-in-out min-w-[240px] focus:border-primary focus:border-2 `}
       />
     </div>
   );

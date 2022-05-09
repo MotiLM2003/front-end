@@ -4,6 +4,7 @@ import logo from '../../../images/logo-white.svg';
 import question from '../../../images/question.svg';
 import settings from '../../../images/settings.svg';
 import bell from '../../../images/bell.svg';
+
 const Header = () => {
   return (
     <header className='bg-primary min-h-[98px] p-4 text-`>'>

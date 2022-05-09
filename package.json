@@ -9,14 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.8",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.27.2",
-    "framer-motion": "^6.3.2",
+    "dayjs": "^1.11.2",
+    "framer-motion": "^6.3.3",
+    "moment": "^2.29.3",
     "next": "12.1.5",
     "next-redux-wrapper": "^7.0.5",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
+    "react": "^18.0.0",
+    "react-datepicker": "^4.7.0",
+    "react-dom": "^18.0.0",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-redux": "^8.0.1",
+    "tabler-icons-react": "^1.47.0",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {

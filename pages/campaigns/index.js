@@ -1,14 +1,19 @@
-import React from 'react';
-import Layout from '../shared/Layout';
-
-const campaigns = () => {
+import React, { useEffect } from 'react';
+import CRMLayout from '../../pages/shared/CRMLayout';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCRMId } from '../../store/menuSlice';
+const id = 0;
+const Campaigns = () => {
+  const dispatch = useDispatch();
+  const { CRMMenuId } = useSelector((state) => state.menuReducer);
+  useEffect(() => {
+    dispatch(setCRMId(id));
+  }, []);
   return (
-    <Layout>
-      <div className='p-[10rem] flex justify-center items-center'>
-        <h1>Campaigns</h1>
-      </div>
-    </Layout>
+    <CRMLayout>
+      <div>Hello wolrdassssdasd</div>
+    </CRMLayout>
   );
 };
 
-export default campaigns;
+export default Campaigns;

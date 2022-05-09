@@ -43,7 +43,8 @@ export default function Home() {
   const logIn = async () => {
     try {
       const { data } = await api.post('/users/login', details);
-      dispatch(setUser(data));
+      const user = data.user;
+      dispatch(setUser(user));
       console.log(data);
       router.push('/dashboard');
     } catch (error) {

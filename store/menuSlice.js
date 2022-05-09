@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   menuId: 0,
+  CRMMenuId: 0,
 };
 
 export const menuSlice = createSlice({
@@ -11,9 +12,12 @@ export const menuSlice = createSlice({
     setId: (state, action) => {
       state.menuId = action.payload;
     },
+    setCRMId: (state, action) => {
+      state.CRMMenuId = action.payload;
+    },
   },
 });
 
-export const { setId } = menuSlice.actions;
+export const { setId, setCRMId } = menuSlice.actions;
 
 export default menuSlice.reducer;

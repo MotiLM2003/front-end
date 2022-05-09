@@ -2,18 +2,16 @@ import React, { useEffect } from 'react';
 import CRMLayout from '../../pages/shared/CRMLayout';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCRMId } from '../../store/menuSlice';
-const id = 0;
-const Dashboard = () => {
+
+const id = 2;
+const recurring = () => {
   const dispatch = useDispatch();
   const { CRMMenuId } = useSelector((state) => state.menuReducer);
   useEffect(() => {
+    console.log('id: ', CRMMenuId);
     dispatch(setCRMId(id));
   }, []);
-  return (
-    <CRMLayout>
-      <div>Hello </div>
-    </CRMLayout>
-  );
+  return <CRMLayout>Hello wosld</CRMLayout>;
 };
 
-export default Dashboard;
+export default recurring;
