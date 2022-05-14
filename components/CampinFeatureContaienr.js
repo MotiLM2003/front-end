@@ -1,59 +1,100 @@
 import React from 'react';
+import { CloudFog } from 'tabler-icons-react';
 import CampaignFeature from './Camaigns/CreateCamaigns/CampaignFeature';
+import { Switch, Box, FormControlLabel } from '@chakra-ui/react';
 
-const CampinFeatureContaienr = ({ campaign, setCampaign }) => {
+const CampinFeatureContaienr = ({
+  campaign,
+  toggleFeatures,
+  name,
+  color = 'red',
+}) => {
   return (
-    <div className='flex gap-4  flex-wrap md:min-w-[900px]'>
-      <CampaignFeature
-        text='Description'
-        field={campaign.isDescription}
-        onChange={() => {
-          setCampaign({
-            ...campaign,
-            isDescription: !campaign.isDescription,
-          });
-        }}
-      />
-
-      <CampaignFeature
-        text='End Date'
-        onChange={() => {
-          setCampaign({ ...campaign, isEndDate: !campaign.isEndDate });
-        }}
-      />
-      <CampaignFeature
-        text='Donor List'
-        onChange={() => {
-          setCampaign({ ...campaign, isDonorList: !campaign.isDonorList });
-        }}
-      />
-      <CampaignFeature
-        text='Presrt Donation'
-        onChange={() => {
-          setCampaign({
-            ...campaign,
-            isPresrDontaion: !campaign.isPresrDontaion,
-          });
-        }}
-      />
-      <CampaignFeature
-        text='Main Banner'
-        onChange={() => {
-          setCampaign({
-            ...campaign,
-            isMainBanner: !campaign.isMainBanner,
-          });
-        }}
-      />
-      <CampaignFeature
-        text='Img Video Slider'
-        onChange={() => {
-          setCampaign({
-            ...campaign,
-            isImgVideoSlider: !campaign.isImgVideoSlider,
-          });
-        }}
-      />
+    <div className='flex gap-2 flex-wrap'>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Description</div>
+        <Box>
+          <Switch
+            checked={campaign.isDescription}
+            onChange={toggleFeatures}
+            name={'isDescription'}
+            colorScheme={color}
+            isChecked={campaign.isDescription}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>End Date</div>
+        <Box>
+          <Switch
+            checked={campaign.isEndDate}
+            onChange={toggleFeatures}
+            name={'isEndDate'}
+            colorScheme={color}
+            isChecked={campaign.isEndDate}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Donor List</div>
+        <Box>
+          <Switch
+            checked={campaign.isDonorList}
+            onChange={toggleFeatures}
+            name={'isDonorList'}
+            colorScheme={color}
+            isChecked={campaign.isDonorList}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Certificate</div>
+        <Box>
+          <Switch
+            checked={campaign.isCertificate}
+            onChange={toggleFeatures}
+            name={'isCertificate'}
+            colorScheme={color}
+            isChecked={campaign.isCertificate}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Main Banner</div>
+        <Box>
+          <Switch
+            checked={campaign.isMainBanner}
+            onChange={toggleFeatures}
+            name={'isMainBanner'}
+            colorScheme={color}
+            isChecked={campaign.isMainBanner}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Presrt Donation</div>
+        <Box>
+          <Switch
+            checked={campaign.isPresrDontaion}
+            onChange={toggleFeatures}
+            name={'isPresrDontaion'}
+            colorScheme={color}
+            isChecked={campaign.isPresrDontaion}
+          />
+        </Box>
+      </div>
+      <div className='flex gap-2 items-center border border-primary p-2 rounded bg-white'>
+        <div>Image Video Slider</div>
+        <Box>
+          <Switch
+            checked={campaign.isImgVideoSlider}
+            onChange={toggleFeatures}
+            name={'isImgVideoSlider'}
+            colorScheme={color}
+            isChecked={campaign.isImgVideoSlider}
+          />
+        </Box>
+      </div>
     </div>
   );
 };

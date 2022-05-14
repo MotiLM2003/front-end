@@ -24,10 +24,7 @@ const Registration = () => {
   };
 
   const setFinalData = async () => {
-    // console.log('data', data);
-    console.log('in final');
     const user = await api.post('http://localhost:5000/users/', data);
-    console.log('user', user);
     setStage(2);
   };
   const onChange = (e) => {

@@ -34,16 +34,16 @@ textarea {
   }
 
   h1 {
-    @apply text-4xl;
+    @apply text-4xl  !important;
   }
   h2 {
-    @apply text-3xl;
+    @apply text-3xl !important;
   }
   h3 {
-    @apply text-2xl;
+    @apply text-2xl !important;
   }
   h4 {
-    @apply text-xl;
+    @apply text-xl !important;
   }
 
   .default-container {
@@ -61,6 +61,10 @@ textarea {
   .sidebarMenu .selected {
     @apply border-red  bg-shades-400 border-r-[6px];
   } /* SIDEBAR MENU */
+
+  .button {
+    @apply px-5 py-2 rounded text-white  cursor-pointer hover:scale-[1.05]  transition duration-150 hover:shadow  hover:brightness-125;
+  }
 }
 
 .header-menu .selected {
@@ -85,4 +89,31 @@ textarea {
   height: 40px;
   cursor: pointer;
   font-size: 0.9rem;
+}
+
+.public-DraftEditorPlaceholder-root {
+  padding: 0.8rem;
+}
+.wof-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+.loader-bg {
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.6;
+}
+
+.wof-loader-content {
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
 }

@@ -10,7 +10,6 @@ const Layout = ({ children, className = '' }) => {
   const { isLogged } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
-    console.log(isLogged);
     if (!isLogged) {
       router.push('/');
     }
@@ -25,7 +24,7 @@ const Layout = ({ children, className = '' }) => {
         <Sidebar />
         <div className='grow'>
           <div className=''>
-            <div className='grow p-3'>{children}</div>
+            <div className='grow'>{children}</div>
           </div>
         </div>
       </div>

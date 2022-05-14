@@ -9,9 +9,13 @@ const Confirmation = ({
   close,
 }) => {
   return (
-    <div className={`${visible ? 'block' : 'hidden'} overflow-hidden`}>
+    <div
+      className={`${
+        visible ? 'block' : 'hidden'
+      } overflow-hidden transition duration-150`}
+    >
       <div className='conf-background'></div>
-      <div className='conf-container rounded'>
+      <div className='conf-container rounded transition-all duration-150'>
         <div className='flex justify-between'>
           <h3>{title}</h3>
           <Image

@@ -8,7 +8,6 @@ const donations = () => {
   const dispatch = useDispatch();
   const { CRMMenuId } = useSelector((state) => state.menuReducer);
   useEffect(() => {
-    console.log('id: ', CRMMenuId);
     dispatch(setCRMId(id));
   }, []);
   return <CRMLayout>donations</CRMLayout>;
