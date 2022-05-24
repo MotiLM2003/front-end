@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useToast } from '@chakra-ui/react';
 import {
   Box,
   Stack,
@@ -47,11 +48,18 @@ const initialBanner = {
   type: 0,
   youtubeDesc: '',
   vimeoDesc: '',
+  description: '',
 };
 const CampaignBanner = ({ bannerList, setBannerList }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [bannerItem, setBannerItem] = useState(initialBanner);
   const firstField = React.useRef();
+
+  const handleBannerItemUpdate = (item) => {
+    setBannerItem(item);
+    onOpen();
+  };
+
   const renderContent = () => {
     switch (bannerItem.type) {
       case 0: {
@@ -64,20 +72,18 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
       }
       case 1: {
         return (
-          <Fade in={onOpen}>
-            <div className='cursor-pointer shadow py-2 flex flex-col rounded items-center p-2'>
-              <Textarea
-                placeholder='Add Youtube link'
-                resize='none'
-                size='lg'
-                value={bannerItem.youtubeDesc}
-                onChange={(e) => {
-                  setBannerItem({ ...bannerItem, youtubeDesc: e.target.value });
-                }}
-                variant='filled'
-              />
-            </div>
-          </Fade>
+          <div className='cursor-pointer shadow py-2 flex flex-col rounded items-center p-2'>
+            <Textarea
+              placeholder='Add Youtube link'
+              resize='none'
+              size='lg'
+              value={bannerItem.youtubeDesc}
+              onChange={(e) => {
+                setBannerItem({ ...bannerItem, youtubeDesc: e.target.value });
+              }}
+              variant='filled'
+            />
+          </div>
         );
       }
       case 2: {
@@ -103,50 +109,41 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
     const image = null;
     switch (bannerItem.type) {
       case 0: {
-        image = faImage;
+        return (
+          <FontAwesomeIcon
+            icon={faImage}
+            size='5x'
+            className='text-slate-700'
+          />
+        );
         break;
       }
       case 1: {
-        image = faYoutube;
-        break;
-      }
-      case 2: {
-        image = faVimeo;
-      }
-    }
-
-    return (
-      <Popover>
-        <PopoverTrigger>
+        return (
           <FontAwesomeIcon
             icon={faYoutube}
             size='5x'
             className='text-slate-700'
           />
-        </PopoverTrigger>
-        <Portal>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverHeader>Confirmation</PopoverHeader>
-            <PopoverCloseButton />
-            <PopoverBody>
-              <div
-                className='text-center flex justify-center items p-4'
-                onClick={() => {
-                  setBannerList(
-                    bannerList.filter((x) => x.id !== bannerItem.id)
-                  );
-                }}
-              >
-                <Button colorScheme='blue'>Delete this item.</Button>
-              </div>
-            </PopoverBody>
-          </PopoverContent>
-        </Portal>
-      </Popover>
+        );
+        break;
+      }
+      case 2: {
+        return (
+          <FontAwesomeIcon
+            icon={faVimeo}
+            size='5x'
+            className='text-slate-700'
+          />
+        );
+      }
+    }
+
+    return (
+      <FontAwesomeIcon icon={faYoutube} size='5x' className='text-slate-700' />
     );
   };
-
+  const toast = useToast();
   return (
     <div>
       <Button size='xs' colorScheme='blue' onClick={onOpen}>
@@ -155,7 +152,17 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
       <div className='flex gap-5 mt-5 mb-8 flex-wrap justify-center '>
         {bannerList.map((item) => {
           console.log(item);
-          return <div className='cursor-pointer'>{renderBannerItem(item)}</div>;
+          return (
+            <div
+              className='cursor-pointer flex flex-col items-center'
+              onClick={() => {
+                handleBannerItemUpdate(item);
+              }}
+            >
+              {renderBannerItem(item)}
+              <div className='max-w-[250px]'>{item.description}</div>
+            </div>
+          );
         })}
       </div>
 
@@ -223,7 +230,17 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
                     <div className='flex-grow select-none'>Vimeo</div>
                   </div>
                 </div>
-                <div className='flex justify-center items-center'>
+                <div className='flex flex-col  gap-4 ustify-center items-center'>
+                  <Input
+                    placeholder='Description'
+                    value={bannerItem.description}
+                    onChange={(e) => {
+                      setBannerItem({
+                        ...bannerItem,
+                        description: e.target.value,
+                      });
+                    }}
+                  />
                   {renderContent()}
                 </div>
               </div>
@@ -231,38 +248,48 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
           </DrawerBody>
 
           <DrawerFooter borderTopWidth='1px'>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              colorScheme='blue'
-              onClick={() => {
-                const isUpdating = false;
-                if (!bannerItem.id) {
-                  setBannerList([...bannerList, { ...bannerItem, id: uid() }]);
-                } else {
-                  isUpdating = true;
-                  setBannerList(
-                    buttonsList.map((item) =>
-                      item.id === bannerItem.id ? bannerItem : item
-                    )
-                  );
-                }
-                onClose();
-                // toast({
-                //   position: 'top',
-                //   title: isUpdating
-                //     ? 'Charity button button successfully updated'
-                //     : 'Charity button button successfully created',
-                //   status: isUpdating ? 'info' : 'success',
-                //   variant: 'top-accent',
-                //   isClosable: true,
-                // });
-                // setCharityButton(initialCharityButton);
-              }}
-            >
-              Submit
-            </Button>
+            <div>
+              <Button variant='outline' mr={3} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme='blue'
+                onClick={() => {
+                  const isUpdating = false;
+                  if (!bannerItem.id) {
+                    setBannerList([
+                      ...bannerList,
+                      { ...bannerItem, id: uid() },
+                    ]);
+                  } else {
+                    isUpdating = true;
+                    setBannerList(
+                      bannerList.map((item) =>
+                        item.id === bannerItem.id ? bannerItem : item
+                      )
+                    );
+                  }
+                  onClose();
+                  toast({
+                    position: 'top',
+                    title: isUpdating
+                      ? 'Banner item successfully updated'
+                      : 'Banner item button successfully created',
+                    status: isUpdating ? 'info' : 'success',
+                    variant: 'top-accent',
+                    isClosable: true,
+                  });
+                  setBannerItem(initialBanner);
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+            <div>
+              <Button mr={3} onClick={onClose}>
+                Cancel
+              </Button>
+            </div>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
