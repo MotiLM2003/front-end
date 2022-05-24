@@ -83,6 +83,13 @@ const Sidebar = () => {
           menuId={CRMMenuId}
           path='/analytics/'
         />
+        <CRMMenuItem
+          icon={analytics}
+          text='User Manager'
+          id={9}
+          menuId={CRMMenuId}
+          path='/crm/user-manager/'
+        />
       </div>
       <div className='flex flex-col items-center mt-20'>
         <div>

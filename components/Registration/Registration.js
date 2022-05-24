@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import axios from 'axios';
 import Stage1 from './Stage1';
 import Stage2 from './Stage2';
@@ -13,7 +14,7 @@ const Registration = () => {
   const [stage, setStage] = useState(0);
   const [data, setData] = useState(initialData);
   const [rabiList, setRabiList] = useState([]);
-
+  const [birthDate, setBirthDate] = useState(new Date());
   const onSetStage = (newStage) => {
     if (newStage !== 2) {
       setStage(newStage);
@@ -24,7 +25,9 @@ const Registration = () => {
   };
 
   const setFinalData = async () => {
-    const user = await api.post('http://localhost:5000/users/', data);
+    //
+    data.birthDate = birthDate;
+    const user = await api.post('/users/', data);
     setStage(2);
   };
   const onChange = (e) => {
@@ -43,7 +46,13 @@ const Registration = () => {
     switch (stage) {
       case 0:
         return (
-          <Stage1 onSetStage={onSetStage} data={data} onChange={onChange} />
+          <Stage1
+            onSetStage={onSetStage}
+            data={data}
+            onChange={onChange}
+            birthDate={birthDate}
+            setBirthDate={setBirthDate}
+          />
         );
       case 1:
         return (

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
+import {
+  EditorState,
+  convertToRaw,
+  convertFromRaw,
+  CompositeDecorator,
+  ContentState,
+} from 'draft-js';
 import api from '../../apis/userAPI';
 const DraftEditor = dynamic(
   () => import('@components/Tests/react-draft-wysiwyg/DraftEditor'),
@@ -14,21 +19,19 @@ const DraftEditorPage = () => {
   useEffect(() => {
     // console.log(Savedcontent);
   }, []);
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(EditorState.createEmpty());
   useEffect(() => {
-    console.log('here');
     const getCamping = async () => {
       const { data } = await api.post('/campaigns/getOne', {
         _id: '627e355dd490ff04709bdef2',
       });
-      console.log(data);
-      setContent(data);
+      setContent(data.campaignContent);
     };
     getCamping();
   }, []);
   return (
     <div>
-      <DraftEditor content={content} />
+      <DraftEditor state={content} setState={setContent} />
     </div>
   );
 };

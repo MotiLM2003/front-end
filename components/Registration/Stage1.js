@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import email from '../../images/icons/email-2.svg';
 import Input from '@components/Input/Input';
 import account from '../../images/icons/account2.svg';
@@ -6,14 +6,16 @@ import shield from '../../images/icons/dark/shield.svg';
 import mobile from '../../images/icons/dark/mobile.svg';
 import globe from '../../images/icons/dark/globe.svg';
 import id from '../../images/icons/dark/id.svg';
-import date from '../../images/icons/dark/date.svg';
+
 import cloud from '../../images/icons/dark/cloud.svg';
 import country from '../../images/icons/dark/country.svg';
 import city from '../../images/icons/dark/city.svg';
 import location from '../../images/icons/dark/location.svg';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { motion, AnimatePresence } from 'framer-motion';
-const Stage1 = ({ onSetStage, data, onChange }) => {
+const Stage1 = ({ onSetStage, data, onChange, birthDate, setBirthDate }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -101,14 +103,17 @@ const Stage1 = ({ onSetStage, data, onChange }) => {
           </div>
         </div>
         <div className='flex gap-3 '>
-          <div>
-            <Input
-              icon={date}
-              type='text'
-              placeholder='Birth of date'
-              onChange={onChange}
-            />
-          </div>{' '}
+          <div className='basis-[50%] relative'>
+            <div>
+              <DatePicker
+                selected={birthDate}
+                onChange={(date) => setBirthDate(date)}
+              />
+              <div className='absolute top-[-10px] left-[0] text-xs font-bold text-primary bg-white p-1 rounded border border-primary '>
+                Date of birth
+              </div>
+            </div>
+          </div>
           <div>
             <Input
               icon={id}

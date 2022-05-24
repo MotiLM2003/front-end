@@ -19,6 +19,8 @@ import api from '../../apis/userAPI';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../store/userSlice';
 import { route } from 'next/dist/server/router';
+import Loader from '@components/Loader/Loader';
+
 export default function Home() {
   const router = useRouter();
   const { isLogged } = useSelector((state) => state.userReducer);
@@ -27,6 +29,7 @@ export default function Home() {
     email: 'motiphone2003@gmail.com',
     password: 'moti2003',
   });
+  const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isConfOpen, setIsConfOpen] = useState(false);
@@ -41,13 +44,15 @@ export default function Home() {
 
   const logIn = async () => {
     try {
+      setLoading(true);
       const { data } = await api.post('/users/login', details);
       const user = data.user;
       dispatch(setUser(user));
-      console.log(data);
+      setLoading(false);
       router.push('/dashboard');
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   return (
@@ -107,6 +112,8 @@ export default function Home() {
         <div className='basis-1/2 xl:basis-1/3 relative'>
           <Image src={hero} layout='responsive' />
         </div>
+
+        <Loader isLoading={isLoading} />
       </div>
       <AnimatePresence>
         {isConfOpen && (

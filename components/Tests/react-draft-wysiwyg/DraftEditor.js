@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {
   EditorState,
   convertToRaw,
@@ -8,77 +9,47 @@ import {
   ContentState,
 } from 'draft-js';
 
-const DraftEditor = ({ content }) => {
-  const [state, setState] = useState(EditorState.createEmpty());
-
+const DraftEditor = ({ state, setState }) => {
+  console.log('state', state);
   useEffect(() => {
-    console.log('content', content);
+    // console.log(state);
+    if (state) {
+      try {
+        console.log('storeContent', state);
+        const storeContent = ConvertToContent(state);
+        // console.log('storeContent', );
+        // // console.log(' editor content', state);
+        setState(EditorState.createWithContent(storeContent));
+      } catch (error) {
+        // console.log('empty error:', error, 'content: ', state);
+        // setState(EditorState.createEmpty());
+      }
+    }
   }, []);
   return (
     <div>
-      <Editor
-        editorState={state}
-        onEditorStateChange={(e) => {
-          // const test = draftToHtml(
-          //   convertToRaw(shortDesc.getCurrentContent())
-          // );
-          // console.log('tere', e.getCurrentContent().getPlainText());
-          setState(e);
-        }}
-        toolbarClassName='toolbarClassName'
-        wrapperClassName='wrapperClassName'
-        editorClassName='editorClassName'
-      />
+      {state && (
+        <Editor
+          editorState={state}
+          onEditorStateChange={(e) => {
+            setState(e);
+            console.log(e);
+          }}
+          toolbarClassName='toolbarClassName'
+          wrapperClassName='wrapperClassName'
+          editorClassName='editorClassName'
+        />
+      )}
     </div>
   );
 };
 
 export default DraftEditor;
 
-const convertToEditorStateWithDecorator = (editorContent) => {
-  const decorator = new CompositeDecorator([
-    {
-      strategy: handleStrategy,
-      component: HandleSpan,
-    },
-  ]);
-  const content = convertFromRaw(JSON.parse(editorContent));
-  const editorState = EditorState.createWithContent(content, decorator);
-  return editorState;
+export const ConvertToRawJson = (content) => {
+  return JSON.stringify(convertToRaw(content.getCurrentContent()));
 };
 
-const HANDLE_REGEX = /\@[\w]+/g;
-const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
-
-function handleStrategy(contentBlock, callback, contentState) {
-  findWithRegex(HANDLE_REGEX, contentBlock, callback);
-}
-
-function hashtagStrategy(contentBlock, callback, contentState) {
-  findWithRegex(HASHTAG_REGEX, contentBlock, callback);
-}
-
-function findWithRegex(regex, contentBlock, callback) {
-  const text = contentBlock.getText();
-  let matchArr, start;
-  while ((matchArr = regex.exec(text)) !== null) {
-    start = matchArr.index;
-    callback(start, start + matchArr[0].length);
-  }
-}
-
-const HandleSpan = (props) => {
-  return (
-    <span {...props} style={styles.handle}>
-      {props.children}
-    </span>
-  );
-};
-
-const HashtagSpan = (props) => {
-  return (
-    <span {...props} style={styles.hashtag}>
-      {props.children}
-    </span>
-  );
+export const ConvertToContent = (content) => {
+  return convertFromRaw(JSON.parse(content));
 };

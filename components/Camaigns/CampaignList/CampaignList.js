@@ -13,22 +13,27 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Link,
 } from '@chakra-ui/react';
 import { Stack, Button, ButtonGroup } from '@chakra-ui/react';
 import api from '../../../apis/userAPI';
 import edit from '../../../images/icons/edit.svg';
 import Loading from '@components/Loader/Loader';
 import Loader from '@components/Loader/Loader';
-const CampaignList = ({ totals, setTotals }) => {
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+const CampaignList = () => {
   const router = useRouter();
   const [list, setList] = useState([]);
+
   const [isLoading, setLoading] = useState(false);
+  const [filterByMenu, setFilterBy] = useState(0);
   const [totals, setTotals] = useState({
     all: 0,
     archive: 0,
     pending: 0,
     approved: 0,
   });
+
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
@@ -68,25 +73,19 @@ const CampaignList = ({ totals, setTotals }) => {
   const orderBy = (index) => {
     switch (index) {
       case 0: {
-        setList(
-          [...list].sort((a, b) => (a.campaignName > b.campaignName ? 1 : -1))
-        );
-        break;
+        return list;
       }
       // pending
       case 1: {
-        setList([...list].sort((a, b) => (a.status === 0 ? 1 : -1)));
-        break;
+        return list.filter((x) => x.status === 0);
       }
       // approve
-      case 1: {
-        setList([...list].sort((a, b) => (a.status === 1 ? 1 : -1)));
-        break;
+      case 2: {
+        return list.filter((x) => x.status === 1);
       }
       // archive
-      case 2: {
-        setList([...list].sort((a, b) => (a.archive === 3 ? 1 : -1)));
-        break;
+      case 3: {
+        return list.filter((x) => x.status === 3);
       }
     }
   };
@@ -94,24 +93,80 @@ const CampaignList = ({ totals, setTotals }) => {
   return (
     <div>
       <div>
-        <div className='flex items-center gap-4 mb-10'>
-          <h5>
+        <div className='flex items-center gap-4 mb-10 mt-5'>
+          <h5
+            onClick={() => {
+              setFilterBy(0);
+            }}
+            className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center${
+              filterByMenu === 0 ? '  status-selected' : ''
+            } `}
+          >
             All Campaigns
-            <span className='text-black'> ({totals.all})</span>
+            <span
+              className={`${
+                filterByMenu === 0 ? 'text-tertiary' : 'text-black'
+              }`}
+            >
+              ({totals.all})
+            </span>
           </h5>
           <div className='text-red font-bold text-xl'>|</div>
-          <h5 onClick={() => orderBy(1)}>
-            Pending<span className='text-black'> ({totals.pending})</span>
+          <h5
+            onClick={() => {
+              setFilterBy(1);
+            }}
+            className={`cursor-pointer transition ease-in-out duration-1000  px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center ${
+              filterByMenu === 1 ? '  status-selected' : ''
+            } `}
+          >
+            Pending
+            <span
+              className={`${
+                filterByMenu === 1 ? 'text-tertiary' : 'text-black'
+              }`}
+            >
+              {' '}
+              ({totals.pending})
+            </span>
           </h5>
           <div className='text-red font-bold text-xl'>|</div>
-          <h5 onClick={() => orderBy(2)}>
+          <h5
+            onClick={() => {
+              setFilterBy(2);
+            }}
+            className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center ${
+              filterByMenu === 2 ? 'status-selected' : ''
+            } `}
+          >
             Approved
-            <span className='text-black'> ({totals.approved})</span>
+            <span
+              className={`${
+                filterByMenu === 2 ? 'text-tertiary' : 'text-black'
+              }`}
+            >
+              {' '}
+              ({totals.approved})
+            </span>
           </h5>
           <div className='text-red font-bold text-xl'>|</div>
-          <h5 onClick={() => orderBy(3)}>
+          <h5
+            onClick={() => {
+              setFilterBy(3);
+            }}
+            className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center ${
+              filterByMenu === 3 ? 'status-selected' : ''
+            } `}
+          >
             Archived
-            <span className='text-black'> ({totals.archive})</span>
+            <span
+              className={`${
+                filterByMenu === 3 ? 'text-tertiary' : 'text-black'
+              }`}
+            >
+              {' '}
+              ({totals.archive})
+            </span>
           </h5>
         </div>
         <TableContainer>
@@ -139,12 +194,16 @@ const CampaignList = ({ totals, setTotals }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {list.map((item, index) => {
+              {orderBy(filterByMenu).map((item, index) => {
                 return (
                   <Tr key={item._id}>
                     <Td>{item._id}</Td>
                     <Td>{moment(item.createdAt).format('DD-MM-YY HH:mm')}</Td>
-                    <td>{item.campaignName}</td>
+                    <td className='underline cursor-pointer '>
+                      <Link href={`/campaigns/${item._id}`} isExternal={true}>
+                        {item.campaignName} <ExternalLinkIcon mx='2px' />
+                      </Link>
+                    </td>
                     <Td>
                       {item.owner.firstName} {item.owner.lastName}
                     </Td>
@@ -170,6 +229,7 @@ const CampaignList = ({ totals, setTotals }) => {
                           <Button
                             colorScheme='yellow'
                             size='xs'
+                            isDisabled={item.status === 3}
                             variant='outline'
                             onClick={() => {
                               onStatuschange(item._id, 3);
@@ -185,6 +245,7 @@ const CampaignList = ({ totals, setTotals }) => {
                             colorScheme='green'
                             size='xs'
                             variant='outline'
+                            isDisabled={item.status === 1}
                             onClick={() => {
                               onStatuschange(item._id, 1);
                               updateCamping(item._id, 1);
@@ -221,7 +282,9 @@ const CampaignList = ({ totals, setTotals }) => {
         draggable
         pauseOnHover
       />
-      {isLoading && <Loader />}
+      {isLoading && (
+        <Loader isLoading={isLoading} text='Loading campaign details...' />
+      )}
     </div>
   );
 };

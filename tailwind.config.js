@@ -17,7 +17,7 @@ module.exports = {
         'red-h': '#e93f2a',
         'light-blue': '#dee0e2',
         'default-background': '#fafafa',
-
+        'success': '#29DC26',
         shades: {
           50: '#F8F8F8',
           100: '#EFEFEF',
