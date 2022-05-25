@@ -37,7 +37,7 @@ import {
   Portal,
 } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faCircleMinus } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube, faVimeo } from '@fortawesome/free-brands-svg-icons';
 import { v4 as uid } from 'uuid';
 import attach from '../../images/icons/attach.svg';
@@ -60,6 +60,10 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
     onOpen();
   };
 
+  const handleBannerItemDelete = (item) => {
+    console.log(item.id);
+    setBannerList(bannerList.filter((x) => x.id !== item.id));
+  };
   const renderContent = () => {
     switch (bannerItem.type) {
       case 0: {
@@ -153,19 +157,34 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
         {bannerList.map((item) => {
           console.log(item);
           return (
-            <div
-              className='cursor-pointer flex flex-col items-center'
-              onClick={() => {
-                handleBannerItemUpdate(item);
-              }}
-            >
-              {renderBannerItem(item)}
-              <div className='max-w-[250px]'>{item.description}</div>
+            <div className='flex flex-col items-center gap-2'>
+              <div
+                className='cursor-pointer flex flex-col items-center'
+                onClick={() => {
+                  handleBannerItemUpdate(item);
+                }}
+              >
+                {renderBannerItem(item)}
+                <div className='max-w-[250px] bg-black text-white p-1 rounded opacity-75'>
+                  {item.description}
+                </div>
+              </div>
+              <div
+                className='cursor-pointer'
+                onClick={() => {
+                  handleBannerItemDelete(item);
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faCircleMinus}
+                  size='1x'
+                  className='text-slate-700'
+                />
+              </div>
             </div>
           );
         })}
       </div>
-
       <Drawer
         isOpen={isOpen}
         placement='right'
