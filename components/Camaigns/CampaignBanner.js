@@ -166,7 +166,9 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
               >
                 {renderBannerItem(item)}
                 <div className='max-w-[250px] bg-black text-white p-1 rounded opacity-75'>
-                  {item.description}
+                  {item.description.length > 0
+                    ? item.description
+                    : 'No description'}
                 </div>
               </div>
               <div
@@ -231,7 +233,7 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
                         className='text-slate-700'
                       />
                     </div>
-                    <div className='select-none'>You sadtube</div>
+                    <div className='select-none'>YouTube</div>
                   </div>
                   <div
                     onClick={() => setBannerItem({ ...bannerItem, type: 2 })}
@@ -249,7 +251,7 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
                     <div className='flex-grow select-none'>Vimeo</div>
                   </div>
                 </div>
-                <div className='flex flex-col  gap-4 ustify-center items-center'>
+                <div className='flex flex-col  gap-4 justify-center items-center'>
                   <Input
                     placeholder='Description'
                     value={bannerItem.description}
@@ -302,11 +304,6 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
                 }}
               >
                 Submit
-              </Button>
-            </div>
-            <div>
-              <Button mr={3} onClick={onClose}>
-                Cancel
               </Button>
             </div>
           </DrawerFooter>
