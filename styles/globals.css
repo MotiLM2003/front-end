@@ -84,7 +84,7 @@ textarea {
   box-shadow: 10px 0 11px rgba(0, 0, 0, 0.1);
 }
 
-.shadow-1 {
+.shadow-m {
   box-shadow: 0 0 21px rgba(0, 0, 0, 0.5);
 }
 .rabiList {
@@ -103,6 +103,9 @@ textarea {
   font-size: 0.9rem;
 }
 
+.absolute-center {
+  transform: translate(-50%, -50%) !important;
+}
 .public-DraftEditorPlaceholder-root {
   padding: 0.8rem;
 }

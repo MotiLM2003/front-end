@@ -13,7 +13,7 @@ const MenuItem = ({
   const dispatch = useDispatch();
   const [isSubMenu, setIsSubMenu] = useState(false);
 
-  useEffect(() => {}, [isSubMenu]);
+  useEffect(() => { }, [isSubMenu]);
 
   return (
     <li
@@ -23,9 +23,8 @@ const MenuItem = ({
       onMouseOut={() => {
         setIsSubMenu(false);
       }}
-      className={`relative   primary-hover ${
-        menuId === itemId ? 'text-primary selected' : ''
-      }`}
+      className={`relative   primary-hover ${menuId === itemId ? 'text-primary selected' : ''
+        }`}
       onClick={() => {
         dispatch(setId(itemId));
       }}
@@ -45,6 +44,7 @@ const MenuItem = ({
       )}
     </li>
   );
+  
 };
 
 export default MenuItem;

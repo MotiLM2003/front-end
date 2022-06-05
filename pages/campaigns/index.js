@@ -8,6 +8,7 @@ const Campaigns = () => {
   const { CRMMenuId } = useSelector((state) => state.menuReducer);
   useEffect(() => {
     dispatch(setCRMId(id));
+    
   }, []);
   return (
     <CRMLayout>

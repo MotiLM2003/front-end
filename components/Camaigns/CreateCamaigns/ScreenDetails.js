@@ -17,6 +17,7 @@ const ScreenDetails = ({ campaign, setCharityButtons, setBannerList }) => {
           <Image src={campaignBanner} width='810' height='110' />
         </div>
         <div className='flex items-center gap-6'>
+
           <div className='flex-grow'>
             <Input
               className='w-[100%]'
@@ -25,7 +26,9 @@ const ScreenDetails = ({ campaign, setCharityButtons, setBannerList }) => {
               _placeholder={{ opacity: 0.4, color: 'gray.600' }}
               isReadOnly={true}
             />
+          H
           </div>
+          
           <div>
             <div className='bg-primary p-[8px] rounded text-white min-w-[100px] text-center flex justify-center items-center'>
               <Image src={print} />

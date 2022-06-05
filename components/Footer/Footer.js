@@ -19,8 +19,7 @@ const Footer = () => {
               ‘World Of Tzedaka’, formerly ’Tomchei Tzedaka Corp’, changed its
               name as per the guidance of Lakewood’s Posek, Rabbi Yaakov
               Forchheimer shlit”a, to avoid confusion with similarly-named
-              organizations.
-            </p>
+              organizations.     </p>
           </div>
           <div className='max-w-[300px]'>
             Tomchei Tzedaka corp. DBA

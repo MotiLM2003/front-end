@@ -8,7 +8,6 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import { Loader } from 'tabler-icons-react';
 import UsersList from './UsersList';
 
 const format = (val) => `$` + val;

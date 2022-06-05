@@ -8,6 +8,16 @@ module.exports = {
       colors: {
         primary: '#1979BE',
 
+        prime: {
+          50: '#e8f4fc',
+          100: '#bbdef6',
+          150: '#8ec7f0',
+          'default': '#349be4',
+          250: '#1b81cb',
+          300: '#15649e',
+          350: '#0f4871',
+        },
+
         secondary: '#1D1E1D',
         tertiary: '#FDB035',
         'offwhite': '#F8F8F8',

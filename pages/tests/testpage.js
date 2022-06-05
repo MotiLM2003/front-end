@@ -1,3 +1,4 @@
+import { Box, Heading, Text } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 const QuillEditor = dynamic(
   () => import('@components/Tests/QuilEditor/QuillEditor'),
