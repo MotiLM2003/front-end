@@ -17,45 +17,24 @@ import { ChevronDownIcon, PhoneIcon } from "@chakra-ui/icons";
 import AccountIcon from "@components/Icons/AccountIcon";
 import { currencies } from "../../../../json-data/currency";
 import DonateOptions from "./DonateOptions";
-import {
-  faCircleArrowRight,
-  faCircleArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CloudFog } from "tabler-icons-react";
 
-//faCircleArrowRight;
-// importint
-const initialRecurring = {
-  displayName: "",
-  currency: 0,
-  sum: null,
-  recurringType: 0,
-  recurringCount: 0,
-  isRecurring: "1",
-  isAnonymous: false,
-  isAddPublicNote: false,
-  isCompleteFee: false,
-  publicNote: "",
-  owner: "",
-};
-
-const Stage1 = ({ campaign }) => {
-  const [recurring, setRecurring] = useState(initialRecurring);
+const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
   const [isPublic, setIsPublic] = useState(false);
-  const onChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setRecurring({ ...recurring, [name]: value });
-  };
 
-  useEffect(() => {
-    console.log("effect", recurring);
-  }, [recurring]);
   const { campaignName } = campaign;
-  const { displayName, sum, currency } = recurring;
+  const { displayName, sum, currency, donationNote } = recurring;
   return (
-    <div className="mt-2 mb-10">
+    <motion.div
+      initial={{ y: -500 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className=""
+      style={{ overflow: "hidden" }}
+    >
       <div className="flex flex-col items-center gap-2">
         <Heading as="div" size="md" className="text-red font-bold">
           Donation for:
@@ -73,7 +52,7 @@ const Stage1 = ({ campaign }) => {
               placeholder="Display Name"
               name="displayName"
               value={displayName}
-              onChange={onChange}
+              onChange={(e) => onRecurringUpdate(e.target.name, e.target.value)}
             />
           </InputGroup>
           <div className="relative">
@@ -81,7 +60,9 @@ const Stage1 = ({ campaign }) => {
               placeholder="Please enter the amount you want donate"
               value={sum}
               name="sum"
-              onChange={onChange}
+              onChange={(e) => {
+                onRecurringUpdate(e.target.name, e.target.value);
+              }}
             />
             <div className="absolute top-[0] right-0">
               <Select
@@ -91,13 +72,10 @@ const Stage1 = ({ campaign }) => {
                 color="white"
                 className="max-w-[80px] text-center"
                 value={currency}
-                onChange={(e) =>
-                  setRecurring({ ...recurring, currency: e.target.value })
-                }
+                onChange={(e) => onRecurringUpdate("currency", e.target.value)}
               >
                 {currencies.map((item) => (
                   <option className="text-black" value={item.id} key={item.id}>
-                    {" "}
                     {item.symbol}{" "}
                   </option>
                 ))}
@@ -106,26 +84,22 @@ const Stage1 = ({ campaign }) => {
             <Text className="text-red text-center text-sm mt-4">
               The name that will appear in the names of the donors in the fund{" "}
             </Text>
-            <DonateOptions recurring={recurring} setRecurring={setRecurring} />{" "}
+            <DonateOptions
+              recurring={recurring}
+              onRecurringUpdate={onRecurringUpdate}
+            />{" "}
             <div className="mt-5">
               <Stack direction="column" gap={1}>
                 <div className="flex items-center gap-3">
                   <Switch
-                    //   checked={campaign.isCertificate}
-                    //   onChange={toggleFeatures}
-                    //   name={'isCertificate'}
                     colorScheme="red"
-                    //   isChecked={campaign.isCertificate}
                     checked={recurring.isAnonymous}
                     onChange={(e) => {
-                      setRecurring({
-                        ...recurring,
-                        isAnonymous: e.target.checked,
-                      });
+                      onRecurringUpdate("isAnonymous", e.target.checked);
                     }}
-                  />{" "}
+                  />
                   <Text className="font-bold">
-                    I prefer to remain anonymous{" "}
+                    I prefer to remain anonymous
                   </Text>
                 </div>
                 <div className="flex items-center gap-3">
@@ -134,16 +108,11 @@ const Stage1 = ({ campaign }) => {
                     checked={recurring.isAddPublicNote}
                     onChange={(e) => {
                       setIsPublic(e.target.checked);
-
-                      setRecurring({
-                        ...recurring,
-                        isAddPublicNote: e.target.checked,
-                      });
+                      onRecurringUpdate("isAddPublicNote", e.target.checked);
                     }}
                   />
                   <div>
                     <Text className="font-bold">
-                      {" "}
                       Add a public donation Note{" "}
                     </Text>
                     <AnimatePresence>
@@ -154,7 +123,14 @@ const Stage1 = ({ campaign }) => {
                           exit={{ opacity: 0 }}
                           className="mt-4"
                         >
-                          <Input placeholder="Donation note..." />
+                          <Input
+                            placeholder="Donation note..."
+                            name="donationNote"
+                            value={donationNote}
+                            onChange={(e) =>
+                              onRecurringUpdate("donationNote", e.target.value)
+                            }
+                          />
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -165,14 +141,10 @@ const Stage1 = ({ campaign }) => {
                     colorScheme="red"
                     checked={recurring.isCompleteFee}
                     onChange={(e) => {
-                      setRecurring({
-                        ...recurring,
-                        isCompleteFee: e.target.checked,
-                      });
+                      onRecurringUpdate("isCompleteFee", e.target.checked);
                     }}
                   />
                   <Text className="font-bold text-primary">
-                    {" "}
                     Complete Help offset the cost fees of this transaction.
                   </Text>
                 </div>
@@ -180,9 +152,8 @@ const Stage1 = ({ campaign }) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-start items-end mt-12 cursor-pointer hover:scale(200)">
-          <div className="grow">
-            {" "}
+        <div className="flex justify-start items-end mt-12 cursor-pointer hover:scale(200) pb-4">
+          <div className="grow" onClick={() => setStage(1)}>
             <FontAwesomeIcon
               className="text-slate-700 hover:text-red transition duration-500 hover:scale-[1.1] "
               icon={faCircleArrowRight}
@@ -191,7 +162,7 @@ const Stage1 = ({ campaign }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

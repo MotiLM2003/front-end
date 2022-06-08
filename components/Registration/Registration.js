@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-import axios from 'axios';
-import Stage1 from './Stage1';
-import Stage2 from './Stage2';
-import Stage3 from './Stage3';
-import api from '../../apis/userAPI';
+import axios from "axios";
+import Stage1 from "./Stage1";
+import Stage2 from "./Stage2";
+import Stage3 from "./Stage3";
+import api from "../../apis/userAPI";
+import { fakeData, data } from "./data";
+import { useGenericOnChange } from "../../hooks/useGenericOnChange";
 
-import { fakeData, data } from './data';
 const initialData = fakeData;
 
 const Registration = () => {
@@ -27,20 +28,29 @@ const Registration = () => {
   const setFinalData = async () => {
     //
     data.birthDate = birthDate;
-    const user = await api.post('/users/', data);
+    const user = await api.post("/users/", data);
     setStage(2);
   };
   const onChange = (e) => {
+    console.log(e);
     const name = e.target.name;
     const value = e.target.value;
 
-    if (e.target.type === 'checkbox') {
+    if (e.target.type === "checkbox") {
       const isChecked = e.target.checked;
       setData({ ...data, [name]: isChecked });
     } else {
       setData({ ...data, [name]: value });
     }
   };
+
+  const onCreditcardChange = (inputName, value) => {
+    onChange(useGenericOnChange(inputName, value));
+  };
+
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
 
   const renderStage = () => {
     switch (stage) {
@@ -62,6 +72,7 @@ const Registration = () => {
             onChange={onChange}
             rabiList={rabiList}
             setRabiList={setRabiList}
+            onCreditcardChange={onCreditcardChange}
           />
         );
       case 2:
