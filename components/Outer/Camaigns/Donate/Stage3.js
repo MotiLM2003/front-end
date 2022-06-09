@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CurrencyFormat from "react-currency-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleArrowRight,
+  faCircleArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import Creditcard from "@components/Icons/Creditcard";
 import Ach from "@components/Icons/Ach";
 import Paypal from "@components/Icons/Paypal";
@@ -21,6 +25,7 @@ import {
   Text,
   Button,
   Switch,
+  Checkbox,
 } from "@chakra-ui/react";
 import CreditcardHandler from "@components/Creditcard/CreditcardHandler";
 const Stage3 = ({
@@ -29,10 +34,13 @@ const Stage3 = ({
   recurring,
   privateRecurring,
   onCreditcardChange,
+  onUpdate,
+  completeDonation,
 }) => {
-  const [paymentType, setPaymentType] = useState(-1);
+  const [paymentType, setPaymentType] = useState(0);
   const { campaignName } = campaign;
   const { sum, fee } = recurring;
+  const [isLoading, setIsLoading] = useState(false);
 
   const getTotal = () => {
     const total =
@@ -44,16 +52,24 @@ const Stage3 = ({
   useEffect(() => {
     console.log(paymentType);
   }, [paymentType]);
+
+  const completeDonate = () => {
+    console.log("test");
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      completeDonation();
+    }, 2000);
+  };
   return (
     <motion.div
-      initial={{ opacity: 0, y: -50 }}
+      initial={{ opacity: 0, y: -80 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      exit={{ opacity: 0, y: 50 }}
-      className="bg-[#E5E5E5]"
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 1, y: 80 }}
       style={{ overflow: "hidden" }}
     >
-      <div className="flex flex-col gap-1 shadow-m bg-white bv">
+      <div className="flex flex-col gap-1  bg-white ">
         <div className="border p-7 rounded">
           <div className="flex gap-2">
             <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
@@ -116,7 +132,7 @@ const Stage3 = ({
           </div>
         </div>
         <RadioGroup onChange={setPaymentType} value={paymentType}>
-          <div className="flex flex-col gap-4 mt-5">
+          <div className="flex flex-col gap-4 mt-5 pb-2">
             <div className="flex justify-around items-center  gap-2">
               <div
                 className={`flex items-center gap-2 border p-3 rounded-xl border-gray-500 w-[200px] transition duration-1000 text-sm  ${
@@ -124,7 +140,9 @@ const Stage3 = ({
                 } `}
               >
                 <div className="flex items-center justify-center ">
-                  <Radio value="0"> </Radio>
+                  <Radio value="0" defaultChecked={true}>
+                    {" "}
+                  </Radio>
                 </div>
                 <div>
                   <Creditcard />
@@ -203,10 +221,55 @@ const Stage3 = ({
         </RadioGroup>
       </div>
       <div className="bg-white">
-        <CreditcardHandler
-          onChange={onCreditcardChange}
-          state={privateRecurring.creditCard}
-        />
+        <AnimatePresence>
+          {parseInt(paymentType) === 0 && (
+            <CreditcardHandler
+              onChange={onCreditcardChange}
+              state={privateRecurring.creditCardNumber}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="pl-1 pt-4 flex flex-col gap-2">
+        <div>
+          <Checkbox oncChange={onUpdate} name="isMarketingEmail">
+            I agree to receive marketing email
+          </Checkbox>
+        </div>
+        <div>
+          <Checkbox>I agree to Terms</Checkbox>
+        </div>
+      </div>
+      <div className="py-8 flex items-center justify-center gap-10">
+        <div>
+          {" "}
+          <div onClick={() => setStage(1)}>
+            <FontAwesomeIcon
+              className="text-slate-700 hover:text-red transition duration-250 hover:scale-[1.1] cursor-pointer "
+              icon={faCircleArrowLeft}
+              size="3x"
+            />
+          </div>
+        </div>
+        <div>
+          <Button
+            colorScheme="orange"
+            isLoading={isLoading}
+            onClick={() => completeDonate()}
+            loadingText="Thank you! Completing donation..."
+          >
+            Donate:&nbsp;
+            {
+              <CurrencyFormat
+                value={getTotal()}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+                is
+              />
+            }
+          </Button>
+        </div>
       </div>
     </motion.div>
   );

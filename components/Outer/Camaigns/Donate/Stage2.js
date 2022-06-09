@@ -25,6 +25,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CloudFog } from "tabler-icons-react";
+import NumberFormat from "react-number-format";
 
 //faCircleArrowRight;
 // importint
@@ -131,16 +132,17 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
           <Text className="font-bold text-primary text-xl">
             General Donation Amount
           </Text>
-          <div className="relative">
-            <Input
-              placeholder="Please enter the amount you want donate"
+          <div className="generalDonation relative">
+            <NumberFormat
+              thousandSeparator={true}
+              prefix={"$"}
               value={sum}
-              name="sum"
-              onChange={(e) => {
-                onRecurringUpdate(e.target.name, e.target.value);
-              }}
               className="bg-white"
-              bg="white"
+              customInput={Input}
+              onValueChange={(values) => {
+                const { formattedValue, value } = values;
+                onRecurringUpdate("sum", value);
+              }}
             />
             <div className="absolute top-[0] right-0 ">
               <Select

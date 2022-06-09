@@ -6,6 +6,7 @@ import { useGenericOnChange } from "../../../../hooks/useGenericOnChange";
 import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
 import Stage3 from "./Stage3";
+import Stage4 from "./Stage4";
 
 const donationCount = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const initialRecurring = {
@@ -30,6 +31,7 @@ const initialRecurring = {
   creditCardNumber: "",
   creditCardExpire: "",
   CVC: "",
+  isMarketingEmail: false,
 };
 
 const Donate = ({ campaign }) => {
@@ -40,13 +42,26 @@ const Donate = ({ campaign }) => {
   };
 
   const onPrivateRecurringUpdate = (name, value) => {
+    console.log("name", name);
+    console.log("value", value);
     setPrivateRecurring({ ...privateRecurring, [name]: value });
   };
 
-  const onCreditcardChange = (inputName, value) => {
-    onPrivateRecurringUpdate(useGenericOnChange(inputName, value));
+  const onUpdate = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPrivateRecurring({ ...privateRecurring, [name]: value });
   };
+  const onCreditcardChange = (inputName, value) => {
+    onUpdate(useGenericOnChange(inputName, value));
+  };
+
   const [stage, setStage] = useState(0);
+
+  const completeDonation = () => {
+    console.log("hello");
+    setStage(3);
+  };
   useEffect(() => {
     console.log("privateRecurring", privateRecurring);
   }, [privateRecurring]);
@@ -68,7 +83,7 @@ const Donate = ({ campaign }) => {
           <Stage2
             campaign={campaign}
             setStage={setStage}
-            onRecurringUpdate={onPrivateRecurringUpdate}
+            onRecurringUpdate={onCreditcardChange}
             recurring={privateRecurring}
           />
         );
@@ -81,8 +96,13 @@ const Donate = ({ campaign }) => {
             recurring={recurring}
             privateRecurring={privateRecurring}
             onCreditcardChange={onCreditcardChange}
+            onUpdate={onUpdate}
+            completeDonation={completeDonation}
           />
         );
+      }
+      case 3: {
+        return <Stage4 campaign={campaign} />;
       }
     }
   };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import creditCard from "../../images/icons/dark/credit-card.svg";
+import { motion, AnimatePresence } from "framer-motion";
 import NumberFormat from "react-number-format";
 import { Input } from "@chakra-ui/react";
 import { CloudFog } from "tabler-icons-react";
@@ -31,12 +32,19 @@ const CreditcardHandler = ({ state, onChange }) => {
   }
 
   return (
-    <div>
-      <div className="mt-4 location">
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 250 }}
+      transition={{ duration: 1 }}
+      exit={{ opacity: 0, height: 0 }}
+      style={{ overflow: "hidden" }}
+    >
+      <div className="pt-10">
         <div>
           <h3 className="text-black">Card Number:</h3>
           <NumberFormat
             format="#### #### #### ####"
+            placeholder="#### #### #### ####"
             value={state}
             mask="#"
             customInput={Input}
@@ -78,7 +86,7 @@ const CreditcardHandler = ({ state, onChange }) => {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

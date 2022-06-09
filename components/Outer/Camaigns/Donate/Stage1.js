@@ -20,6 +20,7 @@ import DonateOptions from "./DonateOptions";
 import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CloudFog } from "tabler-icons-react";
+import NumberFormat from "react-number-format";
 
 const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
   const [isPublic, setIsPublic] = useState(false);
@@ -56,12 +57,14 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
             />
           </InputGroup>
           <div className="relative">
-            <Input
-              placeholder="Please enter the amount you want donate"
+            <NumberFormat
+              thousandSeparator={true}
+              prefix={"$"}
               value={sum}
-              name="sum"
-              onChange={(e) => {
-                onRecurringUpdate(e.target.name, e.target.value);
+              customInput={Input}
+              onValueChange={(values) => {
+                const { formattedValue, value } = values;
+                onRecurringUpdate("sum", value);
               }}
             />
             <div className="absolute top-[0] right-0">
@@ -93,7 +96,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                 <div className="flex items-center gap-3">
                   <Switch
                     colorScheme="red"
-                    checked={recurring.isAnonymous}
+                    isChecked={recurring.isAnonymous}
                     onChange={(e) => {
                       onRecurringUpdate("isAnonymous", e.target.checked);
                     }}
@@ -105,7 +108,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                 <div className="flex items-center gap-3">
                   <Switch
                     colorScheme="red"
-                    checked={recurring.isAddPublicNote}
+                    isChecked={recurring.isAddPublicNote}
                     onChange={(e) => {
                       setIsPublic(e.target.checked);
                       onRecurringUpdate("isAddPublicNote", e.target.checked);
@@ -116,7 +119,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                       Add a public donation Note{" "}
                     </Text>
                     <AnimatePresence>
-                      {isPublic && (
+                      {recurring.isAddPublicNote && (
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
@@ -139,7 +142,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                 <div className="flex items-center gap-3">
                   <Switch
                     colorScheme="red"
-                    checked={recurring.isCompleteFee}
+                    isChecked={recurring.isCompleteFee}
                     onChange={(e) => {
                       onRecurringUpdate("isCompleteFee", e.target.checked);
                     }}
