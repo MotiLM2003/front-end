@@ -37,6 +37,7 @@
     "react-datepicker": "^4.7.0",
     "react-dom": "^18.0.0",
     "react-draft-wysiwyg": "^1.14.7",
+    "react-flip-move": "^3.0.4",
     "react-icons": "^4.3.1",
     "react-number-format": "^4.9.3",
     "react-quill": "^0.0.2",

@@ -30,12 +30,21 @@ import NumberFormat from "react-number-format";
 //faCircleArrowRight;
 // importint
 
-const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
+const Stage2 = ({
+  campaign,
+  setStage,
+  recurring,
+  onRecurringUpdate,
+  donation,
+}) => {
   const [isPublic, setIsPublic] = useState(false);
 
   const { campaignName } = campaign;
-  const { firstName, lastName, email, cell, sum, currency } = recurring;
+  const { firstName, lastName, email, cellphone, sum, currency } = recurring;
+  console.log(" r", recurring);
 
+  const isUpdate = donation && donation._id ? true : false;
+  console.log(isUpdate);
   return (
     <motion.div
       initial={{ y: 500 }}
@@ -97,7 +106,7 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
               <Input
                 placeholder="Cell"
                 name="cellphone"
-                value={cell}
+                value={cellphone}
                 onChange={(e) => {
                   onRecurringUpdate(e.target.name, e.target.value);
                 }}
@@ -121,57 +130,63 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
             </InputGroup>
           </div>
         </div>
-        <div className="mt-5 bg-[#DFDFDF] py-10 px-3 rounded flex flex-col justify-center items-center">
-          <Heading as="div" size="md" className="text-red font-bold">
-            THE WORLD OF TZEDAKA NEEDS YOUR HELP!
-          </Heading>
-          <Text className="text-black my-5 text-center  leading-5">
-            World of Tzedaka also has many cases of tragedies that we are not
-            able to publicize. Please consider adding a donation to our general
-            tzeadakah fund.
-          </Text>
-          <Text className="font-bold text-primary text-xl">
-            General Donation Amount
-          </Text>
-          <div className="generalDonation relative">
-            <NumberFormat
-              thousandSeparator={true}
-              prefix={"$"}
-              value={sum}
-              className="bg-white"
-              customInput={Input}
-              onValueChange={(values) => {
-                const { formattedValue, value } = values;
-                onRecurringUpdate("sum", value);
-              }}
-            />
-            <div className="absolute top-[0] right-0 ">
-              <Select
-                icon={<ChevronDownIcon />}
-                bg="tomato"
-                borderColor="tomato"
-                color="white"
-                className="max-w-[80px] text-center"
-                value={currency}
-                name="currency"
-                onChange={(e) => {
-                  onRecurringUpdate(e.target.name, e.target.value);
+        {!isUpdate && (
+          <div className="mt-5 bg-[#DFDFDF] py-10 px-3 rounded flex flex-col justify-center items-center">
+            <Heading as="div" size="md" className="text-red font-bold">
+              THE WORLD OF TZEDAKA NEEDS YOUR HELP!
+            </Heading>
+            <Text className="text-black my-5 text-center  leading-5">
+              World of Tzedaka also has many cases of tragedies that we are not
+              able to publicize. Please consider adding a donation to our
+              general tzeadakah fund.
+            </Text>
+            <Text className="font-bold text-primary text-xl">
+              General Donation Amount
+            </Text>
+            <div className="generalDonation relative">
+              <NumberFormat
+                thousandSeparator={true}
+                prefix={"$"}
+                value={sum}
+                className="bg-white"
+                customInput={Input}
+                onValueChange={(values) => {
+                  const { formattedValue, value } = values;
+                  onRecurringUpdate("sum", value);
                 }}
-              >
-                {currencies.map((item) => (
-                  <option className="text-black" value={item.id} key={item.id}>
-                    {" "}
-                    {item.symbol}{" "}
-                  </option>
-                ))}
-              </Select>
+              />
+              <div className="absolute top-[0] right-0 ">
+                <Select
+                  icon={<ChevronDownIcon />}
+                  bg="tomato"
+                  borderColor="tomato"
+                  color="white"
+                  className="max-w-[80px] text-center"
+                  value={currency}
+                  name="currency"
+                  onChange={(e) => {
+                    onRecurringUpdate(e.target.name, e.target.value);
+                  }}
+                >
+                  {currencies.map((item) => (
+                    <option
+                      className="text-black"
+                      value={item.id}
+                      key={item.id}
+                    >
+                      {" "}
+                      {item.symbol}{" "}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <DonateOptions
+                recurring={recurring}
+                onRecurringUpdate={onRecurringUpdate}
+              />{" "}
             </div>
-            <DonateOptions
-              recurring={recurring}
-              onRecurringUpdate={onRecurringUpdate}
-            />{" "}
           </div>
-        </div>
+        )}
         <div className="flex justify-center  gap-10  mt-12 cursor-pointer hover:scale(200) pb-4">
           <div onClick={() => setStage(0)}>
             <FontAwesomeIcon

@@ -11,6 +11,7 @@ import api from "../../../../apis/userAPI";
 
 const donationCount = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const initialRecurring = {
+  isPrivateDonation: false,
   displayName: "",
   currency: 0,
   sum: 0,
@@ -36,9 +37,21 @@ const initialRecurring = {
   campaign: "",
 };
 
-const Donate = ({ campaign }) => {
-  const [recurring, setRecurring] = useState(initialRecurring);
-  const [privateRecurring, setPrivateRecurring] = useState(initialRecurring);
+const Donate = ({
+  campaign,
+  donation = null,
+  customCompleteDonation = null,
+}) => {
+  if (donation) {
+    initialRecurring = { ...donation };
+  }
+  const [recurring, setRecurring] = useState(
+    donation ? donation : initialRecurring
+  );
+  const [privateRecurring, setPrivateRecurring] = useState({
+    ...initialRecurring,
+    isPrivateDonation: true,
+  });
   const onRecurringUpdate = (name, value) => {
     setRecurring((prev) => ({ ...prev, [name]: value }));
   };
@@ -56,11 +69,18 @@ const Donate = ({ campaign }) => {
   const [stage, setStage] = useState(0);
 
   const completeDonation = async () => {
-    try {
-      console.log(recurring);
-      const r = await api.post("/recurring/", recurring);
-      // setStage(3);
-    } catch (e) {}
+    if (customCompleteDonation === null) {
+      try {
+        console.log(recurring);
+        const r = await api.post("/recurring/", {
+          recurring,
+          privateRecurring,
+        });
+        // setStage(3);
+      } catch (e) {}
+    } else {
+      customCompleteDonation({ recurring, privateRecurring });
+    }
   };
   useEffect(() => {
     console.log("privateRecurring", privateRecurring);
@@ -105,6 +125,7 @@ const Donate = ({ campaign }) => {
             setStage={setStage}
             onRecurringUpdate={onCreditcardChange}
             recurring={privateRecurring}
+            donation={donation}
           />
         );
       }

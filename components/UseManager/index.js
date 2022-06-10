@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   Input,
   NumberDecrementStepper,
@@ -7,11 +7,11 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-} from '@chakra-ui/react';
-import UsersList from './UsersList';
+} from "@chakra-ui/react";
+import UsersList from "./UsersList";
 
 const format = (val) => `$` + val;
-const parse = (val) => val.replace(/^\$/, '');
+const parse = (val) => val.replace(/^\$/, "");
 const UserManager = () => {
   const [users, setUser] = useState([]);
   const isLoading = useState(false);
@@ -22,7 +22,7 @@ const UserManager = () => {
   };
 
   return (
-    <div className='bg-default-background p-2qq md:p-4 rounded'>
+    <div className="bg-default-background p-2qq md:p-4 rounded">
       <UsersList />
     </div>
   );
