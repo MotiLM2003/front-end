@@ -58,7 +58,7 @@ const Stage3 = ({
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      completeDonation();
+      completeDonation(paymentType);
     }, 2000);
   };
   return (

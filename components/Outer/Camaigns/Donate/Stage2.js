@@ -35,6 +35,7 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
 
   const { campaignName } = campaign;
   const { firstName, lastName, email, cell, sum, currency } = recurring;
+
   return (
     <motion.div
       initial={{ y: 500 }}
@@ -96,7 +97,7 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
               <Input
                 placeholder="Cell"
                 name="cellphone"
-                value={firstName}
+                value={cell}
                 onChange={(e) => {
                   onRecurringUpdate(e.target.name, e.target.value);
                 }}
@@ -152,6 +153,7 @@ const Stage2 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                 color="white"
                 className="max-w-[80px] text-center"
                 value={currency}
+                name="currency"
                 onChange={(e) => {
                   onRecurringUpdate(e.target.name, e.target.value);
                 }}

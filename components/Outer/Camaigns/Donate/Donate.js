@@ -7,6 +7,7 @@ import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
 import Stage3 from "./Stage3";
 import Stage4 from "./Stage4";
+import api from "../../../../apis/userAPI";
 
 const donationCount = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const initialRecurring = {
@@ -32,24 +33,20 @@ const initialRecurring = {
   creditCardExpire: "",
   CVC: "",
   isMarketingEmail: false,
+  campaign: "",
 };
 
 const Donate = ({ campaign }) => {
   const [recurring, setRecurring] = useState(initialRecurring);
   const [privateRecurring, setPrivateRecurring] = useState(initialRecurring);
   const onRecurringUpdate = (name, value) => {
-    setRecurring({ ...recurring, [name]: value });
-  };
-
-  const onPrivateRecurringUpdate = (name, value) => {
-    console.log("name", name);
-    console.log("value", value);
-    setPrivateRecurring({ ...privateRecurring, [name]: value });
+    setRecurring((prev) => ({ ...prev, [name]: value }));
   };
 
   const onUpdate = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
     setPrivateRecurring({ ...privateRecurring, [name]: value });
   };
   const onCreditcardChange = (inputName, value) => {
@@ -58,13 +55,36 @@ const Donate = ({ campaign }) => {
 
   const [stage, setStage] = useState(0);
 
-  const completeDonation = () => {
-    console.log("hello");
-    setStage(3);
+  const completeDonation = async () => {
+    try {
+      console.log(recurring);
+      const r = await api.post("/recurring/", recurring);
+      // setStage(3);
+    } catch (e) {}
   };
   useEffect(() => {
     console.log("privateRecurring", privateRecurring);
   }, [privateRecurring]);
+
+  useEffect(() => {
+    onRecurringUpdate("firstName", privateRecurring.firstName);
+    onRecurringUpdate("lastName", privateRecurring.lastName);
+    onRecurringUpdate("cellphone", privateRecurring.cellphone);
+    onRecurringUpdate("email", privateRecurring.email);
+
+    console.log("ere", privateRecurring);
+  }, [
+    privateRecurring.firstName,
+    privateRecurring.lastName,
+    privateRecurring.firstName,
+    privateRecurring.cellphone,
+    privateRecurring.email,
+  ]);
+
+  useEffect(() => {
+    onUpdate(useGenericOnChange("campaign", campaign._id));
+    onRecurringUpdate("campaign", campaign._id);
+  }, []);
   const renderStage = () => {
     switch (stage) {
       case 0: {
