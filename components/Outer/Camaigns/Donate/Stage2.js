@@ -44,7 +44,7 @@ const Stage2 = ({
   console.log(" r", recurring);
 
   const isUpdate = donation && donation._id ? true : false;
-  console.log(isUpdate);
+
   return (
     <motion.div
       initial={{ y: 500 }}

@@ -18,7 +18,7 @@ const Sidebar = () => {
   const { user } = useSelector((state) => state.userReducer);
 
   return (
-    <div className="basis-1/6 bg-shades-600 py-10  rounded ">
+    <div className="basis-1/6 bg-shades-600 py-10  rounded min-w-[160px] transition duration-500 ">
       <div className="sidebarMenu flex flex-col justify-center gap-4">
         <CRMMenuItem
           icon={status}

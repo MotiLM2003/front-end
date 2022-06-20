@@ -15,11 +15,10 @@ import Donate from "./Donate";
 const DonateContainerModel = ({
   isOpen,
   onClose,
-  campaign,
   donation,
   customCompleteDonation,
+  goToStage,
 }) => {
-  console.log("donation", donation);
   return (
     <Modal
       isCentered
@@ -44,9 +43,10 @@ const DonateContainerModel = ({
         <ModalBody>
           <div style={{ overflow: "hidden" }}>
             <Donate
-              campaign={campaign}
+              campaign={donation.campaign}
               donation={donation}
               customCompleteDonation={customCompleteDonation}
+              goToStage={goToStage}
             />
           </div>
         </ModalBody>

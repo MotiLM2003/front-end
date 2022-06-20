@@ -28,6 +28,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import CreditcardHandler from "@components/Creditcard/CreditcardHandler";
+
 const Stage3 = ({
   campaign,
   setStage,
@@ -49,17 +50,49 @@ const Stage3 = ({
     return total;
   };
 
-  useEffect(() => {
-    console.log(paymentType);
-  }, [paymentType]);
+  useEffect(() => {});
+  useEffect(() => {}, [paymentType]);
 
   const completeDonate = () => {
-    console.log("test");
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       completeDonation(paymentType);
-    }, 2000);
+    }, 500);
+  };
+  const renderButton = () => {
+    if (!recurring._id) {
+      return (
+        <Button
+          colorScheme="orange"
+          isLoading={isLoading}
+          onClick={() => completeDonate()}
+          loadingText="Thank you! Completing donation..."
+        >
+          Donate:&nbsp;
+          {
+            <CurrencyFormat
+              value={getTotal()}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"$"}
+              is
+            />
+          }
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          colorScheme="orange"
+          isLoading={isLoading}
+          onClick={() => completeDonate()}
+          loadingText="Updating details..."
+        >
+          Update details
+        </Button>
+      );
+    }
   };
   return (
     <motion.div
@@ -251,25 +284,7 @@ const Stage3 = ({
             />
           </div>
         </div>
-        <div>
-          <Button
-            colorScheme="orange"
-            isLoading={isLoading}
-            onClick={() => completeDonate()}
-            loadingText="Thank you! Completing donation..."
-          >
-            Donate:&nbsp;
-            {
-              <CurrencyFormat
-                value={getTotal()}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-                is
-              />
-            }
-          </Button>
-        </div>
+        <div>{renderButton()}</div>
       </div>
     </motion.div>
   );

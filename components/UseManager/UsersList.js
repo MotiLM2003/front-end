@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useToast } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useToast } from "@chakra-ui/react";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import {
   Table,
   Thead,
@@ -13,20 +13,20 @@ import {
   TableCaption,
   TableContainer,
   Link,
-} from '@chakra-ui/react';
-import { Stack, Button, ButtonGroup } from '@chakra-ui/react';
-import api from '../../apis/userAPI';
-import edit from '../../images/icons/edit.svg';
-import Loading from '@components/Loader/Loader';
-import Loader from '@components/Loader/Loader';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import edit2 from '../../images/icons/white/edit.svg';
-import close from '../../images/icons/white/close.svg';
-import UserRow from './UserRow';
+} from "@chakra-ui/react";
+import { Stack, Button, ButtonGroup } from "@chakra-ui/react";
+import api from "../../apis/userAPI";
+import edit from "../../images/icons/edit.svg";
+import Loading from "@components/Loader/Loader";
+import Loader from "@components/Loader/Loader";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import edit2 from "../../images/icons/white/edit.svg";
+import close from "../../images/icons/white/close.svg";
+import UserRow from "./UserRow";
 const UsersList = () => {
   const toast = useToast();
   const [users, setUser] = useState([]);
-  const [loadingMessage, setLoadingMessage] = useState('Loading...');
+  const [loadingMessage, setLoadingMessage] = useState("Loading...");
   const [filterByMenu, setFilterBy] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [totals, setTotals] = useState({
@@ -53,12 +53,12 @@ const UsersList = () => {
         return u._id === user._id ? user : u;
       })
     );
-    const user = await api.post('/users/UpdateById', update);
+    const user = await api.post("/users/UpdateById", update);
     toast({
-      position: 'top',
-      title: 'Action successfully committed.',
+      position: "top",
+      title: "Action successfully committed.",
 
-      status: 'success',
+      status: "success",
       duration: 4000,
       isClosable: true,
     });
@@ -67,14 +67,14 @@ const UsersList = () => {
   };
 
   const updateUserDetails = async (updates) => {
-    setLoadingMessage('Updating user details, please wait...');
+    setLoadingMessage("Updating user details, please wait...");
     setLoading(true);
     try {
-      const user = await api.post('/users/UpdateById', updates);
+      const user = await api.post("/users/UpdateById", updates);
       toast({
-        position: 'top',
-        title: 'User details successfully updated!',
-        status: 'success',
+        position: "top",
+        title: "User details successfully updated!",
+        status: "success",
         duration: 4000,
         isClosable: true,
       });
@@ -96,18 +96,17 @@ const UsersList = () => {
 
   useEffect(() => {
     const getData = async () => {
-      setLoadingMessage('Getting users list..');
+      setLoadingMessage("Getting users list..");
       setLoading(true);
-      const { data } = await api.post('/users/get');
+      const { data } = await api.post("/users/get");
       setLoading(false);
-      console.log(data);
+
       setUser(data);
     };
     getData();
   }, []);
 
   const orderBy = (index) => {
-    console.log(index);
     switch (index) {
       case 0: {
         return users;
@@ -115,8 +114,7 @@ const UsersList = () => {
       // pending
       case 1: {
         const pending = users.filter((x) => x.status === 0);
-        // console.log(temp);
-        console.log(pending);
+
         return pending;
       }
       // approve
@@ -133,74 +131,74 @@ const UsersList = () => {
   return (
     <div>
       <div>
-        <div className='flex items-center gap-4 mb-10 mt-5'>
+        <div className="flex items-center gap-4 mb-10 mt-5">
           <h5
             onClick={() => {
               setFilterBy(0);
             }}
             className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center${
-              filterByMenu === 0 ? '  status-selected' : ''
+              filterByMenu === 0 ? "  status-selected" : ""
             } `}
           >
             All users
             <span
               className={`${
-                filterByMenu === 0 ? 'text-tertiary' : 'text-black'
+                filterByMenu === 0 ? "text-tertiary" : "text-black"
               }`}
             >
               ({totals.all})
             </span>
           </h5>
-          <div className='text-red font-bold text-xl'>|</div>
+          <div className="text-red font-bold text-xl">|</div>
           <h5
             onClick={() => {
               setFilterBy(2);
             }}
             className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center${
-              filterByMenu === 2 ? '  status-selected' : ''
+              filterByMenu === 2 ? "  status-selected" : ""
             } `}
           >
             Active users
             <span
               className={`${
-                filterByMenu === 2 ? 'text-tertiary' : 'text-black'
+                filterByMenu === 2 ? "text-tertiary" : "text-black"
               }`}
             >
               ({totals.approved})
             </span>
           </h5>
-          <div className='text-red font-bold text-xl'>|</div>
+          <div className="text-red font-bold text-xl">|</div>
           <h5
             onClick={() => {
               setFilterBy(1);
             }}
             className={`cursor-pointer transition ease-in-out duration-1000  px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center ${
-              filterByMenu === 1 ? '  status-selected' : ''
+              filterByMenu === 1 ? "  status-selected" : ""
             } `}
           >
             Pending users
             <span
               className={`${
-                filterByMenu === 1 ? 'text-tertiary' : 'text-black'
+                filterByMenu === 1 ? "text-tertiary" : "text-black"
               }`}
             >
-              {' '}
+              {" "}
               ({totals.pending})
             </span>
           </h5>
-          <div className='text-red font-bold text-xl'>|</div>
+          <div className="text-red font-bold text-xl">|</div>
           <h5
             onClick={() => {
               setFilterBy(3);
             }}
             className={`cursor-pointer transition ease-in-out duration-1000 px-[.6rem] py-[.1rem] rounded flex items-center gap-1 justify-center ${
-              filterByMenu === 3 ? 'status-selected' : ''
+              filterByMenu === 3 ? "status-selected" : ""
             } `}
           >
             Archived users
             <span
               className={`${
-                filterByMenu == 3 ? 'text-tertiary' : 'text-black'
+                filterByMenu == 3 ? "text-tertiary" : "text-black"
               }`}
             >
               ({totals.archive})
@@ -209,33 +207,33 @@ const UsersList = () => {
         </div>
 
         <TableContainer>
-          <Table variant='striped' colorScheme='gray' size='sm'>
+          <Table variant="striped" colorScheme="gray" size="sm">
             <Thead>
               <Tr>
                 <Th>
-                  <span className='text-primary'>Pay status</span>
+                  <span className="text-primary">Pay status</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>Created</span>
+                  <span className="text-primary">Created</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>First name</span>
+                  <span className="text-primary">First name</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>Last name</span>
+                  <span className="text-primary">Last name</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>PHONE NUMBER</span>
+                  <span className="text-primary">PHONE NUMBER</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>Emails Address</span>
+                  <span className="text-primary">Emails Address</span>
                 </Th>
 
                 <Th>
-                  <span className='text-primary'>ID NUMBER</span>
+                  <span className="text-primary">ID NUMBER</span>
                 </Th>
                 <Th>
-                  <span className='text-primary'>DAY OF BIRTH</span>
+                  <span className="text-primary">DAY OF BIRTH</span>
                 </Th>
               </Tr>
             </Thead>

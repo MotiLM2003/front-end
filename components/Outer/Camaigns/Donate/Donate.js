@@ -2,55 +2,56 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useGenericOnChange } from "../../../../hooks/useGenericOnChange";
-
+import { getNewPayment } from "../../../../utils/payments";
 import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
 import Stage3 from "./Stage3";
 import Stage4 from "./Stage4";
 import api from "../../../../apis/userAPI";
 
-const donationCount = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-const initialRecurring = {
-  isPrivateDonation: false,
-  displayName: "",
-  currency: 0,
-  sum: 0,
-  recurringType: 0,
-  recurringCount: 0,
-  isRecurring: "1",
-  isAnonymous: false,
-  isAddPublicNote: false,
-  isCompleteFee: false,
-  publicNote: "",
-  owner: "",
-  firstName: "",
-  lastName: "",
-  paymentType: 0,
-  cellphone: "",
-  email: "",
-  donationNote: "",
-  fee: 5.25,
-  creditCardNumber: "",
-  creditCardExpire: "",
-  CVC: "",
-  isMarketingEmail: false,
-  campaign: "",
-};
-
+import { initialRecurringData } from "../../../../json-data/initialRecurring";
+import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { ChevronsDownLeft } from "tabler-icons-react";
 const Donate = ({
   campaign,
   donation = null,
   customCompleteDonation = null,
+  goToStage = 0,
 }) => {
+  let isAdmin = null;
+  let isUpdatedByAdmin = null;
+  if (donation && !donation._id) {
+    isAdmin = true;
+  } else {
+    isAdmin = false;
+  }
+
+  if (donation && donation._id) {
+    isUpdatedByAdmin = true;
+  } else {
+    isUpdatedByAdmin = false;
+  }
+
+  const initialRecurring = { ...initialRecurringData };
   if (donation) {
     initialRecurring = { ...donation };
   }
   const [recurring, setRecurring] = useState(
-    donation ? donation : initialRecurring
+    donation
+      ? { ...donation, isAdmin: isAdmin, isUpdatedByAdmin: isUpdatedByAdmin }
+      : {
+          ...initialRecurring,
+          isAdmin: isAdmin,
+          isUpdatedByAdmin: isUpdatedByAdmin,
+        }
   );
+
   const [privateRecurring, setPrivateRecurring] = useState({
     ...initialRecurring,
     isPrivateDonation: true,
+    sum: 0,
+    isAdmin: isAdmin,
+    isUpdatedByAdmin: isUpdatedByAdmin,
   });
   const onRecurringUpdate = (name, value) => {
     setRecurring((prev) => ({ ...prev, [name]: value }));
@@ -66,33 +67,38 @@ const Donate = ({
     onUpdate(useGenericOnChange(inputName, value));
   };
 
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(goToStage);
 
   const completeDonation = async () => {
+    let result = null;
+    // adding new donation.
     if (customCompleteDonation === null) {
       try {
-        console.log(recurring);
-        const r = await api.post("/recurring/", {
+        //  adding new recurring  data
+        result = await api.post("/recurring/", {
           recurring,
           privateRecurring,
         });
-        // setStage(3);
+
+        const newPayment = getNewPayment(result.data);
+        // console.log("afte");
+        // const test = await api.post("/payments/", newPayment);
+        // console.log("new payment", newPayment);
+        goToStage(4);
       } catch (e) {}
     } else {
-      customCompleteDonation({ recurring, privateRecurring });
+      const result = customCompleteDonation({ recurring, privateRecurring });
     }
+    // creating new payment
   };
-  useEffect(() => {
-    console.log("privateRecurring", privateRecurring);
-  }, [privateRecurring]);
+  useEffect(() => {}, [privateRecurring]);
 
+  useEffect(() => {}, [recurring]);
   useEffect(() => {
     onRecurringUpdate("firstName", privateRecurring.firstName);
     onRecurringUpdate("lastName", privateRecurring.lastName);
     onRecurringUpdate("cellphone", privateRecurring.cellphone);
     onRecurringUpdate("email", privateRecurring.email);
-
-    console.log("ere", privateRecurring);
   }, [
     privateRecurring.firstName,
     privateRecurring.lastName,
@@ -148,12 +154,8 @@ const Donate = ({
     }
   };
 
-  useEffect(() => {
-    console.log("recurring", recurring);
-  }, [recurring]);
-  useEffect(() => {
-    console.log("privateRecurring", privateRecurring);
-  }, [privateRecurring]);
+  useEffect(() => {}, [recurring]);
+  useEffect(() => {}, [privateRecurring]);
   return (
     <AnimatePresence>
       <motion.div

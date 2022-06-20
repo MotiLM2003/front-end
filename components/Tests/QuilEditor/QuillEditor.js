@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import ReactQuill, { Quill, Mixin, Toolbar } from 'react-quill'; // ES6
-import 'react-quill/dist/quill.snow.css'; // ES6
+import ReactQuill, { Quill, Mixin, Toolbar } from "react-quill"; // ES6
+import "react-quill/dist/quill.snow.css"; // ES6
 
 const QuillEditor = () => {
   var options = {
-    debug: 'info',
+    debug: "info",
     modules: {
-      toolbar: '#toolbar',
+      toolbar: "#toolbar",
     },
-    placeholder: 'Compose an epic...',
+    placeholder: "Compose an epic...",
     readOnly: true,
-    theme: 'snow',
+    theme: "snow",
   };
 
-  const [state, setState] = useState({ text: '' });
+  const [state, setState] = useState({ text: "" });
 
   const handleChange = (e) => {
     console.log(e);
@@ -25,7 +25,7 @@ const QuillEditor = () => {
         options={options}
         value={state.text}
         onChange={handleChange}
-        theme='snow'
+        theme="snow"
       />
     </div>
   );

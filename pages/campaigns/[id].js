@@ -10,18 +10,32 @@ import fakeSlider from "../../images/temp/fake-slider.png";
 import graph from "../../images/icons/graph.svg";
 import goal from "../../images/icons/goal.svg";
 import donors from "../../images/icons/donors.svg";
-
 import CharityButtons from "@components/Outer/Camaigns/CharityButtons/CharityButtons";
 import DonateModel from "@components/Outer/Camaigns/Donate/DonateModel";
+import { initialRecurringData } from "../../json-data/initialRecurring";
+import DonateContainerModel from "@components/Outer/Camaigns/Donate/DonateContainerModel";
 const CampaignDetails = ({ data }) => {
   // const [id, setId] = useState(null);
   const [campaign, setCampaign] = useState({});
+  const [isCharityButtonDonation, setIsCharityButtonDonation] = useState(false);
+  const [charityDonation, setCharityDonation] = useState(initialRecurringData);
   const router = useRouter();
 
   useEffect(() => {
     setCampaign(data);
   }, []);
+
   const { campaignName, shortDescription, isDescription } = campaign;
+  const customCompleteDonation = () => {};
+
+  const openCharityButtonDonation = (sum) => {
+    setIsCharityButtonDonation(true);
+    setCharityDonation({ ...initialRecurringData, sum });
+  };
+
+  const closeCharityButtonDonation = () => {
+    setIsCharityButtonDonation(false);
+  };
   return (
     <Layout>
       <div className="default-container">
@@ -87,12 +101,23 @@ const CampaignDetails = ({ data }) => {
             </div>
             <div>
               <div>
-                <CharityButtons campaign={campaign} />
+                <CharityButtons
+                  campaign={campaign}
+                  openCharityButtonDonation={openCharityButtonDonation}
+                />
               </div>
             </div>
           </section>
         </div>
       </div>
+      {isCharityButtonDonation && (
+        <DonateContainerModel
+          isOpen={isCharityButtonDonation}
+          onClose={closeCharityButtonDonation}
+          donation={charityDonation}
+          customCompleteDonation={customCompleteDonation}
+        />
+      )}
     </Layout>
   );
 };

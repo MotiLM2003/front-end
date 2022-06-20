@@ -32,7 +32,6 @@ const Registration = () => {
     setStage(2);
   };
   const onChange = (e) => {
-    console.log(e);
     const name = e.target.name;
     const value = e.target.value;
 
@@ -48,9 +47,7 @@ const Registration = () => {
     onChange(useGenericOnChange(inputName, value));
   };
 
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   const renderStage = () => {
     switch (stage) {
