@@ -7,8 +7,7 @@ export const currencies = [
 ];
 
 export const getCurrency = (id) => {
-  console.log(id);
   const result = currencies.find((x) => parseInt(x.id) === parseInt(id));
-  console.log("result", result);
+
   return result;
 };

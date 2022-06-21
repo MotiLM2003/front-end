@@ -58,7 +58,6 @@ const CharityButtons = ({ buttonsList, setButtonsState }) => {
   };
 
   const handleCharityButtonDelete = (item) => {
-    console.log("delete", item);
     setButtonsState(buttonsList.filter((x) => x.id !== item.id));
   };
 

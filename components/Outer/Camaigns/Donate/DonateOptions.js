@@ -19,7 +19,6 @@ const DonateOptions = ({ recurring, onRecurringUpdate }) => {
       <div>
         <RadioGroup
           onChange={(e) => {
-            console.log("e", e);
             onRecurringUpdate("isRecurring", e);
           }}
           value={isRecurring}

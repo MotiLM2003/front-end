@@ -28,7 +28,6 @@ import edit2 from "../../../images/icons/white/edit.svg";
 import close from "../../../images/icons/white/close.svg";
 import DonationRow from "./DonationRow";
 import { returnTrue } from "react-currency-format/lib/utils";
-import { getNewPayment } from "../../../utils/payments";
 import DonateModel from "@components/Outer/Camaigns/Donate/DonateModel";
 import DonateContainerModel from "@components/Outer/Camaigns/Donate/DonateContainerModel";
 import { Reorder } from "framer-motion";
@@ -172,10 +171,10 @@ const DonationList = () => {
     } catch (error) {}
   };
 
-  const customCompleteDonation = async () => {
+  const customCompleteDonation = async (data) => {
     setLoading(true);
     try {
-      const data = updateDonation(data.recurring);
+      const newData = await updateDonation(data.recurring);
       toast({
         position: "top",
         title: "Details successfully updated.",
@@ -186,18 +185,14 @@ const DonationList = () => {
       setLoading(false);
       getData();
       setOpenEditDonation(false);
-      return data;
+      return newData;
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
-  const test = () => {
-    console.log("helo");
-  };
 
   const customCompleteNewDonation = async (data) => {
-    console.log("in custom");
     setLoading(true);
 
     try {
@@ -206,9 +201,6 @@ const DonationList = () => {
         privateRecurring: data.privateRecurring,
       });
 
-      // const newPayment = getNewPayment(r.data);
-      // const test = await api.post("/payments/", newPayment);
-      // console.log("new payment", newPayment);
       toast({
         position: "top",
         title: "Details successfully created.",

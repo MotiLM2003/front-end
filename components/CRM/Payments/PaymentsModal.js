@@ -13,13 +13,12 @@ import {
 import PaymentList from "./PaymentList";
 
 const PaymentsModal = ({ isOpen, onClose, donation }) => {
-  console.log("currentDonation", donation);
   return (
-    <Modal isOpen={isOpen} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent maxW="56rem">
         <ModalHeader>
-          <div>
+          <div className="flex flex-col gap-2">
             <div>Payments list ({donation.campaign.campaignName})</div>
             <div className="flex flex-col justify-center gap-1">
               <Text size="sm" className="text-[14px] p-1">
@@ -46,7 +45,6 @@ const PaymentsModal = ({ isOpen, onClose, donation }) => {
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button variant="ghost">Secondary Action</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

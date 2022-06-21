@@ -17,7 +17,7 @@ const QuillEditor = () => {
   const [state, setState] = useState({ text: "" });
 
   const handleChange = (e) => {
-    console.log(e);
+    // console.log(e);
   };
   return (
     <div>

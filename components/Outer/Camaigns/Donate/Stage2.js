@@ -41,7 +41,6 @@ const Stage2 = ({
 
   const { campaignName } = campaign;
   const { firstName, lastName, email, cellphone, sum, currency } = recurring;
-  console.log(" r", recurring);
 
   const isUpdate = donation && donation._id ? true : false;
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useGenericOnChange } from "../../../../hooks/useGenericOnChange";
-import { getNewPayment } from "../../../../utils/payments";
 import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
 import Stage3 from "./Stage3";
@@ -80,10 +79,6 @@ const Donate = ({
           privateRecurring,
         });
 
-        const newPayment = getNewPayment(result.data);
-        // console.log("afte");
-        // const test = await api.post("/payments/", newPayment);
-        // console.log("new payment", newPayment);
         goToStage(4);
       } catch (e) {}
     } else {

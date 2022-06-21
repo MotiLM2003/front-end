@@ -15,35 +15,61 @@ import {
   Box,
   Switch,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { donationOptions } from "../.././../json-data/donationOptions";
 import api from "../../../apis/userAPI";
 import PaymentRow from "./PaymentRow";
-import { createFuturePayments } from "../../../utils/payments";
+import {
+  createFuturePayments,
+  getLastRoundPayment,
+} from "../../../utils/payments";
+import PaymentListContainer from "./PaymentListContainer";
+import NewPaymentEditor from "./NewPaymentEditor";
 
 const PaymentList = ({ donation }) => {
+  const [futurePayments, setFuturePayments] = useState([]);
+  const [isNewPayment, setNewPayment] = useState(false);
   const [list, setList] = useState([]);
-  //   const [originalList, setOriginalList] = useState([]);
+
   const getList = async () => {
     const { data } = await api.post("/payments/get", {
       recurring: donation._id,
     });
-    console.log("data", data);
-    setList(data);
-    // setOriginalList(data);
-  };
 
-  useEffect(() => {
-    console.log(list);
-    console.log(donation._id);
-  }, [list]);
+    setList(data);
+  };
 
   useEffect(() => {
     getList();
   }, []);
+
+  useEffect(() => {
+    getLastRoundPayment(list);
+  }, [list]);
+  const toggleFutureOrders = (e) => {
+    const isChecked = e.target.checked;
+    if (!isChecked) {
+      setFuturePayments([]);
+    } else {
+      setFuturePayments(createFuturePayments(donation));
+    }
+  };
+
+  const createPayment = async (createdPayment) => {
+    const newPayment = {
+      ...createdPayment,
+      campaign: createdPayment.campaign._id,
+    };
+    console.log("creating:", newPayment);
+    await api.post("/payments/addTransaction", newPayment);
+    getList();
+    setNewPayment(false);
+  };
+
   return (
     <div>
-      <div className="flex gap-3 items-center mt-1 mb-3 justify-around">
+      <div className="flex gap-1 items-center mt-1 mb-3 justify-around">
         <div>
           Number of payments:{" "}
           <span className="text-red text-sm font-bold">
@@ -63,46 +89,37 @@ const PaymentList = ({ donation }) => {
           <Box>
             <Switch
               checked={true}
-              //   onChange={toggleFeatures}
+              onChange={toggleFutureOrders}
               //   name={"isDescription"}
               //   colorScheme={color}
               //   isChecked={campaign.isDescription}
             />
           </Box>
         </div>
+        <div>
+          <Button
+            size="sm"
+            variant="outline"
+            colorScheme="red"
+            onClick={() => setNewPayment((prev) => !prev)}
+          >
+            {isNewPayment ? "Back to list" : "New Payment"}
+          </Button>
+        </div>
       </div>
-      <TableContainer>
-        <Table variant="striped" colorScheme="gray" size="sm">
-          <Thead>
-            <Tr>
-              <Th>
-                <span className="text-primary text-center">Created</span>
-              </Th>
-              <Th>
-                <span className="text-primary text-center">Status</span>
-              </Th>
-              <Th>
-                <span className="text-primary text-center">Sum</span>
-              </Th>
-              <Th>
-                <span className="text-primary text-center">Fee</span>
-              </Th>
-              <Th>
-                <span className="text-primary text-center">
-                  {" "}
-                  <Center>Payment # </Center>
-                </span>
-              </Th>
-              <Td>
-                <span className="text-primary text-center font-bold">
-                  <Center>Currency</Center>
-                </span>
-              </Td>
-            </Tr>
-          </Thead>
-          {list && list.map((item) => <PaymentRow item={item} />)}
-        </Table>
-      </TableContainer>
+      {!isNewPayment ? (
+        <PaymentListContainer
+          donation={donation}
+          futurePayments={futurePayments}
+          list={list}
+        />
+      ) : (
+        <NewPaymentEditor
+          donation={donation}
+          list={list}
+          createPayment={createPayment}
+        />
+      )}
     </div>
   );
 };
