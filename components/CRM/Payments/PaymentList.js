@@ -48,11 +48,13 @@ const PaymentList = ({ donation }) => {
     getLastRoundPayment(list);
   }, [list]);
   const toggleFutureOrders = (e) => {
+    const last = getLastRoundPayment(list);
+    console.log("last", last);
     const isChecked = e.target.checked;
     if (!isChecked) {
       setFuturePayments([]);
     } else {
-      setFuturePayments(createFuturePayments(donation));
+      setFuturePayments(createFuturePayments(donation, last, list));
     }
   };
 
@@ -60,6 +62,7 @@ const PaymentList = ({ donation }) => {
     const newPayment = {
       ...createdPayment,
       campaign: createdPayment.campaign._id,
+      isAdmin: true,
     };
     console.log("creating:", newPayment);
     await api.post("/payments/addTransaction", newPayment);

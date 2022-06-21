@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { donationOptions } from "../utils/donations";
+import { donationOptions } from "../json-data/donationOptions";
 import moment from "moment";
 
 import { initialPayment } from "../json-data/initialPayment";
@@ -47,25 +47,41 @@ function compare(a, b) {
   return 0;
 }
 
-export const createFuturePayments = (r) => {
-  const futurePayments = [...Array(10).keys()].map((item, index) => ({
-    isPrivateDonation: r.isPrivateDonation,
-    currency: 0,
-    sum: r.sum,
-    fee: r.fee,
-    isRecurring: r.isRecurring,
-    createdDate: "test",
-    recurringCount: r.currentRecurringCount,
-    isAnonymous: r.isAnonymous,
-    isCompleteFee: r.isCompleteFee,
-    paymentType: r.paymentType,
-    status: 3,
-    campaign: r.campaign,
-    recurring: r._id,
-    reference_id: uuidv4(),
-    createdAt: Date.now(),
-    isAdmin: false,
-  }));
+export const createFuturePayments = (r, startDate, list) => {
+  let currentDate = moment(startDate.createdDate).add(
+    donationOptions[r.recurringType].days,
+    "days"
+  );
+
+  const max =
+    r.recurringCount === 0 || r.recurringCount > 10
+      ? 10
+      : r.recurringCount - list.length;
+
+  const futurePayments = [...Array(max).keys()].map((item, index) => {
+    currentDate = moment(currentDate).add(
+      donationOptions[r.recurringType].days,
+      "days"
+    );
+    return {
+      isPrivateDonation: r.isPrivateDonation,
+      currency: 0,
+      sum: r.sum,
+      fee: r.fee,
+      isRecurring: r.isRecurring,
+      createdDate: currentDate,
+      recurringCount: r.currentRecurringCount,
+      isAnonymous: r.isAnonymous,
+      isCompleteFee: r.isCompleteFee,
+      paymentType: r.paymentType,
+      status: 3,
+      campaign: r.campaign,
+      recurring: r._id,
+      reference_id: uuidv4(),
+      createdAt: Date.now(),
+      isAdmin: false,
+    };
+  });
 
   return futurePayments;
 };

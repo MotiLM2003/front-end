@@ -1,12 +1,24 @@
 import React from "react";
 import moment from "moment";
-import { Button, Center, Tag, TagLabel, Td, Text, Tr } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Tag,
+  TagLabel,
+  Td,
+  Text,
+  Tooltip,
+  Tr,
+} from "@chakra-ui/react";
 import NumberFormat from "react-number-format";
 
 import { getCurrency } from "../.././../json-data/currency";
 import { paymentStatus } from "../.././../utils/payments";
 import Ok2 from "@components/Icons/Ok2";
 import Cancel2 from "@components/Icons/Cancel2";
+
+import { faShield } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const renderStatus = (status) => {
   switch (status) {
@@ -37,11 +49,14 @@ const renderStatus = (status) => {
   }
   return paymentStatus[status].text;
 };
-const PaymentRow = ({ item }) => {
+const PaymentRow = ({ item, index }) => {
   return (
     <>
       <Tr>
-        <Td>{moment(item.createdAt).format("DD-MM-YY HH:mm")}</Td>
+        <Td>
+          <Center>{index + 1}</Center>
+        </Td>
+        <Td>{moment(item.createdDate).format("DD-MM-YY HH:mm")}</Td>
         <Td className="text-success text-xs font-bold ">
           <Text className="text-success text-sm font-bold ">
             {renderStatus(item.status)}
@@ -81,9 +96,24 @@ const PaymentRow = ({ item }) => {
           <Center>{getCurrency(item.currency).symbol}</Center>
         </Td>
         <Td>
-          <Button size="xs" colorScheme="red">
-            Refund
-          </Button>{" "}
+          <div className="flex items-center gap-4">
+            <Button size="xs" colorScheme="red" variant="outline">
+              Refund
+            </Button>{" "}
+            {item.isAdmin && (
+              <Tooltip
+                label="Payment created by admin"
+                placement="top"
+                shouldWrapChildren
+              >
+                <FontAwesomeIcon
+                  icon={faShield}
+                  size="15x"
+                  className="text-red"
+                />
+              </Tooltip>
+            )}
+          </div>
         </Td>
       </Tr>
     </>

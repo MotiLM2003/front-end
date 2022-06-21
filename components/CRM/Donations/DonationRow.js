@@ -16,6 +16,7 @@ import {
   Center,
   Text,
   Divider,
+  Tooltip,
 } from "@chakra-ui/react";
 import moment from "moment";
 import Image from "next/image";
@@ -349,33 +350,47 @@ const DonationRow = ({
                 setIsFullDetails((prev) => !prev);
               }}
             >
-              <FontAwesomeIcon
-                icon={faCirclePlus}
-                size="1x"
-                className="text-red hover:text-green-900 transition duration-500 cursor-pointer"
-              />
+              <Tooltip
+                label="Open full details"
+                placement="top"
+                shouldWrapChildren
+              >
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  size="1x"
+                  className="text-red hover:text-green-900 transition duration-500 cursor-pointer"
+                />
+              </Tooltip>
             </div>
             <div
               onClick={() => {
                 openNewDonationMenu(donation);
               }}
             >
-              <FontAwesomeIcon
-                icon={faFileCirclePlus}
-                size="1x"
-                className="text-green-500 hover:text-green-900 transition duration-500 cursor-pointer"
-              />
+              <Tooltip
+                label="Create new donation"
+                placement="top"
+                shouldWrapChildren
+              >
+                <FontAwesomeIcon
+                  icon={faFileCirclePlus}
+                  size="1x"
+                  className="text-green-500 hover:text-green-900 transition duration-500 cursor-pointer"
+                />
+              </Tooltip>
             </div>
             <div
               onClick={() => {
                 openEditDonationMenu(donation);
               }}
             >
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                size="1x"
-                className="text-blue-500 hover:text-blue-900 transition duration-500 cursor-pointer"
-              />
+              <Tooltip label="Edit donation" placement="top" shouldWrapChildren>
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  size="1x"
+                  className="text-blue-500 hover:text-blue-900 transition duration-500 cursor-pointer"
+                />
+              </Tooltip>
             </div>
             {donation.isRecurring === "1" && (
               <div
@@ -383,11 +398,17 @@ const DonationRow = ({
                   openPaymentList(donation);
                 }}
               >
-                <FontAwesomeIcon
-                  icon={faList}
-                  size="1x"
-                  className="text-blue-500 hover:text-blue-900 transition duration-500 cursor-pointer"
-                />
+                <Tooltip
+                  label="View payments list"
+                  placement="top"
+                  shouldWrapChildren
+                >
+                  <FontAwesomeIcon
+                    icon={faList}
+                    size="1x"
+                    className="text-blue-500 hover:text-blue-900 transition duration-500 cursor-pointer"
+                  />
+                </Tooltip>
               </div>
             )}
           </div>
