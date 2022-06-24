@@ -59,11 +59,28 @@ const Donate = ({
   const onUpdate = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
     setPrivateRecurring({ ...privateRecurring, [name]: value });
   };
+  const onUpdateWithValues = (name, value) => {
+    setPrivateRecurring((prev) => ({ ...prev, [name]: value }));
+  };
   const onCreditcardChange = (inputName, value) => {
+    const updates = useGenericOnChange(inputName, value);
     onUpdate(useGenericOnChange(inputName, value));
+  };
+
+  const onDonateAmountSumChanged = (inputName, value, isPrivate) => {
+    if (!isPrivate) {
+      onRecurringUpdate(useGenericOnChange(inputName, value));
+    } else {
+      onUpdate(useGenericOnChange(inputName, value));
+    }
+  };
+
+  const onACHChange = (inputName, value) => {
+    const updates = useGenericOnChange(inputName, value);
+    onUpdate(useGenericOnChange(inputName, value));
+    onRecurringUpdate(useGenericOnChange(inputName, value));
   };
 
   const [stage, setStage] = useState(goToStage);
@@ -86,20 +103,40 @@ const Donate = ({
     }
     // creating new payment
   };
-  useEffect(() => {}, [privateRecurring]);
+  useEffect(() => {
+    console.log("private recurring", recurring);
+  }, [privateRecurring]);
 
-  useEffect(() => {}, [recurring]);
+  useEffect(() => {
+    console.log("recurring", recurring);
+  }, [recurring]);
   useEffect(() => {
     onRecurringUpdate("firstName", privateRecurring.firstName);
     onRecurringUpdate("lastName", privateRecurring.lastName);
     onRecurringUpdate("cellphone", privateRecurring.cellphone);
     onRecurringUpdate("email", privateRecurring.email);
+    onRecurringUpdate("creditCardNumber", privateRecurring.creditCardNumber);
+    onRecurringUpdate("CVC", privateRecurring.CVC);
+    onRecurringUpdate("creditCardExpire", privateRecurring.creditCardExpire);
   }, [
     privateRecurring.firstName,
     privateRecurring.lastName,
     privateRecurring.firstName,
     privateRecurring.cellphone,
     privateRecurring.email,
+    privateRecurring.creditCardNumber,
+    privateRecurring.CVC,
+    privateRecurring.creditCardExpire,
+  ]);
+
+  useEffect(() => {
+    onRecurringUpdate("routing_number", privateRecurring.routing_number);
+    onRecurringUpdate("account_number", privateRecurring.account_number);
+    onRecurringUpdate("name", privateRecurring.name);
+  }, [
+    privateRecurring.routing_number,
+    privateRecurring.account_number,
+    privateRecurring.name,
   ]);
 
   useEffect(() => {
@@ -140,6 +177,8 @@ const Donate = ({
             onCreditcardChange={onCreditcardChange}
             onUpdate={onUpdate}
             completeDonation={completeDonation}
+            onRecurringUpdate={onRecurringUpdate}
+            onUpdateWithValues={onUpdateWithValues}
           />
         );
       }

@@ -28,6 +28,8 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import CreditcardHandler from "@components/Creditcard/CreditcardHandler";
+import ACHUI from "@components/ACHUI/ACHUI";
+import EditableText from "@components/Shared/EditableText/EditableText";
 
 const Stage3 = ({
   campaign,
@@ -35,23 +37,34 @@ const Stage3 = ({
   recurring,
   privateRecurring,
   onCreditcardChange,
+  onRecurringUpdate,
   onUpdate,
   completeDonation,
+  onUpdateWithValues,
 }) => {
   const [paymentType, setPaymentType] = useState(0);
   const { campaignName } = campaign;
   const { sum, fee } = recurring;
   const [isLoading, setIsLoading] = useState(false);
-
   const getTotal = () => {
-    const total =
-      parseFloat(sum) + parseFloat(fee) + parseFloat(privateRecurring.sum);
-
-    return total;
+    const feeSum = recurring.isCompleteFee ? fee : 0;
+    const result =
+      parseFloat(sum) + parseFloat(feeSum) + parseFloat(privateRecurring.sum);
+    setTotal(result);
   };
 
-  useEffect(() => {});
-  useEffect(() => {}, [paymentType]);
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    // setting initial total
+    getTotal();
+  }, []);
+
+  useEffect(() => {
+    getTotal();
+  }, [recurring.sum, privateRecurring.sum, recurring.isCompleteFee]);
+  useEffect(() => {
+    console.log("payment type", paymentType);
+  }, [paymentType]);
 
   const completeDonate = () => {
     setIsLoading(true);
@@ -72,7 +85,7 @@ const Stage3 = ({
           Donate:&nbsp;
           {
             <CurrencyFormat
-              value={getTotal()}
+              value={total}
               displayType={"text"}
               thousandSeparator={true}
               prefix={"$"}
@@ -94,16 +107,93 @@ const Stage3 = ({
       );
     }
   };
+
+  const renderPaymentDetails = () => {
+    switch (paymentType) {
+      case "0": {
+        return (
+          <CreditcardHandler
+            onChange={onCreditcardChange}
+            state={privateRecurring}
+          />
+        );
+      }
+      case "1": {
+        console.log("here");
+        return <ACHUI onChange={onUpdate} state={privateRecurring} />;
+      }
+      default: {
+        return null;
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log("fee", recurring.isCompleteFee);
+  }, [recurring.isCompleteFee]);
+  const renderFee = () => {
+    if (recurring.isCompleteFee) {
+      return (
+        <div className="flex gap-2  mb-3">
+          <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
+            Transition Fee:
+          </div>
+          <div>
+            <CurrencyFormat
+              value={fee}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"$"}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              size="sm"
+              colorScheme="red"
+              isChecked={recurring.isCompleteFee}
+              onChange={(e) => {
+                onRecurringUpdate("isCompleteFee", e.target.checked);
+              }}
+            />
+            <Text className="italic text-xs">Cancel fee payment.</Text>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center gap-3 mb-4">
+          <Switch
+            size="sm"
+            colorScheme="red"
+            isChecked={recurring.isCompleteFee}
+            onChange={(e) => {
+              onRecurringUpdate("isCompleteFee", e.target.checked);
+            }}
+          />
+          <Text className="italic text-xs text-black">
+            Complete Help offset the cost fees of this transaction ({" "}
+            <CurrencyFormat
+              value={fee}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"$"}
+            />
+            )
+          </Text>
+        </div>
+      );
+    }
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: -80 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      exit={{ opacity: 1, y: 80 }}
+      exit={{ opacity: 0, y: -80 }}
       style={{ overflow: "hidden" }}
     >
-      <div className="flex flex-col gap-1  bg-white ">
-        <div className="border p-7 rounded">
+      <div className="flex flex-col gap-2  bg-white ">
+        <div className="border p-7 rounded flex flex-col gap-2">
           <div className="flex gap-2">
             <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
               Campaign name:
@@ -114,13 +204,10 @@ const Stage3 = ({
             <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
               Donation:
             </div>
-            <div>
-              <CurrencyFormat
+            <div className="donate-amount">
+              <EditableText
                 value={sum}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-                npm
+                onDonateAmountSumChanged={onRecurringUpdate}
               />
             </div>
           </div>
@@ -129,34 +216,22 @@ const Stage3 = ({
               General Donation:
             </div>
             <div>
-              <CurrencyFormat
-                value={privateRecurring.sum}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-              />
+              <div className="donate-amount">
+                <EditableText
+                  value={privateRecurring.sum}
+                  onDonateAmountSumChanged={onUpdateWithValues}
+                />
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
-              Transition Fee:
-            </div>
-            <div>
-              <CurrencyFormat
-                value={fee}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-              />
-            </div>
-          </div>
+          {renderFee()}
           <div className="flex gap-2">
             <div className="fit-content text-primary  font-bold basis-50% w-[170px] text-2xl">
               Total
             </div>
             <div className="text-2xl text-black font-bold">
               <CurrencyFormat
-                value={getTotal()}
+                value={total}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"$"}
@@ -173,9 +248,7 @@ const Stage3 = ({
                 } `}
               >
                 <div className="flex items-center justify-center ">
-                  <Radio value="0" defaultChecked={true}>
-                    {" "}
-                  </Radio>
+                  <Radio value="0" defaultChecked={true}></Radio>
                 </div>
                 <div>
                   <Creditcard />
@@ -254,14 +327,7 @@ const Stage3 = ({
         </RadioGroup>
       </div>
       <div className="bg-white">
-        <AnimatePresence>
-          {parseInt(paymentType) === 0 && (
-            <CreditcardHandler
-              onChange={onCreditcardChange}
-              state={privateRecurring.creditCardNumber}
-            />
-          )}
-        </AnimatePresence>
+        <AnimatePresence>{renderPaymentDetails()}</AnimatePresence>
       </div>
       <div className="pl-1 pt-4 flex flex-col gap-2">
         <div>

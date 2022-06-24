@@ -27,6 +27,10 @@ export const initialRecurringData = {
   isAdmin: false,
   isUpdatedByAdmin: false,
   isImmediatePayment: true,
+  routing_number: "",
+  account_number: "",
+  name: "",
+  sec_code: "PPD",
 };
 
 export const initialRecurringFakeData = {
@@ -58,4 +62,8 @@ export const initialRecurringFakeData = {
   isAdmin: false,
   isUpdatedByAdmin: false,
   isImmediatePayment: true,
+  routing_number: "",
+  account_number: "",
+  name: "",
+  sec_code: "PPD",
 };

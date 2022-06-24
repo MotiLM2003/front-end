@@ -6,6 +6,9 @@ import { Input } from "@chakra-ui/react";
 import { CloudFog } from "tabler-icons-react";
 
 const CreditcardHandler = ({ state, onChange }) => {
+  useEffect(() => {
+    console.log("state", state);
+  }, []);
   function limit(val, max) {
     if (val.length === 1 && val[0] > max[0]) {
       val = "0" + val;
@@ -45,7 +48,7 @@ const CreditcardHandler = ({ state, onChange }) => {
           <NumberFormat
             format="#### #### #### ####"
             placeholder="#### #### #### ####"
-            value={state}
+            value={state.creditCardNumber}
             mask="#"
             customInput={Input}
             className="pl-6"
@@ -66,6 +69,7 @@ const CreditcardHandler = ({ state, onChange }) => {
             placeholder="MM/YY"
             mask={["M", "M", "Y", "Y"]}
             customInput={Input}
+            value={state.creditCardExpire}
             onValueChange={(values, sourceInfo) => {
               const { formattedValue, value } = values;
               const { event, source } = sourceInfo;
@@ -78,8 +82,10 @@ const CreditcardHandler = ({ state, onChange }) => {
             mask="#"
             placeholder="CVC"
             customInput={Input}
+            value={state.CVC}
             onValueChange={(values, sourceInfo) => {
               const { formattedValue, value } = values;
+
               const { event, source } = sourceInfo;
               onChange("creditCardExpire", value);
             }}

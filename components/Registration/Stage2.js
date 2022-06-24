@@ -148,42 +148,10 @@ const Stage2 = ({
                   <span className="text-red font-bold">28$ /mo</span>
                 </p>
               </div>
-              {/* <div className="mt-4 location">
-                <div>
-                  <h3 className="text-black">Card Number:</h3>
-                  <Input
-                    type="number"
-                    icon={creditCard}
-                    placeholder="***********"
-                    value={data.creditCardNumber}
-                    name="creditCardNumber"
-                    onChange={onChange}
-                  />
-                </div>
-                <div className="mt-4 flex">
-                  <h4 className="text-black basis-1/2">Expiry (MM/YY)</h4>
-                  <h4 className="text-black basis-1/2">Card Code:</h4>
-                </div>
-                <div className="mt-4 flex gap-4">
-                  <Input
-                    icon={creditCard}
-                    placeholder="MM/YY"
-                    value={data.creditCardExpire}
-                    name="creditCardExpire"
-                    onChange={onChange}
-                  />
-                  <Input
-                    icon={creditCard}
-                    placeholder="CVC"
-                    value={data.CVC}
-                    name="CVC"
-                    onChange={onChange}
-                  />
-                </div>
-              </div> */}
+
               <CreditcardHandler
                 onChange={onCreditcardChange}
-                state={data.creditCard}
+                state={data.creditCardNumber}
               />
             </motion.div>
           )}

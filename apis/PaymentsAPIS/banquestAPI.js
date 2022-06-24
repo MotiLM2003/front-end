@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 const cookie = new Cookies();
 
-const baseURL = NEXT_BENQUEST_URL;
+const baseURL = "https://api.sandbox.banquestgateway.com/api/v2/transactions/";
 //    process.env.NEXT_PUBLIC_BASEURL || process.env.REACT_APP_BACKEND_URL;
 let headers = { "Content-Type": "application/json" };
 
