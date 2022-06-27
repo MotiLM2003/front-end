@@ -23,7 +23,6 @@ import PaymentRow from "./PaymentRow";
 import NumberFormat from "react-number-format";
 
 const reducer = (accumulator, item) => {
-  console.log("reducer", item);
   return accumulator + item.sum;
 };
 const PaymentListContainer = ({ donation, futurePayments, list }) => {
@@ -31,7 +30,7 @@ const PaymentListContainer = ({ donation, futurePayments, list }) => {
   useEffect(() => {
     const total = list.reduce(reducer, 0);
     setTotals(total);
-    console.log("total", total);
+    // console.log("total", total);
   }, [list]);
   return (
     <>

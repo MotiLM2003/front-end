@@ -31,6 +31,8 @@ export const initialRecurringData = {
   account_number: "",
   name: "",
   sec_code: "PPD",
+  isAgreeToTerms: true,
+  isMarketingEmail: true,
 };
 
 export const initialRecurringFakeData = {
@@ -66,4 +68,6 @@ export const initialRecurringFakeData = {
   account_number: "",
   name: "",
   sec_code: "PPD",
+  isAgreeToTerms: true,
+  isMarketingEmail: true,
 };

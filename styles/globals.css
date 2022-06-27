@@ -163,3 +163,7 @@ textarea {
   height: 30px !important;
   text-align: center;
 }
+
+input.small-input {
+  width: 80px;
+}

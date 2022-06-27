@@ -58,7 +58,8 @@ const Donate = ({
 
   const onUpdate = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    const value = e.target.checked ? e.target.checked : e.target.value;
+
     setPrivateRecurring({ ...privateRecurring, [name]: value });
   };
   const onUpdateWithValues = (name, value) => {
@@ -103,12 +104,10 @@ const Donate = ({
     }
     // creating new payment
   };
-  useEffect(() => {
-    console.log("private recurring", recurring);
-  }, [privateRecurring]);
+  useEffect(() => {}, [privateRecurring]);
 
   useEffect(() => {
-    console.log("recurring", recurring);
+    // console.log("recurring", recurring);
   }, [recurring]);
   useEffect(() => {
     onRecurringUpdate("firstName", privateRecurring.firstName);
@@ -118,6 +117,8 @@ const Donate = ({
     onRecurringUpdate("creditCardNumber", privateRecurring.creditCardNumber);
     onRecurringUpdate("CVC", privateRecurring.CVC);
     onRecurringUpdate("creditCardExpire", privateRecurring.creditCardExpire);
+    onRecurringUpdate("isAgreeToTerms ", privateRecurring.isAgreeToTerms);
+    onRecurringUpdate("isMarketingEmail", privateRecurring.isMarketingEmail);
   }, [
     privateRecurring.firstName,
     privateRecurring.lastName,

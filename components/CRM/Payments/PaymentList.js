@@ -49,7 +49,7 @@ const PaymentList = ({ donation }) => {
   }, [list]);
   const toggleFutureOrders = (e) => {
     const last = getLastRoundPayment(list);
-    console.log("last", last);
+
     const isChecked = e.target.checked;
     if (!isChecked) {
       setFuturePayments([]);
@@ -64,7 +64,7 @@ const PaymentList = ({ donation }) => {
       campaign: createdPayment.campaign._id,
       isAdmin: true,
     };
-    console.log("creating:", newPayment);
+
     await api.post("/payments/addTransaction", newPayment);
     getList();
     setNewPayment(false);

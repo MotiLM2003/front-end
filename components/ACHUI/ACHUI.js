@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import NumberFormat from "react-number-format";
 
-const ACHUI = ({ state, 
- }) => {
+const ACHUI = ({ state }) => {
   return (
     <motion.div
       initial={{ opacity: 0, height: 0 }}
@@ -19,7 +18,7 @@ const ACHUI = ({ state,
         <div>
           <NumberFormat
             format="#########"
-            placeholder="Please insert your routing Number"
+            placeholder="Please insert your routing number"
             value={state.routing_number}
             mask="#"
             customInput={Input}
@@ -34,7 +33,7 @@ const ACHUI = ({ state,
         <div>
           <NumberFormat
             format="###########"
-            placeholder="Please insert your Account Number"
+            placeholder="Please insert your account number"
             value={state.account_number}
             mask="#"
             customInput={Input}
@@ -49,7 +48,7 @@ const ACHUI = ({ state,
         <div>
           <Input
             value={state.name}
-            placeholder="Please insert the Account owner name"
+            placeholder="Please insert the account owner name"
             onChange={(e) => {
               const name = e.target.name;
               const value = e.target.value;

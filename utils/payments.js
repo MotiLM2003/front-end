@@ -33,7 +33,7 @@ export const getNewPayment = (r) => {
 export const getLastRoundPayment = (list) => {
   const newList = list.sort(compare);
   const last = newList[list.length - 1];
-  console.log("last", last);
+
   return last;
 };
 

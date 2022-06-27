@@ -2,17 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CurrencyFormat from "react-currency-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleArrowRight,
-  faCircleArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import Creditcard from "@components/Icons/Creditcard";
-import Ach from "@components/Icons/Ach";
-import Paypal from "@components/Icons/Paypal";
-import OJC from "@components/Icons/OJC";
-import Donors from "@components/Icons/Donors";
-import googlePay from "../../../../images/icons/dark/google-pay.png";
-import Image from "next/image";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AnimatedNumber from "animated-number-react";
+import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   Heading,
   Input,
@@ -30,6 +23,10 @@ import {
 import CreditcardHandler from "@components/Creditcard/CreditcardHandler";
 import ACHUI from "@components/ACHUI/ACHUI";
 import EditableText from "@components/Shared/EditableText/EditableText";
+import PaymentsInterface from "@components/Shared/PaymentsInterface/PaymentsInterface";
+import api from "../../../../apis/userAPI";
+import { getPercentageValue } from "../../../../utils/math";
+import FixedPriceAddition from "./FixedPriceAddition";
 
 const Stage3 = ({
   campaign,
@@ -46,10 +43,25 @@ const Stage3 = ({
   const { campaignName } = campaign;
   const { sum, fee } = recurring;
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentInterfaceList, setPaymentInterfaceList] = useState([]);
+
+  const [currentPaymentInterface, setCurrentPaymentInterface] = useState(null);
+  const getPaymentInterfaces = async () => {
+    const { data } = await api.post("/payments-interface/", { isActive: true });
+
+    setPaymentInterfaceList(data);
+  };
+
   const getTotal = () => {
-    const feeSum = recurring.isCompleteFee ? fee : 0;
+    const feeSum = recurring.isCompleteFee ? recurring.fee : 0;
+    const fixedFeeSum =
+      recurring.isCompleteFee && currentPaymentInterface
+        ? currentPaymentInterface.fixedFee
+        : 0;
     const result =
-      parseFloat(sum) + parseFloat(feeSum) + parseFloat(privateRecurring.sum);
+      parseFloat(sum) +
+      (parseFloat(feeSum) + parseFloat(fixedFeeSum)) +
+      parseFloat(privateRecurring.sum);
     setTotal(result);
   };
 
@@ -57,21 +69,52 @@ const Stage3 = ({
   useEffect(() => {
     // setting initial total
     getTotal();
+    // getting the list of payments interfaces.
+    getPaymentInterfaces();
   }, []);
 
   useEffect(() => {
     getTotal();
-  }, [recurring.sum, privateRecurring.sum, recurring.isCompleteFee]);
+  }, [
+    recurring.sum,
+    privateRecurring.sum,
+    recurring.isCompleteFee,
+    currentPaymentInterface,
+  ]);
   useEffect(() => {
-    console.log("payment type", paymentType);
+    handleInterfacePayment(paymentType);
   }, [paymentType]);
 
+  useEffect(() => {
+    handleInterfacePayment();
+  }, [paymentInterfaceList]);
+  const paymentInterfaceChanged = (newPaymentType) => {
+    setPaymentType(newPaymentType);
+  };
   const completeDonate = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       completeDonation(paymentType);
     }, 500);
+  };
+
+  useEffect(() => {
+    if (!currentPaymentInterface) return;
+    const total = parseFloat(recurring.sum) + parseFloat(privateRecurring.sum);
+    const newFee = getPercentageValue(
+      total,
+      currentPaymentInterface.feePercentage
+    ).toFixed(2);
+
+    onRecurringUpdate("fee", newFee);
+  }, [currentPaymentInterface, privateRecurring.sum, recurring.sum]);
+
+  const handleInterfacePayment = () => {
+    const item = paymentInterfaceList.find(
+      (x) => x.id.toString() === paymentType.toString()
+    );
+    setCurrentPaymentInterface(item);
   };
   const renderButton = () => {
     if (!recurring._id) {
@@ -109,7 +152,7 @@ const Stage3 = ({
   };
 
   const renderPaymentDetails = () => {
-    switch (paymentType) {
+    switch (paymentType.toString()) {
       case "0": {
         return (
           <CreditcardHandler
@@ -119,7 +162,6 @@ const Stage3 = ({
         );
       }
       case "1": {
-        console.log("here");
         return <ACHUI onChange={onUpdate} state={privateRecurring} />;
       }
       default: {
@@ -128,9 +170,7 @@ const Stage3 = ({
     }
   };
 
-  useEffect(() => {
-    console.log("fee", recurring.isCompleteFee);
-  }, [recurring.isCompleteFee]);
+  useEffect(() => {}, [recurring.isCompleteFee]);
   const renderFee = () => {
     if (recurring.isCompleteFee) {
       return (
@@ -138,13 +178,23 @@ const Stage3 = ({
           <div className="fit-content text-primary  font-bold basis-50% w-[170px]">
             Transition Fee:
           </div>
-          <div>
-            <CurrencyFormat
-              value={fee}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"$"}
-            />
+          <div className="flex items-center italic text-xs text-black">
+            <div className="">
+              <CurrencyFormat
+                value={fee}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+            </div>
+            <div>
+              {currentPaymentInterface && (
+                <FixedPriceAddition
+                  fixedFee={currentPaymentInterface.fixedFee}
+                  withClosing={false}
+                />
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Switch
@@ -170,20 +220,30 @@ const Stage3 = ({
               onRecurringUpdate("isCompleteFee", e.target.checked);
             }}
           />
-          <Text className="italic text-xs text-black">
-            Complete Help offset the cost fees of this transaction ({" "}
-            <CurrencyFormat
-              value={fee}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"$"}
-            />
-            )
-          </Text>
+          <div className="flex items-center italic text-xs text-black">
+            <Text className="italic text-xs text-black">
+              Complete Help offset the cost fees of this transaction ({" "}
+              <CurrencyFormat
+                value={`${fee}`}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+            </Text>
+            <div>
+              {currentPaymentInterface && (
+                <FixedPriceAddition
+                  fixedFee={currentPaymentInterface.fixedFee}
+                  withClosing={true}
+                />
+              )}
+            </div>
+          </div>
         </div>
       );
     }
   };
+  const formatValue = (total) => total.toFixed(2);
   return (
     <motion.div
       initial={{ opacity: 0, y: -80 }}
@@ -208,6 +268,7 @@ const Stage3 = ({
               <EditableText
                 value={sum}
                 onDonateAmountSumChanged={onRecurringUpdate}
+                ConfirmText={"Campaign donation updated!"}
               />
             </div>
           </div>
@@ -220,6 +281,7 @@ const Stage3 = ({
                 <EditableText
                   value={privateRecurring.sum}
                   onDonateAmountSumChanged={onUpdateWithValues}
+                  ConfirmText={"Private donation updated!"}
                 />
               </div>
             </div>
@@ -230,16 +292,30 @@ const Stage3 = ({
               Total
             </div>
             <div className="text-2xl text-black font-bold">
-              <CurrencyFormat
-                value={total}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-              />
+              <div className="flex items-center">
+                <div>$</div>
+                <div>
+                  <AnimatedNumber
+                    value={total}
+                    formatValue={formatValue}
+                    duration={800}
+                    easing="linear"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <RadioGroup onChange={setPaymentType} value={paymentType}>
+        <PaymentsInterface
+          paymentType={paymentType}
+          paymentInterfaceChanged={paymentInterfaceChanged}
+          list={paymentInterfaceList}
+        />
+        {/* <RadioGroup
+          onChange={setPaymentType}
+          value={paymentType.toString()}
+          name="rbPaymentType"
+        >
           <div className="flex flex-col gap-4 mt-5 pb-2">
             <div className="flex justify-around items-center  gap-2">
               <div
@@ -248,7 +324,7 @@ const Stage3 = ({
                 } `}
               >
                 <div className="flex items-center justify-center ">
-                  <Radio value="0" defaultChecked={true}></Radio>
+                  <Radio value="0"></Radio>
                 </div>
                 <div>
                   <Creditcard />
@@ -324,19 +400,29 @@ const Stage3 = ({
               </div>
             </div>
           </div>
-        </RadioGroup>
+        </RadioGroup> */}
       </div>
       <div className="bg-white">
         <AnimatePresence>{renderPaymentDetails()}</AnimatePresence>
       </div>
       <div className="pl-1 pt-4 flex flex-col gap-2">
         <div>
-          <Checkbox oncChange={onUpdate} name="isMarketingEmail">
+          <Checkbox
+            onChange={onUpdate}
+            name="isMarketingEmail"
+            isChecked={recurring.isMarketingEmail}
+          >
             I agree to receive marketing email
           </Checkbox>
         </div>
         <div>
-          <Checkbox>I agree to Terms</Checkbox>
+          <Checkbox
+            onChange={onUpdate}
+            name="isAgreeToTerms"
+            isChecked={recurring.isAgreeToTerms}
+          >
+            I agree to Terms
+          </Checkbox>
         </div>
       </div>
       <div className="py-8 flex items-center justify-center gap-10">
@@ -352,9 +438,19 @@ const Stage3 = ({
         </div>
         <div>{renderButton()}</div>
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </motion.div>
   );
-  טוב;
 };
 
 export default Stage3;

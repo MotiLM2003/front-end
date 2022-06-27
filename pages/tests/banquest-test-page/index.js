@@ -5,7 +5,6 @@ const index = () => {
   const send = async () => {
     try {
       const { data } = await api.post("/benqest/charge", {});
-      console.log("data", data);
     } catch (err) {
       console.log("error", err.toJSON());
     }
