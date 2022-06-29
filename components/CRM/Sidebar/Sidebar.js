@@ -34,13 +34,7 @@ const Sidebar = () => {
           menuId={CRMMenuId}
           path="/donations/"
         />
-        <CRMMenuItem
-          icon={docs}
-          text="Recurring"
-          id={2}
-          menuId={CRMMenuId}
-          path="/recurring/"
-        />
+
         <CRMMenuItem
           icon={partners}
           text="Partners"

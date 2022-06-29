@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Input } from "@chakra-ui/react";
 import IsActive from "@components/Shared/IsActive/IsActive";
-
+import NumberFormat from "react-number-format";
+import { useGenericOnChange } from "../../../../hooks/useGenericOnChange";
 const PaymentInterfaceItem = ({
   item,
   updateInterfaces,
   openResponseEditor,
+  openCurrenciesEditor,
 }) => {
   const [paymentInterface, setPaymentInterface] = useState(item);
 
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+    console.log(name, value);
     if (name === "isActive") {
       value = !paymentInterface.isActive;
     }
@@ -37,44 +40,62 @@ const PaymentInterfaceItem = ({
             size="xs"
             value={paymentInterface.paymentName}
             onChange={onChange}
+            className="input-style-1"
             name="paymentName"
             maxLength="30"
           />
         </div>
         <div className="w-[90px]">
-          <Input
-            type="number"
-            size="xs"
+          <NumberFormat
+            placeholder="Fee %"
             value={paymentInterface.feePercentage}
-            className="small-input  text-center"
-            name="feePercentage"
-            onChange={onChange}
+            customInput={Input}
+            className="input-style-1 text-center"
+            prefix={"%"}
+            onValueChange={(values, sourceInfo) => {
+              const { formattedValue, value } = values;
+              const { event, source } = sourceInfo;
+              onChange(useGenericOnChange("feePercentage", value));
+            }}
           />
         </div>
         <div className="w-[90px]">
-          <Input
-            type="number"
-            size="xs"
+          <NumberFormat
+            placeholder="Fixed fee"
+            className="input-style-1 text-center"
             value={paymentInterface.fixedFee}
-            className="small-input text-center"
-            name="fixedFee"
-            onChange={onChange}
+            customInput={Input}
+            prefix={parseFloat(paymentInterface.fixedFee) < 1 ? "" : "$"}
+            suffix={parseFloat(paymentInterface.fixedFee) < 1 ? "¢" : ""}
+            onValueChange={(values, sourceInfo) => {
+              const { formattedValue, value } = values;
+              const { event, source } = sourceInfo;
+              onChange(useGenericOnChange("fixedFee", value));
+            }}
           />
         </div>
         <div className="w-[90px]">
-          <Input
-            type="number"
-            size="xs"
+          <NumberFormat
+            placeholder="Set days"
+            className="input-style-1 text-center"
             value={paymentInterface.daysToRelease}
-            className="small-input text-center"
-            name="daysToRelease"
-            onChange={onChange}
-            max="3"
+            customInput={Input}
+            suffix={" days"}
+            onValueChange={(values, sourceInfo) => {
+              const { formattedValue, value } = values;
+              const { event, source } = sourceInfo;
+              onChange(useGenericOnChange("daysToRelease", value));
+            }}
           />
         </div>
 
         <div>
-          <Button size="xs" variant="outline" colorScheme="blue">
+          <Button
+            size="xs"
+            variant="outline"
+            colorScheme="blue"
+            onClick={() => openCurrenciesEditor(paymentInterface)}
+          >
             Currencies
           </Button>
         </div>

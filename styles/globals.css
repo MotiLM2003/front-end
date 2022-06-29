@@ -91,6 +91,10 @@ textarea {
 *:focus {
   box-shadow: none !important;
 }
+.chakra-checkbox__input[data-focus-visible-added]
+  + .chakra-checkbox__control[data-focus] {
+  box-shadow: 0 0 0 3px rgb(66 153 225 / 60%);
+}
 .shadow {
   box-shadow: 10px 0 11px rgba(0, 0, 0, 0.1);
 }
@@ -164,6 +168,34 @@ textarea {
   text-align: center;
 }
 
-input.small-input {
+.xs-input {
+  width: 45px;
+}
+
+.small-input {
   width: 80px;
+}
+
+.md-input {
+  width: 120px;
+}
+
+.l-input {
+  width: 180px;
+}
+
+.xl-input {
+  width: 240px;
+}
+
+.xl2-input {
+  width: 300px;
+}
+
+.input-style-1 {
+  height: 25px !important	;
+  font-size: 0.81rem !important;
+  border-radius: 0.4rem !important;
+  color: rgb(120, 120, 120);
+  padding: 0.3rem;
 }

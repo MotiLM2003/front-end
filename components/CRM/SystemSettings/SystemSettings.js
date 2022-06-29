@@ -1,6 +1,8 @@
 import React from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import PaymentsInterfaceSettings from "./PaymentsInterfaceSettings/PaymentsInterfaceSettings";
+import CurrenciesSettings from "./Currencies/CurrenciesSettings";
+import { ToastContainer } from "react-toastify";
 const SystemSettings = () => {
   return (
     <div className="p-2">
@@ -22,20 +24,22 @@ const SystemSettings = () => {
             <span className="text-sm">Future 3</span>
           </Tab>
           <Tab>
-            <span className="text-sm">Logging</span>
+            <span className="text-sm">System logs</span>
           </Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>General</TabPanel>
-          <TabPanel>Manage Currencies</TabPanel>
+          <TabPanel>
+            <CurrenciesSettings />
+          </TabPanel>
           <TabPanel>
             <PaymentsInterfaceSettings />
           </TabPanel>
 
           <TabPanel>Future 2</TabPanel>
           <TabPanel>Future 3</TabPanel>
-          <TabPanel>Logging</TabPanel>
+          <TabPanel>System logging</TabPanel>
         </TabPanels>
       </Tabs>
     </div>

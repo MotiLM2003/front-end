@@ -438,17 +438,6 @@ const Stage3 = ({
         </div>
         <div>{renderButton()}</div>
       </div>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </motion.div>
   );
 };

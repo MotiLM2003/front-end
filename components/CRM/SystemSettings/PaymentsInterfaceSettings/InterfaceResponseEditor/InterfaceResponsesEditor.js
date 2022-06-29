@@ -9,6 +9,8 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
+import InterfaceResponseItem from "./InterfaceResponseItem";
+import InterfaceResponseHeader from "./InterfaceResponseHeader";
 
 const InterfaceResponsesEditor = ({ item, isOpen, onClose }) => {
   return (
@@ -17,7 +19,12 @@ const InterfaceResponsesEditor = ({ item, isOpen, onClose }) => {
       <ModalContent>
         <ModalHeader>{item.paymentName} interface response list</ModalHeader>
         <ModalCloseButton />
-        <ModalBody></ModalBody>
+        <ModalBody>
+          <div>
+            <InterfaceResponseHeader />
+            <InterfaceResponseItem />
+          </div>
+        </ModalBody>
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>

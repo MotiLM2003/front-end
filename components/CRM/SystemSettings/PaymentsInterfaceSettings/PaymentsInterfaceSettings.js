@@ -4,12 +4,14 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // WOT imports
 import api from "../../../../apis/userAPI";
-import PaymentInterfaceItem from "../PaymentInterfaceItem";
+import PaymentInterfaceItem from "./PaymentInterfaceItem";
 import InterfaceResponsesEditor from "./InterfaceResponseEditor/InterfaceResponsesEditor";
+import InterfaceCurrencyEditor from "./InterfaceCurrencyEditor/InterfaceCurrencyEditor";
 
 const PaymentsInterfaceSettings = () => {
   const [list, setList] = useState([]);
   const [isResponseOpen, setIsResponseOpen] = useState(false);
+  const [isCurrencyEditorOpen, setIsCurrencyEditorOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const getPaymentInterfaces = async () => {
     const { data } = await api.post("/payments-interface/");
@@ -23,11 +25,28 @@ const PaymentsInterfaceSettings = () => {
     } catch (err) {}
   };
 
+  const updateInterfaceAllowedCurrencies = (newItem) => {
+    console.log("allowed", newItem);
+    setList(
+      list.map((item) => {
+        return item._id === newItem._id ? newItem : item;
+      })
+    );
+  };
+
   const openResponseEditor = (item) => {
     setCurrentItem(item);
     setIsResponseOpen(true);
   };
 
+  const openCurrenciesEditor = (item) => {
+    setCurrentItem(item);
+    setIsCurrencyEditorOpen(true);
+  };
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
   useEffect(() => {
     getPaymentInterfaces();
   }, []);
@@ -52,22 +71,23 @@ const PaymentsInterfaceSettings = () => {
               item={item}
               updateInterfaces={updateInterfaces}
               openResponseEditor={openResponseEditor}
+              openCurrenciesEditor={openCurrenciesEditor}
             />
           );
         })}
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
 
+      {isCurrencyEditorOpen && (
+        <InterfaceCurrencyEditor
+          isOpen={isCurrencyEditorOpen}
+          updateInterfaceAllowedCurrencies={updateInterfaceAllowedCurrencies}
+          onClose={() => {
+            setIsCurrencyEditorOpen(false);
+          }}
+          item={currentItem}
+          onCurrenciesUpdated={updateInterfaceAllowedCurrencies}
+        />
+      )}
       {isResponseOpen && (
         <InterfaceResponsesEditor
           isOpen={isResponseOpen}
