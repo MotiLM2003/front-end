@@ -38,6 +38,7 @@ const Stage3 = ({
   onUpdate,
   completeDonation,
   onUpdateWithValues,
+  currentCurrencySymbol,
 }) => {
   const [paymentType, setPaymentType] = useState(0);
   const { campaignName } = campaign;
@@ -83,6 +84,7 @@ const Stage3 = ({
   ]);
   useEffect(() => {
     handleInterfacePayment(paymentType);
+    onRecurringUpdate("paymentType", paymentType);
   }, [paymentType]);
 
   useEffect(() => {
@@ -131,7 +133,7 @@ const Stage3 = ({
               value={total}
               displayType={"text"}
               thousandSeparator={true}
-              prefix={"$"}
+              prefix={currentCurrencySymbol}
               is
             />
           }
@@ -184,7 +186,7 @@ const Stage3 = ({
                 value={fee}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrencySymbol}
               />
             </div>
             <div>
@@ -227,7 +229,7 @@ const Stage3 = ({
                 value={`${fee}`}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrencySymbol}
               />
             </Text>
             <div>
@@ -269,6 +271,7 @@ const Stage3 = ({
                 value={sum}
                 onDonateAmountSumChanged={onRecurringUpdate}
                 ConfirmText={"Campaign donation updated!"}
+                currentCurrencySymbol={currentCurrencySymbol}
               />
             </div>
           </div>
@@ -282,6 +285,7 @@ const Stage3 = ({
                   value={privateRecurring.sum}
                   onDonateAmountSumChanged={onUpdateWithValues}
                   ConfirmText={"Private donation updated!"}
+                  currentCurrencySymbol={currentCurrencySymbol}
                 />
               </div>
             </div>
@@ -293,7 +297,7 @@ const Stage3 = ({
             </div>
             <div className="text-2xl text-black font-bold">
               <div className="flex items-center">
-                <div>$</div>
+                <div>{currentCurrencySymbol}</div>
                 <div>
                   <AnimatedNumber
                     value={total}
@@ -310,6 +314,7 @@ const Stage3 = ({
           paymentType={paymentType}
           paymentInterfaceChanged={paymentInterfaceChanged}
           list={paymentInterfaceList}
+          currency={recurring.currency}
         />
         {/* <RadioGroup
           onChange={setPaymentType}

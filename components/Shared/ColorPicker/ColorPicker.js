@@ -92,7 +92,6 @@ const ColorPicker = () => {
                     _hover={{ background: c }}
                     onClick={() => {
                       setColor(c);
-                      console.log(c);
                     }}
                   ></Button>
                 ))}

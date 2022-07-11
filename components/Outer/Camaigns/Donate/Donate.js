@@ -17,6 +17,7 @@ const Donate = ({
   customCompleteDonation = null,
   goToStage = 0,
 }) => {
+  const [currencies, setCurrencies] = useState([]);
   let isAdmin = null;
   let isUpdatedByAdmin = null;
   if (donation && !donation._id) {
@@ -45,6 +46,7 @@ const Donate = ({
         }
   );
 
+  const [interfaceList, setInterfaceList] = useState([]);
   const [privateRecurring, setPrivateRecurring] = useState({
     ...initialRecurring,
     isPrivateDonation: true,
@@ -55,6 +57,8 @@ const Donate = ({
   const onRecurringUpdate = (name, value) => {
     setRecurring((prev) => ({ ...prev, [name]: value }));
   };
+
+  const [currentCurrencySymbol, setCurrentCurrencySymbol] = useState("$");
 
   const onUpdate = (e) => {
     const name = e.target.name;
@@ -92,9 +96,23 @@ const Donate = ({
     if (customCompleteDonation === null) {
       try {
         //  adding new recurring  data
+        const paymentInterface = interfaceList.find(
+          (x) => x.id.toString() === recurring.paymentType.toString()
+        );
+
+        const finalRecurring = {
+          ...recurring,
+          campaign: campaign._id,
+          paymentInterface: paymentInterface._id,
+        };
+        const finalPrivateRecurring = {
+          ...privateRecurring,
+          campaign: campaign._id,
+          paymentInterface: paymentInterface._id,
+        };
         result = await api.post("/recurring/", {
-          recurring,
-          privateRecurring,
+          recurring: finalRecurring,
+          privateRecurring: finalPrivateRecurring,
         });
 
         goToStage(4);
@@ -107,8 +125,14 @@ const Donate = ({
   useEffect(() => {}, [privateRecurring]);
 
   useEffect(() => {
-    // console.log("recurring", recurring);
-  }, [recurring]);
+    setPrivateRecurring({
+      ...privateRecurring,
+      ["currency"]: recurring.currency,
+    });
+    let newCurrency = currencies.find((x) => x._id === recurring.currency);
+    newCurrency = newCurrency ? newCurrency.symbol : "$";
+    setCurrentCurrencySymbol(newCurrency);
+  }, [recurring.currency]);
   useEffect(() => {
     onRecurringUpdate("firstName", privateRecurring.firstName);
     onRecurringUpdate("lastName", privateRecurring.lastName);
@@ -140,10 +164,27 @@ const Donate = ({
     privateRecurring.name,
   ]);
 
+  const getCurrencies = async () => {
+    const { data } = await api.post("/currencies/get");
+    if (recurring.currency === 0) {
+      setRecurring({ ...recurring, currency: data[0]._id });
+    }
+    setCurrencies(data);
+  };
+
+  const getInterfaceList = async () => {
+    const { data } = await api.post("/payments-interface/", {});
+    setInterfaceList(data);
+  };
+
   useEffect(() => {
     onUpdate(useGenericOnChange("campaign", campaign._id));
     onRecurringUpdate("campaign", campaign._id);
+    getCurrencies();
+    getInterfaceList();
   }, []);
+
+  useEffect(() => {}, [recurring.campaign]);
   const renderStage = () => {
     switch (stage) {
       case 0: {
@@ -154,6 +195,9 @@ const Donate = ({
             renderStage={renderStage}
             onRecurringUpdate={onRecurringUpdate}
             recurring={recurring}
+            currencies={currencies}
+            currency={recurring.currency}
+            currentCurrencySymbol={currentCurrencySymbol}
           />
         );
       }
@@ -165,6 +209,8 @@ const Donate = ({
             onRecurringUpdate={onCreditcardChange}
             recurring={privateRecurring}
             donation={donation}
+            currencies={currencies}
+            currentCurrencySymbol={currentCurrencySymbol}
           />
         );
       }
@@ -180,6 +226,7 @@ const Donate = ({
             completeDonation={completeDonation}
             onRecurringUpdate={onRecurringUpdate}
             onUpdateWithValues={onUpdateWithValues}
+            currentCurrencySymbol={currentCurrencySymbol}
           />
         );
       }

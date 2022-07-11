@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Table,
   Thead,
@@ -51,6 +52,7 @@ const DonationRow = ({
   currentDonation,
   updatePrivateNotes,
   openPaymentList,
+  processors,
 }) => {
   const [isFullDetails, setIsFullDetails] = useState(false);
   const [privateNote, setPrivateNote] = useState(
@@ -80,7 +82,9 @@ const DonationRow = ({
               </div>
               <div>
                 <Text className="text-red font-bold">• Payments Done</Text>
-                <Text className="pl-4 text-xs font-bold mt-1">1</Text>
+                <Text className="pl-4 text-xs font-bold mt-1">
+                  {donation.currentRecurringCount}
+                </Text>
               </div>
             </div>
             <div className="min-w-[20px] h-[60px]  border-r-2 border-red">
@@ -89,11 +93,15 @@ const DonationRow = ({
             <div className="flex flex-col gap-2 justify-center">
               <div>
                 <Text className="text-red font-bold">• Payment Method</Text>
-                <Text className="pl-4 text-xs font-bold mt-1">Credit Card</Text>
+                <Text className="pl-4 text-xs font-bold mt-1">
+                  {donation.paymentInterface.paymentName}
+                </Text>
               </div>
               <div>
                 <Text className="text-red font-bold">• Payment Processor</Text>
-                <Text className="pl-4 text-xs font-bold mt-1">Banquest</Text>
+                <Text className="pl-4 text-xs font-bold mt-1">
+                  {processors[donation.paymentInterface.processor].name}
+                </Text>
               </div>
             </div>
           </div>
@@ -127,6 +135,49 @@ const DonationRow = ({
     );
   };
 
+  const renderReleaseDays = () => {
+    const dayToAdd = donation.paymentInterface.daysToRelease;
+    const now = moment();
+
+    const expiration = moment(donation.createdAt).add(dayToAdd, "days");
+    const isAfter = moment().isAfter(expiration);
+
+    //express as a duration
+    const diff = expiration.diff(now);
+    const diffDuration = moment.duration(diff);
+    if (isAfter) {
+      return (
+        <Text className="w-[200px] h-[40px]  font-bold  flex items-center justify-center">
+          <Center>
+            <div className="flex flex-col">
+              <div className="bg-success text-white text-xs mt-1 py-[1px] px-[4px] rounded">
+                Funds available!
+              </div>
+              <Center>
+                <Text className="text-[10px] font-bold mt-1">
+                  {expiration.format("DD-MM-YY HH:mm:ss")}
+                </Text>
+              </Center>
+            </div>
+          </Center>
+        </Text>
+      );
+    } else {
+      return (
+        <>
+          <Text className="text-xs font-bold mt-1">
+            <Center>
+              {diffDuration.days()} days and {diffDuration.hours()} hours and{" "}
+              {diffDuration.minutes()} minutes.
+            </Center>
+          </Text>
+          <Text className="text-xs font-bold mt-1">
+            <Center>{expiration.format("DD-MM-YY HH:mm:ss")}</Center>
+          </Text>
+        </>
+      );
+    }
+  };
   const renderFullDetailsPayment = () => {
     return (
       <motion.div
@@ -195,11 +246,16 @@ const DonationRow = ({
             <div className="flex flex-col gap-2 justify-center min-w-[250px]">
               <div>
                 <Text className="text-red font-bold">• Payment Method</Text>
-                <Text className="pl-4 text-xs font-bold mt-1">Credit Card</Text>
+                <Text className="pl-4 text-xs font-bold mt-1">
+                  {" "}
+                  {donation.paymentInterface.paymentName}
+                </Text>
               </div>
               <div>
                 <Text className="text-red font-bold">• Payment Processor</Text>
-                <Text className="pl-4 text-xs font-bold mt-1">Banquest</Text>
+                <Text className="pl-4 text-xs font-bold mt-1">
+                  {processors[donation.paymentInterface.processor].name}
+                </Text>
               </div>
             </div>
             <div className="min-w-[20px] h-[60px]  border-r-2 border-red mx-2">
@@ -207,14 +263,14 @@ const DonationRow = ({
             </div>
             <div className="bg-shades-100 px-4 py-2 rounded min-w-[200px] ">
               <div className="flex flex-col gap-1 justify-center">
-                <div className="flex flex-col justify-center gap-1">
+                <div className="flex flex-col justify-center max-h-[107px]">
                   <Text className="text-red font-bold">• Processing fee</Text>
                   <Text className="pl-4 text-xs font-bold mt-1">
                     <NumberFormat
                       value={donation.fee}
                       displayType={"text"}
                       thousandSeparator={true}
-                      prefix={"$"}
+                      prefix={donation.currency.symbol}
                     />
                   </Text>
                   {donation.isCompleteFee ? (
@@ -241,9 +297,7 @@ const DonationRow = ({
                       • Time till funds available
                     </Text>
 
-                    <Text className="text-xs font-bold mt-1">
-                      4 days and 10 hours (2022-05-07)
-                    </Text>
+                    {renderReleaseDays()}
                   </div>
                 </div>
               </div>
@@ -303,14 +357,16 @@ const DonationRow = ({
           </div>
         </Td>
         <Td>
-          <Center> {currencies[donation.currency].symbol}</Center>
+          <Center>
+            {donation.currency.symbol} - {donation.currency.abbr}
+          </Center>
         </Td>
         <Td>
           <NumberFormat
             value={donation.sum}
             displayType={"text"}
             thousandSeparator={true}
-            prefix={"$"}
+            prefix={donation.currency.symbol}
           />
         </Td>
         <Td>
@@ -328,7 +384,7 @@ const DonationRow = ({
                 value={donation.fee}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={donation.currency.symbol}
               />
             </div>
           </div>

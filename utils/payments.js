@@ -33,7 +33,6 @@ export const getNewPayment = (r) => {
 export const getLastRoundPayment = (list) => {
   const newList = list.sort(compare);
   const last = newList[list.length - 1];
-
   return last;
 };
 
@@ -48,11 +47,7 @@ function compare(a, b) {
 }
 
 export const createFuturePayments = (r, startDate, list) => {
-  let currentDate = moment(startDate.createdDate).add(
-    donationOptions[r.recurringType].days,
-    "days"
-  );
-
+  let currentDate = moment(startDate.createdDate);
   const max =
     r.recurringCount === 0 || r.recurringCount > 10
       ? 10

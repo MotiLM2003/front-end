@@ -7,6 +7,7 @@ import initialCurrency from "json-data/initialCurrency";
 
 import api from "apis/userAPI";
 import { currencies } from "json-data/currency";
+import { motion } from "framer-motion";
 const CurrenciesSettings = () => {
   const [currentCurrency, setCurrentCurrency] = useState(initialCurrency);
   const [currenciesList, setCurrenciesList] = useState([]);
@@ -26,7 +27,6 @@ const CurrenciesSettings = () => {
   const updateItem = async (item) => {
     const { data } = await api.put("/currencies/update", item);
     toast.success(`${item.symbol} - ${item.description} updated successfully!`);
-    console.log("updated");
   };
 
   useEffect(() => {}, [currentCurrency]);
@@ -35,7 +35,13 @@ const CurrenciesSettings = () => {
     getItems();
   }, []);
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      exit={{ opacity: 0, y: 0 }}
+      style={{ overflow: "hidden" }}
+    >
       <div class="flex flex-col gap-2 justify-center border rounded p-2">
         <p className="text-[1.1rem] text-primary font-bold ">
           Add new currency type:
@@ -56,7 +62,7 @@ const CurrenciesSettings = () => {
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

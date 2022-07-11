@@ -17,7 +17,6 @@ import { ChevronDownIcon, PhoneIcon } from "@chakra-ui/icons";
 import AccountIcon from "@components/Icons/AccountIcon";
 import Cellphone from "@components/Icons/Cellphone";
 import Email from "@components/Icons/Email";
-import { currencies } from "../../../../json-data/currency";
 import DonateOptions from "./DonateOptions";
 import {
   faCircleArrowRight,
@@ -36,11 +35,14 @@ const Stage2 = ({
   recurring,
   onRecurringUpdate,
   donation,
+  currencies,
+  currentCurrencySymbol,
 }) => {
+  useEffect(() => {}, []);
   const [isPublic, setIsPublic] = useState(false);
 
   const { campaignName } = campaign;
-  const { firstName, lastName, email, cellphone, sum, currency } = recurring;
+  const { firstName, lastName, email, cellphone, sum } = recurring;
 
   const isUpdate = donation && donation._id ? true : false;
 
@@ -145,7 +147,7 @@ const Stage2 = ({
             <div className="generalDonation relative">
               <NumberFormat
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrencySymbol}
                 value={sum}
                 className="bg-white"
                 customInput={Input}
@@ -157,24 +159,22 @@ const Stage2 = ({
               <div className="absolute top-[0] right-0 ">
                 <Select
                   icon={<ChevronDownIcon />}
-                  bg="tomato"
-                  borderColor="tomato"
+                  style={{ pointerEvents: "none" }}
+                  isReadOnly={true}
+                  bg="gray"
+                  borderColor="gray"
                   color="white"
                   className="max-w-[80px] text-center"
-                  value={currency}
+                  value={recurring.currency}
                   name="currency"
-                  onChange={(e) => {
-                    onRecurringUpdate(e.target.name, e.target.value);
-                  }}
                 >
                   {currencies.map((item) => (
                     <option
                       className="text-black"
-                      value={item.id}
-                      key={item.id}
+                      value={item._id}
+                      key={item._id}
                     >
-                      {" "}
-                      {item.symbol}{" "}
+                      {item.symbol}
                     </option>
                   ))}
                 </Select>

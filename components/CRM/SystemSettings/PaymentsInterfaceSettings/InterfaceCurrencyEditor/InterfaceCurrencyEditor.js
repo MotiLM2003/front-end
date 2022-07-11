@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import api from "apis/userAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import InterfaceCurrencyItem from "./InterfaceCurrencyItem";
 
 const InterfaceCurrencyEditor = ({
@@ -22,40 +21,29 @@ const InterfaceCurrencyEditor = ({
   updateInterfaceAllowedCurrencies,
   onCurrenciesUpdated,
 }) => {
-  const [currenciesList, setCurrenciesList] = useState([]);
+  const [allowedCurrencies, setAllowedCurrencies] = useState(
+    item.allowedCurrencies
+  );
+  const [currencyList, setCurrencyList] = useState([]);
   const getItems = async () => {
     const { data } = await api.post("/currencies/get", {});
-    console.log("item", item.allowedCurrencies);
-    setCurrenciesList(
-      data.map((i) => ({
-        ...i,
-        isChecked: item.allowedCurrencies.find((x) => x === item._id),
-      }))
-    );
+    setCurrencyList(data);
   };
 
-  const onChange = (item) => {
-    setCurrenciesList(
-      currenciesList.map((currency) => {
-        return currency._id === item._id
-          ? { ...item, isChecked: !item.isChecked }
-          : currency;
-      })
-    );
+  const onChange = (e, curr) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setAllowedCurrencies([...allowedCurrencies, curr._id]);
+    } else {
+      setAllowedCurrencies(allowedCurrencies.filter((x) => x !== curr._id));
+    }
   };
 
   const onUpdate = () => {
-    onCurrenciesUpdated(item);
+    onCurrenciesUpdated(allowedCurrencies);
   };
 
-  useEffect(() => {
-    console.log("updating", item);
-    const allowedCurrencies = currenciesList
-      .filter((x) => x.isChecked)
-      .map((currencies) => currencies._id);
-    item.allowedCurrencies = allowedCurrencies;
-    updateInterfaceAllowedCurrencies(item);
-  }, [currenciesList]);
+  useEffect(() => {}, [allowedCurrencies]);
   useEffect(() => {
     getItems();
   }, []);
@@ -64,21 +52,23 @@ const InterfaceCurrencyEditor = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {item.paymentName} interface supported currency list
+          {item.paymentName}
+          interface supported currency list
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <div>
             <div class="flex gap-5">
-              <div className="l-input">Currencies</div>
+              <div className="l-input"> Currencies </div>
             </div>
             <div class="flex   gap-5">
               <div>
-                {currenciesList &&
-                  currenciesList.map((item) => (
+                {currencyList &&
+                  currencyList.map((item) => (
                     <InterfaceCurrencyItem
                       key={item._id}
                       item={item}
+                      isChecked={allowedCurrencies.includes(item._id)}
                       onClose={onClose}
                       onChange={onChange}
                     />
@@ -99,7 +89,6 @@ const InterfaceCurrencyEditor = ({
             </div>
           </div>
         </ModalBody>
-
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             Close

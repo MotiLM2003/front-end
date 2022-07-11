@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Input } from "@chakra-ui/react";
+import { Button, Checkbox, Input, Select } from "@chakra-ui/react";
 import IsActive from "@components/Shared/IsActive/IsActive";
 import NumberFormat from "react-number-format";
 import { useGenericOnChange } from "../../../../hooks/useGenericOnChange";
@@ -8,13 +8,14 @@ const PaymentInterfaceItem = ({
   updateInterfaces,
   openResponseEditor,
   openCurrenciesEditor,
+  processors,
 }) => {
   const [paymentInterface, setPaymentInterface] = useState(item);
 
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
+
     if (name === "isActive") {
       value = !paymentInterface.isActive;
     }
@@ -44,6 +45,21 @@ const PaymentInterfaceItem = ({
             name="paymentName"
             maxLength="30"
           />
+        </div>
+        <div className="w-[150px]">
+          <Select
+            size="xs"
+            name="processor"
+            onChange={(e) => {
+              const value = e.target.value;
+              onChange(useGenericOnChange("processor", value));
+            }}
+            value={paymentInterface.processor}
+          >
+            {processors.map((p, index) => (
+              <option value={p.id}>{p.name}</option>
+            ))}
+          </Select>
         </div>
         <div className="w-[90px]">
           <NumberFormat
@@ -86,9 +102,8 @@ const PaymentInterfaceItem = ({
               const { event, source } = sourceInfo;
               onChange(useGenericOnChange("daysToRelease", value));
             }}
-          />
+          />{" "}
         </div>
-
         <div>
           <Button
             size="xs"
@@ -96,9 +111,9 @@ const PaymentInterfaceItem = ({
             colorScheme="blue"
             onClick={() => openCurrenciesEditor(paymentInterface)}
           >
-            Currencies
-          </Button>
-        </div>
+            Currencies{" "}
+          </Button>{" "}
+        </div>{" "}
         <div>
           <Button
             size="xs"
@@ -106,19 +121,19 @@ const PaymentInterfaceItem = ({
             colorScheme="red"
             onClick={() => openResponseEditor(paymentInterface)}
           >
-            Interface Responses
-          </Button>
-        </div>
+            Interface Responses{" "}
+          </Button>{" "}
+        </div>{" "}
         <div>
           <Button
             size="xs"
             colorScheme="green"
             onClick={() => updateInterfaces(paymentInterface)}
           >
-            Update
-          </Button>
-        </div>
-      </div>
+            Update{" "}
+          </Button>{" "}
+        </div>{" "}
+      </div>{" "}
     </>
   );
 };

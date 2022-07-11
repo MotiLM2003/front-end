@@ -56,7 +56,11 @@ const PaymentRow = ({ item, index }) => {
         <Td>
           <Center>{index + 1}</Center>
         </Td>
-        <Td>{moment(item.createdDate).format("DD-MM-YY HH:mm")}</Td>
+        <Td>
+          {item._id
+            ? moment(item.createdDate).format("DD-MM-YY HH:mm")
+            : moment(item.createdDate).format("DD-MM-YYYY")}
+        </Td>
         <Td className="text-success text-xs font-bold ">
           <Text className="text-success text-sm font-bold ">
             {renderStatus(item.status)}
@@ -67,7 +71,7 @@ const PaymentRow = ({ item, index }) => {
             value={item.sum}
             displayType={"text"}
             thousandSeparator={true}
-            prefix={"$"}
+            prefix={item.currency.symbol}
           />
         </Td>
         <Td>
@@ -83,7 +87,7 @@ const PaymentRow = ({ item, index }) => {
                   value={item.fee}
                   displayType={"text"}
                   thousandSeparator={true}
-                  prefix={"$"}
+                  prefix={item.currency.symbol}
                 />
               </div>
             </div>{" "}
@@ -93,7 +97,9 @@ const PaymentRow = ({ item, index }) => {
           <Center>{item.recurringCount}</Center>
         </Td>
         <Td>
-          <Center>{getCurrency(item.currency).symbol}</Center>
+          <Center>
+            {item.currency.symbol} - {item.currency.abbr}
+          </Center>
         </Td>
         <Td>
           <div className="flex items-center gap-4">

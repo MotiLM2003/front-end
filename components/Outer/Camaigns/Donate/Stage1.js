@@ -15,18 +15,26 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon, PhoneIcon } from "@chakra-ui/icons";
 import AccountIcon from "@components/Icons/AccountIcon";
-import { currencies } from "../../../../json-data/currency";
 import DonateOptions from "./DonateOptions";
 import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CloudFog } from "tabler-icons-react";
 import NumberFormat from "react-number-format";
-
-const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
+import api from "../../../../apis/userAPI";
+const Stage1 = ({
+  campaign,
+  setStage,
+  recurring,
+  onRecurringUpdate,
+  currencies,
+  currentCurrencySymbol,
+}) => {
   const [isPublic, setIsPublic] = useState(false);
 
   const { campaignName } = campaign;
   const { displayName, sum, currency, donationNote } = recurring;
+
+  useEffect(() => {}, []);
   return (
     <motion.div
       initial={{ y: -500 }}
@@ -59,7 +67,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
           <div className="relative">
             <NumberFormat
               thousandSeparator={true}
-              prefix={"$"}
+              prefix={currentCurrencySymbol}
               value={sum}
               customInput={Input}
               onValueChange={(values) => {
@@ -75,22 +83,30 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                 color="white"
                 className="max-w-[80px] text-center"
                 value={currency}
-                onChange={(e) => onRecurringUpdate("currency", e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  onRecurringUpdate("currency", value);
+                  onRecurringUpdate("currency", value);
+                }}
               >
                 {currencies.map((item) => (
-                  <option className="text-black" value={item.id} key={item.id}>
-                    {item.symbol}{" "}
+                  <option
+                    className="text-black"
+                    value={item._id}
+                    key={item._id}
+                  >
+                    {item.symbol}
                   </option>
                 ))}
               </Select>
             </div>
             <Text className="text-red text-center text-sm mt-4">
-              The name that will appear in the names of the donors in the fund{" "}
+              The name that will appear in the names of the donors in the fund
             </Text>
             <DonateOptions
               recurring={recurring}
               onRecurringUpdate={onRecurringUpdate}
-            />{" "}
+            />
             <div className="mt-5">
               <Stack direction="column" gap={1}>
                 <div className="flex items-center gap-3">
@@ -116,7 +132,7 @@ const Stage1 = ({ campaign, setStage, recurring, onRecurringUpdate }) => {
                   />
                   <div>
                     <Text className="font-bold">
-                      Add a public donation Note{" "}
+                      Add a public donation Note
                     </Text>
                     <AnimatePresence>
                       {recurring.isAddPublicNote && (

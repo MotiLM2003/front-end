@@ -36,7 +36,7 @@ import {
   initialRecurringFakeData,
 } from "../../../json-data/initialRecurring";
 import PaymentsModal from "../Payments/PaymentsModal";
-
+import { processors } from "json-data/processors";
 const DonationList = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -410,6 +410,7 @@ const DonationList = () => {
                     currentDonation={donation}
                     openPaymentList={openPaymentList}
                     updatePrivateNotes={updatePrivateNotes}
+                    processors={processors}
                   />
                 );
               })}

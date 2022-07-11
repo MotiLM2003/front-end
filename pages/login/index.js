@@ -60,14 +60,14 @@ export default function Home() {
       <div className="flex flex-col md:flex-row justify-center">
         <div className="bg-shades-100 p-6 flex items-center basis-1/2  justify-center">
           <div className="flex flex-col gap-2">
-            <h1>Login</h1>
+            <h1> Login </h1>{" "}
             <Input
               placeholder={"E-mail / username"}
               name="email"
               value={details.email}
               onChange={onChange}
               icon={email}
-            />
+            />{" "}
             <Input
               type={`${passwordVisible ? "text" : "password"}`}
               placeholder={`${passwordVisible ? "text" : "password"}`}
@@ -79,43 +79,43 @@ export default function Home() {
               backIconCallback={() => {
                 setPasswordVisible((prev) => !prev);
               }}
-            />
+            />{" "}
             <div className="flex justify-between text-xs text-paragraph underline">
               <div
                 className="cursor-pointer"
                 onClick={() => setIsConfOpen((prev) => !prev)}
               >
-                Forget Password
-              </div>
-            </div>
+                Forget Password{" "}
+              </div>{" "}
+            </div>{" "}
             <div
               className="flex justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3"
               onClick={() => logIn()}
             >
-              <button>Sign In</button>
-            </div>
-            <p className="text-xs flex justify-center m-4"> Or</p>
-            <Image src={google} />
+              <button> Sign In </button>{" "}
+            </div>{" "}
+            <p className="text-xs flex justify-center m-4"> Or </p>
+            <Image src={google} />{" "}
             <p className="text-xs flex justify-center m-4">
-              Don't have an account?&nbsp;{" "}
+              Don 't have an account?&nbsp;{" "}
               <span
                 className="font-bold text-paragraph cursor-pointer hover:text-primary"
                 onClick={() => {
                   setIsSignUp(true);
                 }}
               >
-                Sign up
-              </span>
-            </p>
-          </div>
-        </div>
+                Sign up{" "}
+              </span>{" "}
+            </p>{" "}
+          </div>{" "}
+        </div>{" "}
         <div className="basis-1/2 xl:basis-1/3 relative">
           <Image src={hero} layout="responsive" />
-        </div>
-
-        <Loader isLoading={isLoading} />
-      </div>
+        </div>{" "}
+        <Loader isLoading={isLoading} />{" "}
+      </div>{" "}
       <AnimatePresence>
+        {" "}
         {isConfOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -130,7 +130,7 @@ export default function Home() {
               visible={isConfOpen}
             >
               <div className="flex flex-col">
-                <p className="text-sm my-2">Enter your email</p>
+                <p className="text-sm my-2"> Enter your email </p>{" "}
                 <input type="text" className="bg-shades-500 rounded h-[2rem]" />
                 <div className="flex max-w-[100px] justify-center bg-black rounded border-none px-3 py-2 text-sm cursor-pointer text-white mt-3  self-end">
                   <button
@@ -140,15 +140,16 @@ export default function Home() {
                       setIsConfOpen((prev) => !prev);
                     }}
                   >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </Confirmation>
+                    Submit{" "}
+                  </button>{" "}
+                </div>{" "}
+              </div>{" "}
+            </Confirmation>{" "}
           </motion.div>
-        )}
-      </AnimatePresence>
+        )}{" "}
+      </AnimatePresence>{" "}
       <AnimatePresence>
+        {" "}
         {isSignUp && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -159,9 +160,9 @@ export default function Home() {
               title={
                 <div className="flex gap-6 justify-center pb-1 border-b overflow-hidden  items-center md:min-w-[600px] ">
                   <div>
-                    <Image src={bigAccount} />
-                  </div>
-                  <div>Become A Memeber</div>
+                    <Image src={bigAccount} />{" "}
+                  </div>{" "}
+                  <div> Become A Memeber </div>{" "}
                 </div>
               }
               close={() => {
@@ -173,8 +174,8 @@ export default function Home() {
               <Registration />
             </Confirmation>{" "}
           </motion.div>
-        )}
-      </AnimatePresence>
+        )}{" "}
+      </AnimatePresence>{" "}
     </Layout>
   );
 }

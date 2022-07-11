@@ -13,6 +13,7 @@ const EditableText = ({
   onDonateAmountSumChanged,
   ConfirmText = "Action Updated!",
   CancelText = "Action Canceled",
+  currentCurrencySymbol,
 }) => {
   const [isEditableMode, setIsEditableMode] = useState(false);
   const [sum, setSum] = useState(value);
@@ -35,7 +36,7 @@ const EditableText = ({
               displayType={"text"}
               customInput={Input}
               thousandSeparator={true}
-              prefix={"$"}
+              prefix={currentCurrencySymbol}
             />
           </div>
           <div
@@ -59,7 +60,7 @@ const EditableText = ({
             <NumberFormat
               placeholder={placeholder}
               value={sum}
-              prefix={"$"}
+              prefix={currentCurrencySymbol}
               customInput={Input}
               onValueChange={(values, sourceInfo) => {
                 const { formattedValue, value } = values;
