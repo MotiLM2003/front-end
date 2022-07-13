@@ -104,11 +104,13 @@ const Donate = ({
           ...recurring,
           campaign: campaign._id,
           paymentInterface: paymentInterface._id,
+          lastPaymentDate: new Date(),
         };
         const finalPrivateRecurring = {
           ...privateRecurring,
           campaign: campaign._id,
           paymentInterface: paymentInterface._id,
+          lastPaymentDate: new Date(),
         };
         result = await api.post("/recurring/", {
           recurring: finalRecurring,

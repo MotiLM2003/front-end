@@ -1,4 +1,14 @@
 {
-  "cSpell.words": ["ACHUI", "Banquest", "Bridgewood", "chakra", "tailwindcss"],
-  "editor.formatOnSave": true
+  "cSpell.words": [
+    "ACHUI",
+    "Banquest",
+    "Bridgewood",
+    "chakra",
+    "Loglist",
+    "tailwindcss"
+  ],
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }

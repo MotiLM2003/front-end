@@ -173,7 +173,7 @@ textarea {
 }
 
 .small-input {
-  width: 80px;
+  width: 80px !important;
 }
 
 .md-input {

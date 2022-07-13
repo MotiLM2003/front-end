@@ -3,6 +3,8 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import PaymentsInterfaceSettings from "./PaymentsInterfaceSettings/PaymentsInterfaceSettings";
 import CurrenciesSettings from "./Currencies/CurrenciesSettings";
 import { AnimatePresence } from "framer-motion";
+import SystemLogs from "./SystemLogs/SystemLogs";
+import TasksEngineSettings from "./TasksEngine/TasksEngine";
 
 const SystemSettings = () => {
   return (
@@ -28,22 +30,30 @@ const SystemSettings = () => {
             <span className="text-sm"> System logs </span>
           </Tab>
           <Tab>
-            <span className="text-sm">Payments Scheduler </span>
+            <span className="text-sm">Tasks engine</span>
           </Tab>
         </TabList>
         <TabPanels>
           <TabPanel> General </TabPanel>
           <TabPanel>
             <AnimatePresence>
-              <CurrenciesSettings />{" "}
+              <CurrenciesSettings />
             </AnimatePresence>
           </TabPanel>
           <TabPanel>
             <PaymentsInterfaceSettings />
           </TabPanel>
           <TabPanel>withdraws </TabPanel> <TabPanel> Future 3 </TabPanel>
-          <TabPanel>System logging </TabPanel>
-          <TabPanel>Payments Scheduler </TabPanel>
+          <TabPanel>
+            <AnimatePresence>
+              <SystemLogs />
+            </AnimatePresence>
+          </TabPanel>
+          <TabPanel>
+            <AnimatePresence>
+              <TasksEngineSettings />
+            </AnimatePresence>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </div>

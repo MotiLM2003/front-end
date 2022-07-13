@@ -49,6 +49,12 @@ export default function Home() {
       const user = data.user;
       dispatch(setUser(user));
       setLoading(false);
+      api.post("logger/add", {
+        loggerId: 2,
+        statusCode: 200,
+        descriptionId: 0,
+        params: [`${user.firstName} ${user.lastName}`],
+      });
       router.push("/dashboard");
     } catch (error) {
       console.log(error);

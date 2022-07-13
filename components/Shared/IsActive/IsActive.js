@@ -1,11 +1,11 @@
 import IsActiveIcon from "@components/Icons/IsActiveIcon";
 import React from "react";
 
-const IsActive = ({ isActive }) => {
+const IsActive = ({ isActive, width = "10", height = "9" }) => {
   return (
     <IsActiveIcon
-      width="10"
-      height="9"
+      width={width}
+      height={height}
       fill={isActive ? "#29DC26" : "#e93f2a"}
     />
   );

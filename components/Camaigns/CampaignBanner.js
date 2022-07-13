@@ -153,37 +153,38 @@ const CampaignBanner = ({ bannerList, setBannerList }) => {
         Create a new Banner item
       </Button>
       <div className="flex gap-5 mt-5 mb-8 flex-wrap justify-center ">
-        {bannerList.map((item) => {
-          return (
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className="cursor-pointer flex flex-col items-center"
-                onClick={() => {
-                  handleBannerItemUpdate(item);
-                }}
-              >
-                {renderBannerItem(item)}
-                <div className="max-w-[250px] bg-black text-white p-1 rounded opacity-75">
-                  {item.description.length > 0
-                    ? item.description
-                    : "No description"}
+        {bannerList &&
+          bannerList.map((item) => {
+            return (
+              <div className="flex flex-col items-center gap-2">
+                <div
+                  className="cursor-pointer flex flex-col items-center"
+                  onClick={() => {
+                    handleBannerItemUpdate(item);
+                  }}
+                >
+                  {renderBannerItem(item)}
+                  <div className="max-w-[250px] bg-black text-white p-1 rounded opacity-75">
+                    {item.description.length > 0
+                      ? item.description
+                      : "No description"}
+                  </div>
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleBannerItemDelete(item);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faCircleMinus}
+                    size="1x"
+                    className="text-slate-700"
+                  />
                 </div>
               </div>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  handleBannerItemDelete(item);
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faCircleMinus}
-                  size="1x"
-                  className="text-slate-700"
-                />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
       <Drawer
         isOpen={isOpen}
