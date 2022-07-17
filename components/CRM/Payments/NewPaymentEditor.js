@@ -5,7 +5,7 @@ import {
   getLastRoundPayment,
   createFuturePayments,
 } from "../../../utils/payments";
-import { donationOptions } from "../../../json-data/donationOptions";
+
 import { Button } from "@chakra-ui/react";
 const NewPaymentEditor = ({ donation, list, createPayment }) => {
   const [days, setDays] = useState(0);

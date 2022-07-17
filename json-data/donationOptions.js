@@ -19,4 +19,9 @@ export const donationOptions = [
     text: "Quarterly",
     days: 91,
   },
+  {
+    id: 4,
+    text: "Daily",
+    days: 1,
+  },
 ];

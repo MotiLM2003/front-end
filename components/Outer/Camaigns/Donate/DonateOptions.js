@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // import  {faCircleArrowRight } from
 import { ChevronDownIcon, PhoneIcon } from "@chakra-ui/icons";
+import { donationOptions } from "json-data/donationOptions";
 const DonateOptions = ({ recurring, onRecurringUpdate }) => {
   const { recurringType, isRecurring, recurringCount } = recurring;
 
@@ -40,7 +41,23 @@ const DonateOptions = ({ recurring, onRecurringUpdate }) => {
             style={{ overflow: "hidden" }}
           >
             <div className="flex justify-between mt-4">
-              <Button
+              {donationOptions &&
+                donationOptions.map((donation, i) => {
+                  return (
+                    <Button
+                      variant={`${
+                        recurringType === donation.id ? "solid" : "outline"
+                      }`}
+                      colorScheme="blue"
+                      onClick={() => {
+                        onRecurringUpdate("recurringType", donation.id);
+                      }}
+                    >
+                      {donation.text}
+                    </Button>
+                  );
+                })}
+              {/* <Button
                 variant={`${recurringType === 0 ? "solid" : "outline"}`}
                 colorScheme="blue"
                 onClick={() => {
@@ -75,7 +92,7 @@ const DonateOptions = ({ recurring, onRecurringUpdate }) => {
                 }}
               >
                 Quarterly
-              </Button>
+              </Button> */}
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex gap-2 mt-5 items-center">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
@@ -32,6 +32,7 @@ import Confirmation from "@components/Confirmation/Confirmation";
 import Link from "next/link";
 import ScreenDetails from "./ScreenDetails";
 import Loader from "@components/Loader/Loader";
+import { Editor } from "@tinymce/tinymce-react";
 const initialCampaign = {
   isDescription: true,
   isGoal: true,
@@ -60,6 +61,7 @@ const CreateCampaign = ({ campingData = null }) => {
   const [endDate, setEndDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [didCompleteCampaign, setCompletedCampaign] = useState(false);
+  const editorRef = useRef();
   const onChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -92,6 +94,8 @@ const CreateCampaign = ({ campingData = null }) => {
   const createNewCampaign = async () => {
     campaign.owner = user._id;
     campaign.endDate = endDate;
+    campaign.campaignContent = editorRef.current.getContent();
+    console.log("object", editorRef.current);
     campaign._id ? updateCampaign() : createCampaign();
   };
 
@@ -217,11 +221,7 @@ const CreateCampaign = ({ campingData = null }) => {
                             Short description
                           </h3>
                           <div className="bg-white min-h-[100px]">
-                            {1 === 2 ? (
-                              <DraftEditor content={null} state={null} />
-                            ) : (
-                              "WORK IN PROGRESS"
-                            )}
+                            WORK IN PROGRESS
                           </div>
                         </div>
                       )}
@@ -229,11 +229,21 @@ const CreateCampaign = ({ campingData = null }) => {
                         About the campaign
                       </h3>
                       <div className="bg-white min-h-[300px]">
-                        {1 === 2 ? (
-                          <DraftEditor content={null} state={null} />
-                        ) : (
-                          "WORK IN PROGRESS"
-                        )}
+                        <Editor
+                          apiKey="pncsizcpp6ff387u1m648ue9dsnjcqfsvmpd9p8jtwy2lra5"
+                          initialValue={campaign.campaignContent}
+                          onInit={(evt, editor) => {
+                            console.log("onInit", editor);
+                            editorRef.current = editor;
+                          }}
+                          init={{
+                            menubar: false,
+                            plugins: "link image code emoticons",
+                            fontSizeFormat: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+                            toolbar:
+                              "undo  |   forecolor backcolor | bold italic | emoticons | alignleft aligncenter alignright alignjustify | outdent indent | link image | ",
+                          }}
+                        />
                       </div>
                     </div>
                   </motion.div>

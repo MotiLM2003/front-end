@@ -17,10 +17,10 @@ const TasksList = () => {
   return (
     <div>
       <div>
-        <div className="flex items-center gap-4 pb-1 border-b-2 mb-3">
+        <div className="flex items-center gap-4 pb-1 border-b-2 mb-3 text-primary font-bold text-sm">
           <div className="w-[12px]">&nbsp;</div>
           <div className="w-[250px]">Task description</div>
-          <div className="w-[162px]">Interval type</div>
+          <div className="w-[162px] text-center">Interval type</div>
 
           <div className="w-[90px]">Last start</div>
           <div className=" w-[90px]">Last run</div>
