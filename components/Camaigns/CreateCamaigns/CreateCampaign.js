@@ -220,8 +220,13 @@ const CreateCampaign = ({ campingData = null }) => {
                           <h3 className="mt-4 mb-2 text-black text-xl font-bold">
                             Short description
                           </h3>
-                          <div className="bg-white min-h-[100px]">
-                            WORK IN PROGRESS
+                          <div className="bg-white ">
+                            <Input
+                              className="w-[100%] text-[1.3rem] font-bold"
+                              name="shortDescription"
+                              onChange={onChange}
+                              value={campaign.shortDescription}
+                            />
                           </div>
                         </div>
                       )}

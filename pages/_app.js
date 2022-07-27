@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "../styles/globals.css";
 import "../styles/confirmation.css";
 import "../styles/buttons.css";
-
+import theme from "../styles/theme.css";
 import store, { wrapper } from "../store/store";
 import { ToastContainer } from "react-toastify";
 function MyApp({ Component, pageProps }) {

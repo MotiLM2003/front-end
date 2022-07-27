@@ -82,6 +82,17 @@ textarea {
   .status-selected {
     @apply bg-primary text-white scale-[1.04];
   }
+  .slider-button-off {
+    @apply bg-primary text-white scale-[1.04];
+  }
+
+  .slider-button-on {
+    @apply bg-[#1979BE] w-[40px] h-[13px] rounded-xl cursor-pointer;
+  }
+
+  .slider-button-off {
+    @apply bg-[#8BB8D8] w-[20px] h-[13px] rounded-xl  cursor-pointer;
+  }
 }
 
 .header-menu .selected {

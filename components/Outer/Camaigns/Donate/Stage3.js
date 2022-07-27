@@ -27,6 +27,7 @@ import PaymentsInterface from "@components/Shared/PaymentsInterface/PaymentsInte
 import api from "../../../../apis/userAPI";
 import { getPercentageValue } from "../../../../utils/math";
 import FixedPriceAddition from "./FixedPriceAddition";
+import NumberFormat from "react-number-format";
 
 const Stage3 = ({
   campaign,
@@ -129,12 +130,11 @@ const Stage3 = ({
         >
           Donate:&nbsp;
           {
-            <CurrencyFormat
-              value={total}
+            <NumberFormat
+              value={total.toFixed(2)}
               displayType={"text"}
               thousandSeparator={true}
               prefix={currentCurrencySymbol}
-              is
             />
           }
         </Button>

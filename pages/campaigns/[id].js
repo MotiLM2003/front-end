@@ -19,28 +19,96 @@ import DonateModel from "@components/Outer/Camaigns/Donate/DonateModel";
 import { initialRecurringData } from "../../json-data/initialRecurring";
 import DonateContainerModel from "@components/Outer/Camaigns/Donate/DonateContainerModel";
 import Panel from "./Panel";
-
+import SliderItem from "./SliderItem";
+import RenderSliderContent from "./RenderSliderContent";
+import { CloudFog } from "tabler-icons-react";
+import { getPercentage } from "utils/math";
 const CampaignDetails = ({ data }) => {
   // const [id, setId] = useState(null);
   const [campaign, setCampaign] = useState({});
   const [isCharityButtonDonation, setIsCharityButtonDonation] = useState(false);
   const [charityDonation, setCharityDonation] = useState(initialRecurringData);
   const [progressWidth, setProgressWidth] = useState(0);
+  const [currentPanelIndex, setCurrentPanelIndex] = useState(0);
+  const [totalPayments, setTotalPayments] = useState(0);
+  const [totalDonaters, setTotalDonaters] = useState(0);
   const router = useRouter();
+  const isSliderOn = useRef(true);
+  const interval = null;
+  const getTotalPayments = async () => {
+    try {
+      const { data } = await api.post("/payments/getTottalPayments", {
+        campaign: campaign._id,
+      });
+
+      setTotalPayments(data[0].count);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalDoneters = async () => {
+    try {
+      const filter = {
+        campaign: campaign._id,
+      };
+      const { data } = await api.post("/recurring/get-recurring-count", {
+        campaign: campaign._id,
+      });
+
+      console.log(data);
+
+      setTotalDonaters(data.count);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     setCampaign(data);
+    // getTotalPayments();
+    // getTotalDoneters();
     setTimeout(() => {
       setProgressWidth(95);
     }, 2000);
 
-    const interval = setInterval(() => {
-      moveToNextPanel();
-    }, 4000);
+    console.log("is goal", campaign);
 
+    if (campaign._id && campaign.bannerItems.length === 0) {
+      setCampaign({
+        ...campaign,
+        isImgVideoSlider: false,
+      });
+    } else if (campaign.bannerItems && campaign.bannerItems.length > 1) {
+      interval = setInterval(() => {
+        if (
+          (campaign &&
+            campaign.bannerItems &&
+            campaign.bannerItems.length <= 1) ||
+          !isSliderOn.current
+        )
+          return;
+        if (!isSliderOn.current) return;
+        moveToNextPanel();
+      }, 4000);
+    } else {
+    }
     return () => {
       clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (campaign) {
+      getTotalPayments();
+      getTotalDoneters();
+    }
+  }, [campaign]);
+
+  const clearSliderInterval = () => {
+    console.log("clering");
+    clearInterval(interval);
+  };
 
   const { campaignName, shortDescription, isDescription } = campaign;
 
@@ -109,16 +177,35 @@ const CampaignDetails = ({ data }) => {
   const flick = useRef(null);
 
   const moveToNextPanel = async () => {
+    if (!isSliderOn.current) return;
     if (flick && flick.current) {
+      const length = flick.current._panels.length - 1;
+      const nextIndex = currentPanelIndex + 1;
+      console.log("length", length, "next index", nextIndex);
+
+      setCurrentPanelIndex((prev) => (prev + 1 > length ? 0 : prev + 1));
+      console.log("isSliderOn", isSliderOn.current);
       await flick.current.next();
     }
   };
 
-  const moveToPrevPanel = () => {};
+  const moveToPanel = async (index) => {
+    await flick.current.moveTo(index);
+    setCurrentPanelIndex(index);
+  };
 
   useEffect(() => {
+    console.log("currentPanelIndex", currentPanelIndex);
+  }, [currentPanelIndex]);
+
+  useEffect(() => {
+    console.log("slideron changed", isSliderOn.current);
+  }, [isSliderOn]);
+  useEffect(() => {
     if (!flick.current) return;
-    console.log(flick.current.next());
+    if (campaign.bannerItems.length <= 1) return;
+
+    flick.current.next();
   }, [flick.current]);
 
   return (
@@ -131,12 +218,20 @@ const CampaignDetails = ({ data }) => {
             className="w-[88%] -mt-[40px] md:-mt-[80px] bg-white shadow rounded flex flex-col gap-4 justify-center relative z-50 p-3"
           >
             <Heading className="text-black">{campaignName}</Heading>
-            <div>
-              <Text>{shortDescription}</Text>
-            </div>
-            <div className="flex flex-col md:flex-row justify-center ">
+
+            <div
+              className="flex flex-col md:flex-row אחי
+            justify-center "
+            >
               {campaign.isImgVideoSlider && (
-                <div className={`basis-1/2 flex  flex-col justify-center`}>
+                <div
+                  className={`basis-1/2 flex  flex-col justify-center`}
+                  onMouseOver={() => {
+                    // clearSliderInterval();
+                    console.log("set slider off");
+                    isSliderOn.current = false;
+                  }}
+                >
                   <motion.div
                     variants={sliderVariant}
                     initial="hidden"
@@ -146,46 +241,51 @@ const CampaignDetails = ({ data }) => {
                     }`}
                   >
                     <Flicking ref={flick} circular={true}>
-                      <div
-                        className={`${
-                          campaign.isGoal
-                            ? "h-[300px] w-[450px]"
-                            : "h-[400px] w-[650px]"
-                        }   bg-red  flex items-center justify-center panel`}
-                      >
-                        <p className="text-white"> items-center 1</p>
-                      </div>
-                      <div
-                        className={`${
-                          campaign.isGoal
-                            ? "h-[300px] w-[450px]"
-                            : "h-[400px] w-[650px]"
-                        } bg-green-500 flex items-center justify-center  panel`}
-                      >
-                        <p className="text-white"> items-center 2</p>
-                      </div>
-                      <div
-                        className={`${
-                          campaign.isGoal
-                            ? "h-[300px] w-[450px]"
-                            : "h-[400px] w-[650px]"
-                        } bg-purple-500  flex items-center justify-center panel`}
-                      >
-                        <p className="text-white"> items-center 3</p>
-                      </div>
+                      {campaign.bannerItems.map((item) => (
+                        <div
+                          className={`${
+                            campaign.isGoal
+                              ? "h-[300px] w-[450px]"
+                              : "h-[400px] w-[650px]"
+                          }     flex items-center justify-center panel`}
+                        >
+                          <RenderSliderContent banner={item} />
+                        </div>
+                      ))}
                     </Flicking>
                   </motion.div>
+
                   <div className="flex gap-1 mt-3 justify-center mr-[6.5rem]">
-                    <div className="bg-[#1979BE] w-[40px] h-[13px] rounded-xl cursor-pointer">
-                      &nbsp;
-                    </div>
-                    <div className="bg-[#8BB8D8] w-[20px] h-[13px] rounded-xl  cursor-pointer">
-                      &nbsp;
-                    </div>
-                    <div className="bg-[#8BB8D8] w-[20px] h-[13px] rounded-xl  cursor-pointer">
-                      &nbsp;
-                    </div>
+                    {campaign.bannerItems.length > 1 &&
+                      campaign.bannerItems.map((item, index) => {
+                        const color =
+                          index === currentPanelIndex ? "#1979BE" : "#8BB8D8";
+                        const size =
+                          index === currentPanelIndex
+                            ? "w-[40px] h-[13px]"
+                            : "w-[20px] h-[13px]";
+                        return (
+                          <div
+                            className={`bg-[${color}] ${size} rounded-xl cursor-pointer transition-all duration-700`}
+                            onClick={() => {
+                              isSliderOn.current = false;
+                              moveToPanel(index);
+                            }}
+                          >
+                            &nbsp;
+                          </div>
+                        );
+                      })}
                   </div>
+                  {/* <div className="bg-[#1979BE] w-[40px] h-[13px] rounded-xl cursor-pointer">
+                    &nbsp;
+                  </div>
+                  <div className="bg-[#8BB8D8] w-[20px] h-[13px] rounded-xl  cursor-pointer">
+                    &nbsp;
+                  </div>
+                  <div className="bg-[#8BB8D8] w-[20px] h-[13px] rounded-xl  cursor-pointer">
+                    &nbsp;
+                  </div> */}
                 </div>
               )}
 
@@ -203,7 +303,7 @@ const CampaignDetails = ({ data }) => {
                     <div>$</div>
                     <div>
                       <AnimatedNumber
-                        value={"25800"}
+                        value={totalPayments}
                         formatValue={formatValue}
                         duration={800}
                         easing="linear"
@@ -228,7 +328,16 @@ const CampaignDetails = ({ data }) => {
                           <Image src={graph} width={36} height={33} />
                           <Text className="font-bold">Found Raised:</Text>
                           <Heading as="div" size="md">
-                            25.75%
+                            %
+                            <AnimatedNumber
+                              value={getPercentage(
+                                totalPayments,
+                                campaign.goal
+                              )}
+                              formatValue={formatValue}
+                              duration={800}
+                              easing="linear"
+                            />
                           </Heading>
                         </div>
                       </motion.div>
@@ -240,7 +349,7 @@ const CampaignDetails = ({ data }) => {
                           <Image src={goal} width={36} height={33} />
                           <Text className="font-bold">Funding Goal:</Text>
                           <Heading as="div" size="md">
-                            $100,000
+                            ${formatValue(campaign.goal)}
                           </Heading>
                         </div>
                       </motion.div>
@@ -252,7 +361,7 @@ const CampaignDetails = ({ data }) => {
                           <Image src={donors} width={32} height={28} />
                           <Text className="font-bold">Donors</Text>
                           <Heading as="div" size="md">
-                            165
+                            {totalDonaters}
                           </Heading>
                         </div>
                       </motion.div>
@@ -263,7 +372,7 @@ const CampaignDetails = ({ data }) => {
             </div>
             <div className="flex justify-center  my-14 ">
               <div>{campaign && <DonateModel campaign={campaign} />}</div>
-              <div className="flex justify-center  my-14 gap-5 ">
+              {/* <div className="flex justify-center  my-14 gap-5 ">
                 <Button
                   onClick={() => {
                     setCampaign({
@@ -302,13 +411,12 @@ const CampaignDetails = ({ data }) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    console.log(flick.current._panels[2]);
                     flick.current.prev();
                   }}
                 >
                   Switch to prev
                 </Button>
-              </div>
+              </div> */}
             </div>
 
             <div>
@@ -317,6 +425,28 @@ const CampaignDetails = ({ data }) => {
                 openCharityButtonDonation={openCharityButtonDonation}
               />
             </div>
+            {campaign.isCertificate && (
+              <div className="default-container flex justify">
+                <div className="bg-primary w-[400px] relative  p-2 pb-6 shadow text-white flex items-center text-[.8rem] flex-col justify-center">
+                  <div>
+                    <div className="text-center">
+                      THIS CAUSE HAS BEEN VERIFIED
+                    </div>
+                    <div className="text-center">BY THE VA'AD HATZEDAKAH</div>
+                    <div>TOMCHEI TZEDEKAH OF LAKEWOOD</div>
+                  </div>
+                  <div className="w-[200px] bg-black absolute bottom-[-11px] p-1 text-center shadow">
+                    Certificate/Account #
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="mt-2 text-[1.5rem] font-bold">
+              {campaign.isDescription && campaign.shortDescription}
+            </div>
+            <div
+              dangerouslySetInnerHTML={{ __html: campaign.campaignContent }}
+            ></div>
           </section>
         </div>
       </div>
