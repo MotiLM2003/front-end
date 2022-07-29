@@ -10,10 +10,10 @@ export const selectedSwitcherSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.selectedUser = action.payload;
+      state.selectedUser = { ...action.payload };
     },
     setCampagin: (state, action) => {
-      state.selectedCampagin = action.payload;
+      state.selectedCampagin = { ...action.payload };
     },
   },
 });

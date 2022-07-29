@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
-import CRMLayout from '../../pages/shared/CRMLayout';
-import { useSelector, useDispatch } from 'react-redux';
-import { setCRMId } from '../../store/menuSlice';
+import React, { useEffect } from "react";
+import CRMLayout from "../../pages/shared/CRMLayout";
+import { useSelector, useDispatch } from "react-redux";
+import { setCRMId } from "../../store/menuSlice";
+
+import Dashboard from "@components/CRM/Dashboard/Dashboard";
+
 const id = 0;
-const Dashboard = () => {
+const index = () => {
   const dispatch = useDispatch();
   const { CRMMenuId } = useSelector((state) => state.menuReducer);
   useEffect(() => {
@@ -11,9 +14,9 @@ const Dashboard = () => {
   }, []);
   return (
     <CRMLayout>
-      <div>Hello </div>
+      <Dashboard />
     </CRMLayout>
   );
 };
 
-export default Dashboard;
+export default index;

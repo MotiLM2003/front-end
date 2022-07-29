@@ -2,12 +2,12 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import menuReducer from "./menuSlice";
 import userReducer from "./userSlice";
-import selectedSwitcherSlice from "./selectedSwitcherSlice";
+import switcherReducer from "./selectedSwitcherSlice";
 
 const reducer = combineReducers({
   menuReducer,
   userReducer,
-  selectedSwitcherSlice,
+  switcherReducer,
 });
 
 export default configureStore({

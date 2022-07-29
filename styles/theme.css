@@ -15,9 +15,16 @@
 }
 
 .react-autosuggest__suggestions-container--open {
+  z-index: 1000;
   transition: width 2s, height 4s;
+  background: #fff;
   width: 40rem;
   padding: 0.5rem;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 0.2rem;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background: #bbdef6;
   border-radius: 0.2rem;
 }

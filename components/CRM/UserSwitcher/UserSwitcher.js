@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import Autosuggest from "react-autosuggest";
 import api from "apis/userAPI";
-const UserSwitcher = ({ onSelected = () => {} }) => {
+const UserSwitcher = ({ onSelected = () => {}, initialValue }) => {
   const [suggestions, setSuggestions] = useState([]);
-  //   const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(initialValue);
 
-  const inputValue = useRef("");
-  useEffect(() => {}, []);
+  // const inputValue = useRef(initialValue);
   useEffect(() => {
-    console.log("suggestions", suggestions);
-  }, [suggestions]);
+    console.log("initialValue", initialValue);
+  }, []);
+  useEffect(() => {
+    console.log("test", initialValue);
+
+    setInputValue(initialValue);
+  }, [initialValue]);
   const getSuggestions = async (value) => {
     // console.log("value", value);
     // const inputValue = value.trim().toLowerCase();
@@ -21,14 +25,14 @@ const UserSwitcher = ({ onSelected = () => {} }) => {
     //       (lang) => lang.name.toLowerCase().slice(0, inputLength) === inputValue
     //     );
     const { data } = await api.post("/users/search/", {
-      searchText: inputValue.current,
+      searchText: inputValue,
     });
 
     return data;
   };
 
   const onSuggestionsFetchRequested = async ({ value }) => {
-    setSuggestions(await getSuggestions(inputValue.current));
+    setSuggestions(await getSuggestions(inputValue));
   };
 
   const onSuggestionsClearRequested = () => {
@@ -37,7 +41,7 @@ const UserSwitcher = ({ onSelected = () => {} }) => {
 
   const renderSuggestion = (suggestion) => {
     return (
-      <div className="flex items-center p-2 border-b  border-b-shades-200">
+      <div className="flex items-center p-2 border-b  border-b-shades-200 cursor-pointer">
         <div className="w-[180px]">
           {suggestion.firstName} {suggestion.lastName}
         </div>
@@ -51,13 +55,13 @@ const UserSwitcher = ({ onSelected = () => {} }) => {
   const getSuggestionValue = (suggestion) => suggestion.firstName;
 
   const onChange = (event, { newValue }) => {
-    // setInputValue(newValue);
-    inputValue.current = newValue;
+    setInputValue(newValue);
+    // inputValue = newValue;
   };
 
   const inputProps = {
     placeholder: "Select user",
-    value: inputValue.current,
+    value: inputValue,
     onChange: onChange,
   };
 
@@ -65,9 +69,8 @@ const UserSwitcher = ({ onSelected = () => {} }) => {
     event,
     { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
   ) => {
-    console.log("here");
-    console.log(suggestion);
     onSelected(suggestion);
+    inputValue = `${suggestion.firstName} ${suggestion.lastName}`;
   };
   return (
     <div className="relative">
